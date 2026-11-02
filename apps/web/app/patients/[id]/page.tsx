@@ -10,6 +10,7 @@ import {
   isBeingWorkedOn,
   queryStatusLabel,
 } from "@/lib/format";
+import { DeleteDocument } from "./delete-document";
 import { DocumentUpload } from "./document-upload";
 import { QueryDrop } from "./query-drop";
 import { RefreshWhileReading, RetryButton } from "./reading-status";
@@ -121,6 +122,9 @@ export default async function PatientPage({
                     <th scope="col">Type</th>
                     <th scope="col">Size</th>
                     <th scope="col">Uploaded</th>
+                    {user.role !== "patient" && (
+                      <th scope="col"><span className="visually-hidden">Actions</span></th>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -148,6 +152,9 @@ export default async function PatientPage({
                       </td>
                       <td>{formatBytes(document.sizeBytes)}</td>
                       <td>{formatDate(document.createdAt)}</td>
+                      {user.role !== "patient" && (
+                        <td><DeleteDocument documentId={document.id} patientId={patient.id} /></td>
+                      )}
                     </tr>
                   ))}
                 </tbody>

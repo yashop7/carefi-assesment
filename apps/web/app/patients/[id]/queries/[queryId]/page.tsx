@@ -101,6 +101,9 @@ export default async function QueryPage({
                         </Link>
                       </p>
                     )}
+                    {point.status === "already_in_locker" && !point.document && (
+                      <p className="summary">This document has since been deleted.</p>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -81,6 +81,13 @@ export async function requireStaffAccess(user: CurrentUser, patientId: string) {
   return requirePatientAccess(user, patientId);
 }
 
+export async function requireStaffDocumentAccess(user: CurrentUser, documentId: string) {
+  const document = await db.orm.public.Document.first({ id: documentId });
+  if (!document) return deny(user, null, documentId);
+  await requireStaffAccess(user, document.patientId);
+  return document;
+}
+
 // Access is checked against the letter's own patient, never one from a URL.
 export async function requireQueryAccess(user: CurrentUser, queryId: string) {
   const letter = await db.orm.public.QueryLetter.first({ id: queryId });
