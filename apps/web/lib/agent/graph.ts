@@ -10,6 +10,7 @@ import {
   finish,
   routeAfterTeam,
   routeDelivery,
+  routeMessage,
   routeResults,
   safetyChecks,
   sendMessages,
@@ -30,7 +31,7 @@ const workflow = new StateGraph(State)
   .addEdge("checkLocker", "safetyChecks")
   .addConditionalEdges("safetyChecks", routeResults, ["addToTeamQueue", "buildMessage", "finish"])
   .addConditionalEdges("addToTeamQueue", routeAfterTeam, ["buildMessage", "finish"])
-  .addEdge("buildMessage", "sendMessages")
+  .addConditionalEdges("buildMessage", routeMessage, ["sendMessages", "finish"])
   .addConditionalEdges("sendMessages", routeDelivery, ["sendMessages", "alertTeam", "finish"])
   .addEdge("alertTeam", END)
   .addEdge("finish", END);
@@ -62,7 +63,12 @@ export async function runAgent(queryLetterId: string) {
       .update({ startedAt: new Date().toISOString() });
 
     const agent = await getGraph();
-    const saved = await agent.getState(config);
+    let saved = await agent.getState(config);
+    // A failed delivery ended its run, so a retry goes back to the sending step.
+    if (saved.next.length === 0 && saved.values.messages) {
+      await agent.updateState(config, { sendAttempts: 0 }, "buildMessage");
+      saved = await agent.getState(config);
+    }
     // A run with a saved next step carries on from there, not from the top.
     await agent.invoke(saved.next.length > 0 ? null : { queryLetterId }, config);
   } catch (error) {

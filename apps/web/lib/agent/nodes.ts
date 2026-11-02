@@ -1,6 +1,8 @@
 import { Annotation } from "@langchain/langgraph";
 import { db } from "db";
 import { fileContent, namesDiffer } from "../documents";
+import { DeliveryError, sendEmail, sendWhatsApp } from "../messaging/send";
+import { fillTemplate } from "../messaging/template";
 import { getObject } from "../storage";
 import {
   askAI,
@@ -28,7 +30,8 @@ export const State = Annotation.Root({
   patientName: Annotation<string | null>(),
   decisions: Annotation<Decision[]>(),
   results: Annotation<Result[]>(),
-  messages: Annotation<Record<Channel, string>>(),
+  messages: Annotation<Record<Channel, string> | null>(),
+  emailSubject: Annotation<string>(),
   delivery: Annotation<Delivery>({
     reducer: (_, next) => next,
     default: () => ({ whatsapp: "pending", email: "pending" }),
@@ -213,24 +216,40 @@ export async function buildMessage(state: GraphState) {
     .map((result, index) => `${index + 1}. ${result.patientRequest}\n   Why: ${result.patientWhy}`)
     .join("\n\n");
 
-  const messages = {} as Record<Channel, string>;
-  for (const channel of CHANNELS) {
-    const template = await db.orm.public.Template.first({ channel });
-    if (!template) throw new Error("Template not found");
-    messages[channel] = template.body
-      .replaceAll("{{patient_name}}", patient.name)
-      .replaceAll("{{patient_id}}", patient.patientCode)
-      .replaceAll("{{claim_number}}", patient.claimNumber ?? "(not on file)")
-      .replaceAll("{{requested_items}}", requestedItems);
+  const values = {
+    patient_name: patient.name,
+    patient_id: patient.patientCode,
+    claim_number: patient.claimNumber,
+    requested_items: requestedItems,
+  };
+  const whatsapp = await db.orm.public.Template.first({ channel: "whatsapp" });
+  const email = await db.orm.public.Template.first({ channel: "email" });
+  if (!whatsapp || !email) throw new Error("Template not found");
+
+  const whatsappBody = fillTemplate(whatsapp.body, values);
+  const emailBody = fillTemplate(email.body, values);
+  const emailSubject = fillTemplate(email.subject ?? "Documents needed for your claim", values);
+  if (whatsappBody && emailBody && emailSubject) {
+    return { messages: { whatsapp: whatsappBody, email: emailBody }, emailSubject };
   }
-  return { messages };
+
+  // Nothing was sent, so these points can't say the patient was asked.
+  await db.orm.public.QueryPoint.where({
+    queryLetterId: letter.id,
+    status: "needed_from_patient",
+  }).updateAll({
+    status: "needs_team",
+    reason: "No message was sent because the patient's profile is missing a detail it needs, such as the claim number.",
+  });
+  return { messages: null };
 }
 
-// Sending is simulated until stage 5, so this only records what would go out.
-// Set SIMULATE_SEND_FAILURE to a channel name to test the retry path.
-async function deliver(channel: Channel) {
-  if (process.env.SIMULATE_SEND_FAILURE === channel) throw new Error("Simulated failure");
-  return "simulated";
+function deliver(
+  message: { id: string; channel: Channel; recipient: string; body: string },
+  emailSubject: string,
+) {
+  if (message.channel === "whatsapp") return sendWhatsApp(message.recipient, message.body);
+  return sendEmail(message.recipient, emailSubject, message.body, message.id);
 }
 
 async function sendOne(channel: Channel, state: GraphState, recipient: string, patientId: string) {
@@ -242,14 +261,14 @@ async function sendOne(channel: Channel, state: GraphState, recipient: string, p
       patientId,
       channel,
       recipient,
-      body: state.messages[channel],
+      body: state.messages![channel],
     }));
   // The row is what stops a duplicate after a retry or restart.
   if (message.status === "sent") return "sent";
 
   const row = db.orm.public.Message.where({ id: message.id });
   try {
-    const providerId = await deliver(channel);
+    const providerId = await deliver({ ...message, channel }, state.emailSubject);
     await row.update({
       status: "sent",
       attempts: message.attempts + 1,
@@ -258,11 +277,13 @@ async function sendOne(channel: Channel, state: GraphState, recipient: string, p
       sentAt: new Date().toISOString(),
     });
     return "sent";
-  } catch {
+  } catch (error) {
+    const reason = error instanceof DeliveryError ? error.message : "Could not deliver this message";
+    console.error("Send failed:", channel, reason);
     await row.update({
       status: "failed",
       attempts: message.attempts + 1,
-      errorMessage: "Could not deliver this message",
+      errorMessage: reason,
     });
     return "failed";
   }
@@ -317,6 +338,10 @@ export function routeResults(state: GraphState) {
 
 export function routeAfterTeam(state: GraphState) {
   return patientMustSend(state) ? "buildMessage" : "finish";
+}
+
+export function routeMessage(state: GraphState) {
+  return state.messages ? "sendMessages" : "finish";
 }
 
 export function routeDelivery(state: GraphState) {

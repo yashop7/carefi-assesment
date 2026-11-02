@@ -10,6 +10,7 @@ import {
   timeTaken,
 } from "@/lib/format";
 import { createExpiringLink } from "@/lib/storage";
+import { MessageList } from "../../message-list";
 import { RefreshWhileReading, RetryButton } from "../../reading-status";
 
 export default async function QueryPage({
@@ -58,7 +59,7 @@ export default async function QueryPage({
             <span className={letter.status.endsWith("failed") ? "badge badge-warn" : "badge"}>
               {statusLabel}
             </span>
-            {letter.status === "failed" && <RetryButton url={`/api/queries/${letter.id}/retry`} />}
+            {letter.status.endsWith("failed") && <RetryButton url={`/api/queries/${letter.id}/retry`} />}
           </dd>
         </div>
         <div><dt>Uploaded</dt><dd>{formatDate(letter.createdAt)}</dd></div>
@@ -115,23 +116,7 @@ export default async function QueryPage({
       {messages.length > 0 && (
         <>
           <h2>Message to the patient</h2>
-          {messages.some(({ providerId }) => providerId === "simulated") && (
-            <p className="muted">Sending is simulated for now. Nothing has reached the patient.</p>
-          )}
-          {messages.map((message) => (
-            <div className="message" key={message.id}>
-              <p className="status-cell">
-                <strong>{message.channel === "whatsapp" ? "WhatsApp" : "Email"}</strong>
-                <span className={message.status === "failed" ? "badge badge-warn" : "badge badge-good"}>
-                  {message.status === "failed" ? "Failed" : message.status === "sent" ? "Sent" : "Sending"}
-                </span>
-                <span className="muted">
-                  {message.recipient}, {message.attempts} {message.attempts === 1 ? "attempt" : "attempts"}
-                </span>
-              </p>
-              <pre>{message.body}</pre>
-            </div>
-          ))}
+          <MessageList messages={messages} showDelivery />
         </>
       )}
     </>

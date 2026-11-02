@@ -12,6 +12,7 @@ import {
 } from "@/lib/format";
 import { DeleteDocument } from "./delete-document";
 import { DocumentUpload } from "./document-upload";
+import { MessageList } from "./message-list";
 import { QueryDrop } from "./query-drop";
 import { RefreshWhileReading, RetryButton } from "./reading-status";
 
@@ -60,6 +61,14 @@ export default async function PatientPage({
           .select("id", "fileName", "status", "createdAt")
           .include("points", (points) => points.select("status").limit(200))
           .orderBy((letter) => letter.createdAt.desc())
+          .limit(200)
+          .all()
+      : [];
+
+  const messages =
+    tab === "messages"
+      ? await db.orm.public.Message.where({ patientId: patient.id })
+          .orderBy((message) => message.createdAt.desc())
           .limit(200)
           .all()
       : [];
@@ -201,9 +210,12 @@ export default async function PatientPage({
           )}
         </>
       )}
-      {tab === "messages" && (
-        <div className="empty"><p>No messages yet.</p></div>
-      )}
+      {tab === "messages" &&
+        (messages.length === 0 ? (
+          <div className="empty"><p>No messages yet.</p></div>
+        ) : (
+          <MessageList messages={messages} showDelivery={user.role !== "patient"} />
+        ))}
     </>
   );
 }

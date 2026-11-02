@@ -168,4 +168,8 @@ After upload, the AI reads each file once in the background and saves its type, 
 
 ## Query letters
 
-Staff drop a letter on a patient's Query letters tab. A LangGraph agent (`apps/web/lib/agent/`) lists every point, checks the locker, and shows each decision and its reason on the letter's page. Progress is saved in the `langgraph` schema, so a restart carries on from the last step. Sending is simulated until stage 5. Set `SIMULATE_SEND_FAILURE=whatsapp` or `email` to test the retry path.
+Staff drop a letter on a patient's Query letters tab. A LangGraph agent (`apps/web/lib/agent/`) lists every point, checks the locker, and shows each decision and its reason on the letter's page. Progress is saved in the `langgraph` schema, so a restart carries on from the last step.
+
+## Sending
+
+When the patient must send something, the agent sends the template on WhatsApp through Twilio and by email through Resend (`apps/web/lib/messaging/`). A failed channel retries alone, then the letter shows "Delivery failed" with "Try again". Set `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_FROM`, `RESEND_API_KEY` and `EMAIL_FROM` in `apps/web/.env` and on Railway. Without them, sending fails rather than pretending to work.
