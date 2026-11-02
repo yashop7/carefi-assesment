@@ -1,0 +1,19 @@
+{
+  "name": "db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "contract:emit": "prisma contract emit",
+    "postinstall": "prisma skills sync || exit 0"
+  },
+  "dependencies": {
+    "@prisma/orm-postgres": "8.0.0-rc.21",
+    "dotenv": "^18.0.9"
+  },
+  "devDependencies": {
+    "@prisma/cli-engine": "0.9.0",
+    "@types/node": "^26.6.6",
+    "prisma": "^8.0.0-rc.29"
+  }
+}
