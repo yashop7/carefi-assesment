@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { getCurrentUser, logAccess, orNotFound, requireDocumentAccess } from "@/lib/access";
 import { documentTypeLabel, isBeingRead } from "@/lib/format";
 import { createExpiringLink } from "@/lib/storage";
-import { RefreshWhileReading, RetryReading } from "../../reading-status";
+import { RefreshWhileReading, RetryButton } from "../../reading-status";
 
 export default async function DocumentPage({
   params,
@@ -41,7 +41,7 @@ export default async function DocumentPage({
       )}
       {document.readingStatus === "failed" && (
         <p className="field-error">
-          Reading failed. <RetryReading documentId={document.id} />
+          Reading failed. <RetryButton url={`/api/documents/${document.id}/read`} />
         </p>
       )}
       {document.nameMismatch && (

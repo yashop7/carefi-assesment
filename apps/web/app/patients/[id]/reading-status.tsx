@@ -14,13 +14,13 @@ export function RefreshWhileReading() {
   return null;
 }
 
-export function RetryReading({ documentId }: { documentId: string }) {
+export function RetryButton({ url }: { url: string }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
 
   async function retry() {
     setPending(true);
-    await fetch(`/api/documents/${documentId}/read`, { method: "POST" }).catch(() => null);
+    await fetch(url, { method: "POST" }).catch(() => null);
     router.refresh();
     setPending(false);
   }

@@ -397,6 +397,9 @@ CareFi's patients may only arrive at evaluation, so an admin needs a fast way to
 | `buildMessage` | Our code fills the template. The AI writes only the request and reason text. | Not applicable |
 | `sendMessages` | Sends on both channels. Retries only the failed one, waiting 1s and then 2s. | Goes to `alertTeam` after 3 attempts |
 | `alertTeam` | Sets `delivery_failed` and shows it in the team queue. | Not applicable |
+| `finish` | Sets `completed` and the finish time. | Not applicable |
+
+`addToTeamQueue` and `buildMessage` run one after the other, not side by side, so `finish` runs only once.
 
 ### Rules in `safetyChecks`
 
@@ -405,7 +408,9 @@ A point goes to the team if any of these is true:
 - The AI skipped it.
 - It cites a document that isn't in this patient's locker.
 - The cited document has `nameMismatch`, or it's unreadable or still unread.
-- The AI says the patient must send something but doesn't say what.
+- The AI says the patient must send something but doesn't say what or why.
+- The AI says the patient must send something, but a locker document is still unread.
+- The name on the letter clearly isn't the patient's. No message is built.
 
 A letter with no points also goes to the team.
 
@@ -504,7 +509,6 @@ Every route checks login and permissions first.
 | `POST /api/patients/[id]/documents` | Upload a document |
 | `GET /api/documents/[id]/link` | Get an expiring file link |
 | `POST /api/patients/[id]/queries` | Upload a letter and start the agent |
-| `GET /api/queries/[id]` | Status, points and messages, used for the 2-second check |
 | `POST /api/queries/[id]/retry` | Retry a failed letter or channel |
 | `POST /api/points/[id]/resolve` | Mark a team item as handled |
 | `GET, PUT /api/templates/[channel]` | Read and edit a template |

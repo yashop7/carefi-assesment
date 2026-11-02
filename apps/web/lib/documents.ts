@@ -1,6 +1,7 @@
 import { db } from "db";
 import OpenAI from "openai";
 import { zodTextFormat } from "openai/helpers/zod";
+import type { ResponseInputContent } from "openai/resources/responses/responses";
 import { z } from "zod";
 import { getObject } from "./storage";
 
@@ -66,22 +67,20 @@ export function namesDiffer(patientName: string, nameOnDocument: string) {
   return !shorter.every((word) => longer.some((other) => sameWord(word, other)));
 }
 
-async function askAI(content: Uint8Array, mimeType: string) {
+// The file only: its name and the patient's details aren't sent.
+export function fileContent(content: Uint8Array, mimeType: string): ResponseInputContent {
   const data = `data:${mimeType};base64,${Buffer.from(content).toString("base64")}`;
+  return mimeType === "application/pdf"
+    ? { type: "input_file", filename: "document.pdf", file_data: data }
+    : { type: "input_image", image_url: data, detail: "high" };
+}
+
+async function askAI(content: Uint8Array, mimeType: string) {
   const response = await new OpenAI().responses.parse({
     model: process.env.OPENAI_MODEL!,
     store: false,
     instructions: INSTRUCTIONS,
-    input: [
-      {
-        role: "user",
-        content: [
-          mimeType === "application/pdf"
-            ? { type: "input_file", filename: "document.pdf", file_data: data }
-            : { type: "input_image", image_url: data, detail: "high" },
-        ],
-      },
-    ],
+    input: [{ role: "user", content: [fileContent(content, mimeType)] }],
     text: { format: zodTextFormat(DocumentReading, "document_reading") },
   });
   if (!response.output_parsed) throw new Error("No valid answer");

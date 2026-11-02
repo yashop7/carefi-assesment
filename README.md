@@ -165,3 +165,7 @@ Staff log in at `/patients`, add a patient, and upload PDF, JPG or PNG files to 
 ## Document reading
 
 After upload, the AI reads each file once in the background and saves its type, summary, name and date (`apps/web/lib/documents.ts`). Set `OPENAI_API_KEY` and `OPENAI_MODEL` in `apps/web/.env` and on Railway.
+
+## Query letters
+
+Staff drop a letter on a patient's Query letters tab. A LangGraph agent (`apps/web/lib/agent/`) lists every point, checks the locker, and shows each decision and its reason on the letter's page. Progress is saved in the `langgraph` schema, so a restart carries on from the last step. Sending is simulated until stage 5. Set `SIMULATE_SEND_FAILURE=whatsapp` or `email` to test the retry path.
