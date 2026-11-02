@@ -161,3 +161,7 @@ Learn more about the power of Turborepo:
 ## Patient locker
 
 Staff log in at `/patients`, add a patient, and upload PDF, JPG or PNG files to that patient's locker. A repeat of a file is refused. Files stay in the private bucket and open through 5-minute links. All access rules are in `apps/web/lib/access.ts`.
+
+## Document reading
+
+After upload, the AI reads each file once in the background and saves its type, summary, name and date (`apps/web/lib/documents.ts`). Set `OPENAI_API_KEY` and `OPENAI_MODEL` in `apps/web/.env` and on Railway.

@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getCurrentUser, logAccess, orNotFound, requireDocumentAccess } from "@/lib/access";
+import { documentTypeLabel, isBeingRead } from "@/lib/format";
 import { createExpiringLink } from "@/lib/storage";
+import { RefreshWhileReading, RetryReading } from "../../reading-status";
 
 export default async function DocumentPage({
   params,
@@ -28,6 +30,33 @@ export default async function DocumentPage({
           Open in new tab
         </a>
       </div>
+      {isBeingRead(document.readingStatus) && (
+        <>
+          <p className="muted">Reading this document...</p>
+          <RefreshWhileReading />
+        </>
+      )}
+      {document.readingStatus === "unreadable" && (
+        <p className="field-error">This file is too unclear to trust. Upload a clearer copy.</p>
+      )}
+      {document.readingStatus === "failed" && (
+        <p className="field-error">
+          Reading failed. <RetryReading documentId={document.id} />
+        </p>
+      )}
+      {document.nameMismatch && (
+        <p className="field-error">
+          The name on this document ({document.nameOnDocument}) doesn&apos;t match this patient.
+        </p>
+      )}
+      {document.readingStatus === "done" && (
+        <dl className="profile">
+          <div><dt>Type</dt><dd>{documentTypeLabel(document.type)}</dd></div>
+          <div><dt>Name on document</dt><dd>{document.nameOnDocument ?? "—"}</dd></div>
+          <div><dt>Date</dt><dd>{document.documentDate ?? "—"}</dd></div>
+          <div className="profile-wide"><dt>Summary</dt><dd>{document.summary}</dd></div>
+        </dl>
+      )}
       <p className="muted">
         This secure link lasts 5 minutes. Reload the page if the file stops loading.
       </p>

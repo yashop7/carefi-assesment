@@ -2,8 +2,9 @@ import { db } from "db";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser, logAccess, orNotFound, requirePatientAccess } from "@/lib/access";
-import { formatBytes, formatDate } from "@/lib/format";
+import { documentTypeLabel, formatBytes, formatDate, isBeingRead } from "@/lib/format";
 import { DocumentUpload } from "./document-upload";
+import { RefreshWhileReading, RetryReading } from "./reading-status";
 
 export default async function PatientPage({
   params,
@@ -29,7 +30,16 @@ export default async function PatientPage({
   const documents =
     tab === "documents"
       ? await db.orm.public.Document.where({ patientId: patient.id })
-          .select("id", "fileName", "sizeBytes", "createdAt")
+          .select(
+            "id",
+            "fileName",
+            "sizeBytes",
+            "createdAt",
+            "type",
+            "summary",
+            "readingStatus",
+            "nameMismatch",
+          )
           .orderBy((document) => document.createdAt.desc())
           .limit(500)
           .all()
@@ -77,6 +87,9 @@ export default async function PatientPage({
       {tab === "documents" && (
         <>
           <DocumentUpload patientId={patient.id} />
+          {documents.some(({ readingStatus }) => isBeingRead(readingStatus)) && (
+            <RefreshWhileReading />
+          )}
           {documents.length === 0 ? (
             <div className="empty">
               <p>No documents yet. Upload the first one above.</p>
@@ -87,7 +100,7 @@ export default async function PatientPage({
                 <thead>
                   <tr>
                     <th scope="col">File</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Type</th>
                     <th scope="col">Size</th>
                     <th scope="col">Uploaded</th>
                   </tr>
@@ -99,8 +112,22 @@ export default async function PatientPage({
                         <Link className="text-link" href={`/patients/${patient.id}/documents/${document.id}`}>
                           {document.fileName}
                         </Link>
+                        {document.summary && <p className="summary">{document.summary}</p>}
                       </td>
-                      <td><span className="badge">Waiting to be read</span></td>
+                      <td>
+                        <div className="status-cell">
+                          {isBeingRead(document.readingStatus) && <span className="badge">Reading</span>}
+                          {document.readingStatus === "done" && <span className="badge">{documentTypeLabel(document.type)}</span>}
+                          {document.readingStatus === "unreadable" && <span className="badge badge-warn">Unreadable, upload a clearer copy</span>}
+                          {document.readingStatus === "failed" && (
+                            <>
+                              <span className="badge badge-warn">Reading failed</span>
+                              <RetryReading documentId={document.id} />
+                            </>
+                          )}
+                          {document.nameMismatch && <span className="badge badge-warn">Name doesn&apos;t match</span>}
+                        </div>
+                      </td>
                       <td>{formatBytes(document.sizeBytes)}</td>
                       <td>{formatDate(document.createdAt)}</td>
                     </tr>

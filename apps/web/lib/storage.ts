@@ -38,6 +38,13 @@ export async function putObject(
   );
 }
 
+export async function getObject(key: string) {
+  const response = await getClient().send(
+    new GetObjectCommand({ Bucket: process.env.S3_BUCKET, Key: key }),
+  );
+  return response.Body!.transformToByteArray();
+}
+
 export async function deleteObject(key: string) {
   await getClient().send(
     new DeleteObjectCommand({ Bucket: process.env.S3_BUCKET, Key: key }),
