@@ -191,7 +191,7 @@ This design was run on a throwaway copy of the repo, with Postgres 17 in Docker 
 - `package.json` (root) — Add this script:
 
   ```json
-  "deploy:prepare": "bun run --cwd packages/db db:migrate && bun run --cwd apps/web auth:migrate && bun run --cwd apps/web admin:create && bun run --cwd packages/db db:seed"
+  "deploy:prepare": "bun run --cwd packages/db db:migrate && bun run --cwd packages/db db:verify && bun run --cwd apps/web auth:migrate && bun run --cwd apps/web admin:create && bun run --cwd packages/db db:seed"
   ```
 
 - `bun.lock` — Updates with the new packages.
@@ -394,7 +394,7 @@ Live site:
 
 Database on Railway:
 
-- [ ] `bunx prisma db verify --db "<public URL>"` passes, using Railway's `DATABASE_PUBLIC_URL`
+- [ ] `db:verify` passes in the pre-deploy logs. The database has no public URL, so it runs there
 - [ ] `public` has the 8 tables and `auth` has 4
 - [ ] `Template` has 2 rows, and `Patient` has none, because `NODE_ENV` is `production`
 
