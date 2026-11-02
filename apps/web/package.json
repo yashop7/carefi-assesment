@@ -8,18 +8,30 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --max-warnings 0",
-    "check-types": "next typegen && tsc --noEmit"
+    "check-types": "next typegen && tsc --noEmit",
+    "auth:migrate": "auth migrate --config lib/auth.ts --yes",
+    "admin:create": "bun run scripts/create-admin.ts",
+    "storage:check": "bun run scripts/check-storage.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1161.0",
+    "@aws-sdk/s3-request-presigner": "3.1161.0",
     "@repo/ui": "*",
+    "auth": "1.7.15",
+    "better-auth": "1.7.15",
+    "db": "workspace:*",
+    "kysely": "0.29.8",
     "next": "16.3.8",
+    "pg": "8.23.1",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "8.0.1",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "@types/node": "26.4.1",
+    "@types/pg": "8.23.1",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",
     "eslint": "10.9.1",

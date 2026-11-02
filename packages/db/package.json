@@ -7,6 +7,7 @@
     "contract:emit": "prisma contract emit",
     "postinstall": "prisma skills sync || exit 0",
     "db:update": "prisma db update --db \"$DATABASE_URL\"",
+    "db:migrate": "prisma db migrate --db \"$DATABASE_URL\" --no-interactive",
     "db:verify": "prisma db verify",
     "db:seed": "bun run src/seed.ts",
     "check-types": "tsc --noEmit"

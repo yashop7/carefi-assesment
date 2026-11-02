@@ -52,6 +52,7 @@ apps/web/
   lib/agent/ai.ts       OpenAI helper and response shapes
   lib/messaging/        Twilio, Resend and template filling
   instrumentation.ts    Resumes unfinished letters on startup
+  scripts/              Admin creation and the bucket privacy check
 packages/db/            Contract, migrations and database client
 test-data/              Fake patients, letters and expected answers
 ```
@@ -494,6 +495,7 @@ Every route checks login and permissions first.
 | Route | Purpose |
 |---|---|
 | `/api/auth/[...all]` | Better Auth |
+| `GET /api/health` | Railway's healthcheck. Public, and returns no patient data |
 | `GET, POST /api/patients` | List and create patients |
 | `GET, PATCH /api/patients/[id]` | Read and edit a profile |
 | `POST /api/patients/[id]/documents` | Upload a document |
@@ -513,6 +515,8 @@ These go in `.env` locally and Railway variables in production. Commit only `.en
 DATABASE_URL
 BETTER_AUTH_SECRET
 BETTER_AUTH_URL
+ADMIN_EMAIL
+ADMIN_PASSWORD
 OPENAI_API_KEY
 OPENAI_MODEL
 S3_ENDPOINT
@@ -526,6 +530,8 @@ TWILIO_WHATSAPP_FROM
 RESEND_API_KEY
 EMAIL_FROM
 ```
+
+Railway also sets `NODE_ENV=production`, so the seed never adds the fake patient, plus `RAILPACK_BUN_VERSION` and `RAILPACK_NODE_VERSION`.
 
 ## 12. Build stages
 
@@ -614,7 +620,7 @@ Each stage ends with something you can test. Don't start a stage until the one b
 | CareFi's data and template arrive late | Bulk import and the template editor |
 | Blurry scans read badly | Test in stage 3, and send doubtful documents to the team |
 | Prisma 8 is a release candidate | Stay on the pinned version, and don't update before the evaluation |
-| Better Auth or checkpoint tables conflict with Prisma | Check in stage 1, and use separate schemas if needed |
+| Better Auth or checkpoint tables conflict with Prisma | `db update` plans to drop any table in `public` that isn't in the contract. Better Auth's tables live in an `auth` schema, and stage 4's checkpoint tables also need their own schema |
 
 ## 14. Open questions for CareFi
 
