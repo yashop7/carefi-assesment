@@ -157,3 +157,7 @@ Learn more about the power of Turborepo:
 - [Configuration Options](https://turborepo.dev/docs/reference/configuration)
 - [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
 # CareFI-PatientLocker
+
+## Patient locker
+
+Staff log in at `/patients`, add a patient, and upload PDF, JPG or PNG files to that patient's locker. A repeat of a file is refused. Files stay in the private bucket and open through 5-minute links. All access rules are in `apps/web/lib/access.ts`.

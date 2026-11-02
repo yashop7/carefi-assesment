@@ -479,6 +479,9 @@ Requested items are written in simple language and say why each one is needed:
 | `/login` | Everyone | Email and password |
 | `/patients` | Admin, agent | Search, ID, name, open items and latest query status |
 | `/patients/[id]` | Admin, agent, own patient | Profile and tabs: Documents, Query letters, Messages |
+| `/patients/new` | Admin | Add-patient form |
+| `/patients/[id]/edit` | Admin | Edit a profile. The patient ID can't change |
+| `/patients/[id]/documents/[documentId]` | Admin, agent, own patient | Document viewer, using an expiring link |
 | `/patients/[id]/queries/[queryId]` | Admin, agent | Letter, each point with its decision and reason, cited document, message and delivery status, time taken |
 | `/queue` | Admin, agent | Points needing a person and failed deliveries, with resolve and retry |
 | `/admin/templates` | Admin | Template editor and preview |
