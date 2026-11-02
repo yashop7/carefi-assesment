@@ -125,6 +125,7 @@ S3_ACCESS_KEY_ID=${{files.ACCESS_KEY_ID}}
 S3_SECRET_ACCESS_KEY=${{files.SECRET_ACCESS_KEY}}
 RAILPACK_BUN_VERSION=1.3.13
 RAILPACK_NODE_VERSION=24
+NODE_ENV=production
 ```
 
 Use `BUCKET`, not `RAILWAY_BUCKET_NAME`, which isn't the name the S3 API expects. New buckets use virtual-hosted URLs. If the bucket's Credentials tab says path-style, add `forcePathStyle: true` to the client in `lib/storage.ts`.
@@ -184,6 +185,8 @@ This design was run on a throwaway copy of the repo, with Postgres 17 in Docker 
 - `apps/web/tsconfig.json` — Add `"paths": { "@/*": ["./*"] }` to `compilerOptions`, with no `baseUrl`.
 - `apps/web/app/page.tsx` — Replace the sample page with the temporary home page.
 - `apps/web/app/layout.tsx` — Set the title to "CareFi Patient Locker", and a matching description.
+- `apps/web/.gitignore` — Add `!.env.example`, because `.env*` also ignores the example file.
+- `README.md` — Remove the mentions of `docs`.
 - `packages/db/package.json` — Add `"db:migrate": "prisma db migrate --db \"$DATABASE_URL\" --no-interactive"`.
 - `package.json` (root) — Add this script:
 
@@ -310,7 +313,7 @@ All go in `apps/web`, using exact versions, because these are the ones tested.
 | `@aws-sdk/s3-request-presigner` | `3.1161.0` | Dependency | Expiring links |
 | `auth` | `1.7.15` | Dependency | Better Auth's migration command. It must match `better-auth`, and pre-deploy needs it |
 | `@types/pg` | `8.23.1` | Dev | Types for `pg` |
-| `@babel/preset-typescript` | `8.0.1` | Dev | Fixes `lint`, which currently fails with a missing-package error because ESLint looks for this from `apps/web` |
+| `@babel/preset-typescript` | `8.0.1` | Dev, in `apps/web` and `packages/ui` | Fixes `lint`, which fails with a missing-package error because ESLint looks for this from each package |
 
 ## Environment variables
 
@@ -322,6 +325,7 @@ All go in `apps/web`, using exact versions, because these are the ones tested.
 | `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` | Bucket access | Already planned |
 | `ADMIN_EMAIL`, `ADMIN_PASSWORD` | First admin login | **New** |
 | `RAILPACK_BUN_VERSION`, `RAILPACK_NODE_VERSION` | Railway build versions. Railway only | **New** |
+| `NODE_ENV` | Set to `production` on Railway, so the seed skips the fake patient during pre-deploy | **New** |
 
 ## Out of scope
 

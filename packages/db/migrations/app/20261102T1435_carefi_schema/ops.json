@@ -1,0 +1,1908 @@
+[
+  {
+    "id": "dropTable.Post",
+    "label": "Drop table \"Post\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Post"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Post\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Post\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Post\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop table \"Post\"",
+        "sql": "DROP TABLE \"public\".\"Post\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Post\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Post\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Post\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "dropTable.User",
+    "label": "Drop table \"User\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"User\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"User\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop table \"User\"",
+        "sql": "DROP TABLE \"public\".\"User\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"User\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"User\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.AccessLog",
+    "label": "Create table \"AccessLog\"",
+    "summary": "Creates table \"AccessLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "AccessLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"AccessLog\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccessLog\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"AccessLog\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"AccessLog\"",
+        "sql": "CREATE TABLE \"public\".\"AccessLog\" (\n  \"action\" text NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"patientId\" text,\n  \"resourceId\" text,\n  \"userId\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"AccessLog_action_check_c4a4121d\" CHECK (\"action\" IN ('view_patient', 'view_document', 'view_query', 'upload', 'denied'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"AccessLog\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"AccessLog\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"AccessLog\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.AgentPatient",
+    "label": "Create table \"AgentPatient\"",
+    "summary": "Creates table \"AgentPatient\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "AgentPatient"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"AgentPatient\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AgentPatient\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"AgentPatient\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"AgentPatient\"",
+        "sql": "CREATE TABLE \"public\".\"AgentPatient\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"patientId\" text NOT NULL,\n  \"userId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"AgentPatient\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"AgentPatient\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"AgentPatient\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Document",
+    "label": "Create table \"Document\"",
+    "summary": "Creates table \"Document\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Document"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Document\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Document\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Document\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Document\"",
+        "sql": "CREATE TABLE \"public\".\"Document\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"documentDate\" text,\n  \"fileName\" text NOT NULL,\n  \"id\" text NOT NULL,\n  \"mimeType\" text NOT NULL,\n  \"nameMismatch\" bool DEFAULT false NOT NULL,\n  \"nameOnDocument\" text,\n  \"patientId\" text NOT NULL,\n  \"readingStatus\" text DEFAULT 'pending' NOT NULL,\n  \"sha256\" text NOT NULL,\n  \"sizeBytes\" int4 NOT NULL,\n  \"storageKey\" text NOT NULL,\n  \"summary\" text,\n  \"type\" text DEFAULT 'other' NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"uploadedBy\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"Document_readingStatus_check_00034fcf\" CHECK (\"readingStatus\" IN ('pending', 'processing', 'done', 'unreadable', 'failed')),\n  CONSTRAINT \"Document_type_check_458f01a4\" CHECK (\"type\" IN ('discharge_summary', 'summary_bill', 'itemised_bill', 'pharmacy_bill', 'investigation_report', 'consultation_paper', 'policy_copy', 'kyc', 'cancelled_cheque', 'query_letter', 'other'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Document\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Document\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Document\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Message",
+    "label": "Create table \"Message\"",
+    "summary": "Creates table \"Message\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Message"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Message\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Message\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Message\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Message\"",
+        "sql": "CREATE TABLE \"public\".\"Message\" (\n  \"attempts\" int4 DEFAULT 0 NOT NULL,\n  \"body\" text NOT NULL,\n  \"channel\" text NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"errorMessage\" text,\n  \"id\" text NOT NULL,\n  \"patientId\" text NOT NULL,\n  \"providerId\" text,\n  \"queryLetterId\" text NOT NULL,\n  \"recipient\" text NOT NULL,\n  \"sentAt\" timestamptz,\n  \"status\" text DEFAULT 'pending' NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"Message_channel_check_ff2da1a4\" CHECK (\"channel\" IN ('whatsapp', 'email')),\n  CONSTRAINT \"Message_status_check_a1bd2f80\" CHECK (\"status\" IN ('pending', 'sent', 'failed'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Message\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Message\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Message\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Patient",
+    "label": "Create table \"Patient\"",
+    "summary": "Creates table \"Patient\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Patient"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Patient\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Patient\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Patient\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Patient\"",
+        "sql": "CREATE TABLE \"public\".\"Patient\" (\n  \"claimNumber\" text,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"email\" text NOT NULL,\n  \"id\" text NOT NULL,\n  \"name\" text NOT NULL,\n  \"patientCode\" text NOT NULL,\n  \"phone\" text NOT NULL,\n  \"policyNumber\" text,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"userId\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Patient\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Patient\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Patient\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.QueryLetter",
+    "label": "Create table \"QueryLetter\"",
+    "summary": "Creates table \"QueryLetter\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "QueryLetter"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"QueryLetter\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"QueryLetter\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"QueryLetter\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"QueryLetter\"",
+        "sql": "CREATE TABLE \"public\".\"QueryLetter\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"errorMessage\" text,\n  \"fileName\" text NOT NULL,\n  \"finishedAt\" timestamptz,\n  \"id\" text NOT NULL,\n  \"mimeType\" text NOT NULL,\n  \"patientId\" text NOT NULL,\n  \"startedAt\" timestamptz,\n  \"status\" text DEFAULT 'uploaded' NOT NULL,\n  \"storageKey\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"uploadedBy\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"QueryLetter_status_check_41917121\" CHECK (\"status\" IN ('uploaded', 'reading', 'checking_locker', 'sending', 'completed', 'delivery_failed', 'failed'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"QueryLetter\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"QueryLetter\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"QueryLetter\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.QueryPoint",
+    "label": "Create table \"QueryPoint\"",
+    "summary": "Creates table \"QueryPoint\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "QueryPoint"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"QueryPoint\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"QueryPoint\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"QueryPoint\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"QueryPoint\"",
+        "sql": "CREATE TABLE \"public\".\"QueryPoint\" (\n  \"asksFor\" text NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"documentId\" text,\n  \"id\" text NOT NULL,\n  \"patientRequest\" text,\n  \"patientWhy\" text,\n  \"position\" int4 NOT NULL,\n  \"queryLetterId\" text NOT NULL,\n  \"reason\" text NOT NULL,\n  \"resolvedAt\" timestamptz,\n  \"resolvedBy\" text,\n  \"status\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"QueryPoint_status_check_2b4539fa\" CHECK (\"status\" IN ('already_in_locker', 'needed_from_patient', 'needs_team'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"QueryPoint\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"QueryPoint\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"QueryPoint\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "table.Template",
+    "label": "Create table \"Template\"",
+    "summary": "Creates table \"Template\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Template"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Template\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Template\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"Template\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Template\"",
+        "sql": "CREATE TABLE \"public\".\"Template\" (\n  \"body\" text NOT NULL,\n  \"channel\" text NOT NULL,\n  \"id\" text NOT NULL,\n  \"subject\" text,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"updatedBy\" text,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"Template_channel_check_ff2da1a4\" CHECK (\"channel\" IN ('whatsapp', 'email'))\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Template\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"Template\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"Template\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "unique.AgentPatient.AgentPatient_userId_patientId_key",
+    "label": "Add unique constraint on \"AgentPatient\" (userId, patientId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "AgentPatient_userId_patientId_key",
+        "table": "AgentPatient"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"AgentPatient_userId_patientId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AgentPatient_userId_patientId_key",
+          "public",
+          "\"public\".\"AgentPatient\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"AgentPatient_userId_patientId_key\" on \"AgentPatient\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"AgentPatient_userId_patientId_key\"",
+        "sql": "ALTER TABLE \"public\".\"AgentPatient\" ADD CONSTRAINT \"AgentPatient_userId_patientId_key\" UNIQUE (\"userId\", \"patientId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"AgentPatient_userId_patientId_key\" exists on (userId, patientId)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "AgentPatient_userId_patientId_key",
+          "public",
+          "\"public\".\"AgentPatient\"",
+          "u",
+          "[\"userId\",\"patientId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Document.Document_storageKey_key",
+    "label": "Add unique constraint on \"Document\" (storageKey)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Document_storageKey_key",
+        "table": "Document"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Document_storageKey_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Document_storageKey_key",
+          "public",
+          "\"public\".\"Document\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Document_storageKey_key\" on \"Document\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Document_storageKey_key\"",
+        "sql": "ALTER TABLE \"public\".\"Document\" ADD CONSTRAINT \"Document_storageKey_key\" UNIQUE (\"storageKey\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Document_storageKey_key\" exists on (storageKey)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Document_storageKey_key",
+          "public",
+          "\"public\".\"Document\"",
+          "u",
+          "[\"storageKey\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Document.Document_patientId_sha256_key",
+    "label": "Add unique constraint on \"Document\" (patientId, sha256)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Document_patientId_sha256_key",
+        "table": "Document"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Document_patientId_sha256_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Document_patientId_sha256_key",
+          "public",
+          "\"public\".\"Document\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Document_patientId_sha256_key\" on \"Document\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Document_patientId_sha256_key\"",
+        "sql": "ALTER TABLE \"public\".\"Document\" ADD CONSTRAINT \"Document_patientId_sha256_key\" UNIQUE (\"patientId\", \"sha256\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Document_patientId_sha256_key\" exists on (patientId, sha256)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Document_patientId_sha256_key",
+          "public",
+          "\"public\".\"Document\"",
+          "u",
+          "[\"patientId\",\"sha256\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Message.Message_queryLetterId_channel_key",
+    "label": "Add unique constraint on \"Message\" (queryLetterId, channel)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Message_queryLetterId_channel_key",
+        "table": "Message"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Message_queryLetterId_channel_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Message_queryLetterId_channel_key",
+          "public",
+          "\"public\".\"Message\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Message_queryLetterId_channel_key\" on \"Message\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Message_queryLetterId_channel_key\"",
+        "sql": "ALTER TABLE \"public\".\"Message\" ADD CONSTRAINT \"Message_queryLetterId_channel_key\" UNIQUE (\"queryLetterId\", \"channel\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Message_queryLetterId_channel_key\" exists on (queryLetterId, channel)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Message_queryLetterId_channel_key",
+          "public",
+          "\"public\".\"Message\"",
+          "u",
+          "[\"queryLetterId\",\"channel\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Patient.Patient_patientCode_key",
+    "label": "Add unique constraint on \"Patient\" (patientCode)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Patient_patientCode_key",
+        "table": "Patient"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Patient_patientCode_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Patient_patientCode_key",
+          "public",
+          "\"public\".\"Patient\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Patient_patientCode_key\" on \"Patient\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Patient_patientCode_key\"",
+        "sql": "ALTER TABLE \"public\".\"Patient\" ADD CONSTRAINT \"Patient_patientCode_key\" UNIQUE (\"patientCode\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Patient_patientCode_key\" exists on (patientCode)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Patient_patientCode_key",
+          "public",
+          "\"public\".\"Patient\"",
+          "u",
+          "[\"patientCode\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Patient.Patient_userId_key",
+    "label": "Add unique constraint on \"Patient\" (userId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Patient_userId_key",
+        "table": "Patient"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Patient_userId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Patient_userId_key",
+          "public",
+          "\"public\".\"Patient\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Patient_userId_key\" on \"Patient\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Patient_userId_key\"",
+        "sql": "ALTER TABLE \"public\".\"Patient\" ADD CONSTRAINT \"Patient_userId_key\" UNIQUE (\"userId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Patient_userId_key\" exists on (userId)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Patient_userId_key",
+          "public",
+          "\"public\".\"Patient\"",
+          "u",
+          "[\"userId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.QueryLetter.QueryLetter_storageKey_key",
+    "label": "Add unique constraint on \"QueryLetter\" (storageKey)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "QueryLetter_storageKey_key",
+        "table": "QueryLetter"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"QueryLetter_storageKey_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "QueryLetter_storageKey_key",
+          "public",
+          "\"public\".\"QueryLetter\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"QueryLetter_storageKey_key\" on \"QueryLetter\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"QueryLetter_storageKey_key\"",
+        "sql": "ALTER TABLE \"public\".\"QueryLetter\" ADD CONSTRAINT \"QueryLetter_storageKey_key\" UNIQUE (\"storageKey\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"QueryLetter_storageKey_key\" exists on (storageKey)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "QueryLetter_storageKey_key",
+          "public",
+          "\"public\".\"QueryLetter\"",
+          "u",
+          "[\"storageKey\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.QueryPoint.QueryPoint_queryLetterId_position_key",
+    "label": "Add unique constraint on \"QueryPoint\" (queryLetterId, position)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "QueryPoint_queryLetterId_position_key",
+        "table": "QueryPoint"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"QueryPoint_queryLetterId_position_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "QueryPoint_queryLetterId_position_key",
+          "public",
+          "\"public\".\"QueryPoint\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"QueryPoint_queryLetterId_position_key\" on \"QueryPoint\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"QueryPoint_queryLetterId_position_key\"",
+        "sql": "ALTER TABLE \"public\".\"QueryPoint\" ADD CONSTRAINT \"QueryPoint_queryLetterId_position_key\" UNIQUE (\"queryLetterId\", \"position\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"QueryPoint_queryLetterId_position_key\" exists on (queryLetterId, position)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "QueryPoint_queryLetterId_position_key",
+          "public",
+          "\"public\".\"QueryPoint\"",
+          "u",
+          "[\"queryLetterId\",\"position\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Template.Template_channel_key",
+    "label": "Add unique constraint on \"Template\" (channel)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Template_channel_key",
+        "table": "Template"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Template_channel_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Template_channel_key",
+          "public",
+          "\"public\".\"Template\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"Template_channel_key\" on \"Template\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Template_channel_key\"",
+        "sql": "ALTER TABLE \"public\".\"Template\" ADD CONSTRAINT \"Template_channel_key\" UNIQUE (\"channel\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify unique constraint \"Template_channel_key\" exists on (channel)",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb)) AS \"result\"",
+        "params": [
+          "Template_channel_key",
+          "public",
+          "\"public\".\"Template\"",
+          "u",
+          "[\"channel\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AccessLog.AccessLog_patientId_idx_e5f07e88",
+    "label": "Create index \"AccessLog_patientId_idx_e5f07e88\" on \"AccessLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AccessLog_patientId_idx_e5f07e88",
+        "table": "AccessLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AccessLog_patientId_idx_e5f07e88\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccessLog_patientId_idx_e5f07e88\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"AccessLog_patientId_idx_e5f07e88\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AccessLog_patientId_idx_e5f07e88\"",
+        "sql": "CREATE INDEX \"AccessLog_patientId_idx_e5f07e88\" ON \"public\".\"AccessLog\" (\"patientId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AccessLog_patientId_idx_e5f07e88\" exists on \"AccessLog\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"AccessLog_patientId_idx_e5f07e88\"",
+          "i",
+          "I",
+          "\"public\".\"AccessLog\"",
+          "btree",
+          "[\"patientId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AccessLog.AccessLog_userId_idx_a489d58a",
+    "label": "Create index \"AccessLog_userId_idx_a489d58a\" on \"AccessLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AccessLog_userId_idx_a489d58a",
+        "table": "AccessLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AccessLog_userId_idx_a489d58a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AccessLog_userId_idx_a489d58a\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"AccessLog_userId_idx_a489d58a\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AccessLog_userId_idx_a489d58a\"",
+        "sql": "CREATE INDEX \"AccessLog_userId_idx_a489d58a\" ON \"public\".\"AccessLog\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AccessLog_userId_idx_a489d58a\" exists on \"AccessLog\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"AccessLog_userId_idx_a489d58a\"",
+          "i",
+          "I",
+          "\"public\".\"AccessLog\"",
+          "btree",
+          "[\"userId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AgentPatient.AgentPatient_patientId_idx_e5f07e88",
+    "label": "Create index \"AgentPatient_patientId_idx_e5f07e88\" on \"AgentPatient\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AgentPatient_patientId_idx_e5f07e88",
+        "table": "AgentPatient"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AgentPatient_patientId_idx_e5f07e88\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AgentPatient_patientId_idx_e5f07e88\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"AgentPatient_patientId_idx_e5f07e88\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AgentPatient_patientId_idx_e5f07e88\"",
+        "sql": "CREATE INDEX \"AgentPatient_patientId_idx_e5f07e88\" ON \"public\".\"AgentPatient\" (\"patientId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AgentPatient_patientId_idx_e5f07e88\" exists on \"AgentPatient\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"AgentPatient_patientId_idx_e5f07e88\"",
+          "i",
+          "I",
+          "\"public\".\"AgentPatient\"",
+          "btree",
+          "[\"patientId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Document.Document_patientId_idx_e5f07e88",
+    "label": "Create index \"Document_patientId_idx_e5f07e88\" on \"Document\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Document_patientId_idx_e5f07e88",
+        "table": "Document"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Document_patientId_idx_e5f07e88\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Document_patientId_idx_e5f07e88\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Document_patientId_idx_e5f07e88\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Document_patientId_idx_e5f07e88\"",
+        "sql": "CREATE INDEX \"Document_patientId_idx_e5f07e88\" ON \"public\".\"Document\" (\"patientId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Document_patientId_idx_e5f07e88\" exists on \"Document\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Document_patientId_idx_e5f07e88\"",
+          "i",
+          "I",
+          "\"public\".\"Document\"",
+          "btree",
+          "[\"patientId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Message.Message_patientId_idx_e5f07e88",
+    "label": "Create index \"Message_patientId_idx_e5f07e88\" on \"Message\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Message_patientId_idx_e5f07e88",
+        "table": "Message"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Message_patientId_idx_e5f07e88\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Message_patientId_idx_e5f07e88\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Message_patientId_idx_e5f07e88\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Message_patientId_idx_e5f07e88\"",
+        "sql": "CREATE INDEX \"Message_patientId_idx_e5f07e88\" ON \"public\".\"Message\" (\"patientId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Message_patientId_idx_e5f07e88\" exists on \"Message\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Message_patientId_idx_e5f07e88\"",
+          "i",
+          "I",
+          "\"public\".\"Message\"",
+          "btree",
+          "[\"patientId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Message.Message_queryLetterId_idx_2e9e8707",
+    "label": "Create index \"Message_queryLetterId_idx_2e9e8707\" on \"Message\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Message_queryLetterId_idx_2e9e8707",
+        "table": "Message"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Message_queryLetterId_idx_2e9e8707\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Message_queryLetterId_idx_2e9e8707\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Message_queryLetterId_idx_2e9e8707\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Message_queryLetterId_idx_2e9e8707\"",
+        "sql": "CREATE INDEX \"Message_queryLetterId_idx_2e9e8707\" ON \"public\".\"Message\" (\"queryLetterId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Message_queryLetterId_idx_2e9e8707\" exists on \"Message\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Message_queryLetterId_idx_2e9e8707\"",
+          "i",
+          "I",
+          "\"public\".\"Message\"",
+          "btree",
+          "[\"queryLetterId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Patient.Patient_name_idx_ce87e6ba",
+    "label": "Create index \"Patient_name_idx_ce87e6ba\" on \"Patient\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Patient_name_idx_ce87e6ba",
+        "table": "Patient"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Patient_name_idx_ce87e6ba\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Patient_name_idx_ce87e6ba\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"Patient_name_idx_ce87e6ba\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Patient_name_idx_ce87e6ba\"",
+        "sql": "CREATE INDEX \"Patient_name_idx_ce87e6ba\" ON \"public\".\"Patient\" (\"name\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Patient_name_idx_ce87e6ba\" exists on \"Patient\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"Patient_name_idx_ce87e6ba\"",
+          "i",
+          "I",
+          "\"public\".\"Patient\"",
+          "btree",
+          "[\"name\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.QueryLetter.QueryLetter_patientId_idx_e5f07e88",
+    "label": "Create index \"QueryLetter_patientId_idx_e5f07e88\" on \"QueryLetter\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "QueryLetter_patientId_idx_e5f07e88",
+        "table": "QueryLetter"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"QueryLetter_patientId_idx_e5f07e88\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"QueryLetter_patientId_idx_e5f07e88\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"QueryLetter_patientId_idx_e5f07e88\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"QueryLetter_patientId_idx_e5f07e88\"",
+        "sql": "CREATE INDEX \"QueryLetter_patientId_idx_e5f07e88\" ON \"public\".\"QueryLetter\" (\"patientId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"QueryLetter_patientId_idx_e5f07e88\" exists on \"QueryLetter\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"QueryLetter_patientId_idx_e5f07e88\"",
+          "i",
+          "I",
+          "\"public\".\"QueryLetter\"",
+          "btree",
+          "[\"patientId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.QueryLetter.QueryLetter_status_idx_e98638ab",
+    "label": "Create index \"QueryLetter_status_idx_e98638ab\" on \"QueryLetter\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "QueryLetter_status_idx_e98638ab",
+        "table": "QueryLetter"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"QueryLetter_status_idx_e98638ab\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"QueryLetter_status_idx_e98638ab\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"QueryLetter_status_idx_e98638ab\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"QueryLetter_status_idx_e98638ab\"",
+        "sql": "CREATE INDEX \"QueryLetter_status_idx_e98638ab\" ON \"public\".\"QueryLetter\" (\"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"QueryLetter_status_idx_e98638ab\" exists on \"QueryLetter\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"QueryLetter_status_idx_e98638ab\"",
+          "i",
+          "I",
+          "\"public\".\"QueryLetter\"",
+          "btree",
+          "[\"status\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.QueryPoint.QueryPoint_documentId_idx_825ef746",
+    "label": "Create index \"QueryPoint_documentId_idx_825ef746\" on \"QueryPoint\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "QueryPoint_documentId_idx_825ef746",
+        "table": "QueryPoint"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"QueryPoint_documentId_idx_825ef746\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"QueryPoint_documentId_idx_825ef746\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"QueryPoint_documentId_idx_825ef746\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"QueryPoint_documentId_idx_825ef746\"",
+        "sql": "CREATE INDEX \"QueryPoint_documentId_idx_825ef746\" ON \"public\".\"QueryPoint\" (\"documentId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"QueryPoint_documentId_idx_825ef746\" exists on \"QueryPoint\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"QueryPoint_documentId_idx_825ef746\"",
+          "i",
+          "I",
+          "\"public\".\"QueryPoint\"",
+          "btree",
+          "[\"documentId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.QueryPoint.QueryPoint_queryLetterId_idx_2e9e8707",
+    "label": "Create index \"QueryPoint_queryLetterId_idx_2e9e8707\" on \"QueryPoint\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "QueryPoint_queryLetterId_idx_2e9e8707",
+        "table": "QueryPoint"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"QueryPoint_queryLetterId_idx_2e9e8707\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"QueryPoint_queryLetterId_idx_2e9e8707\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"QueryPoint_queryLetterId_idx_2e9e8707\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"QueryPoint_queryLetterId_idx_2e9e8707\"",
+        "sql": "CREATE INDEX \"QueryPoint_queryLetterId_idx_2e9e8707\" ON \"public\".\"QueryPoint\" (\"queryLetterId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"QueryPoint_queryLetterId_idx_2e9e8707\" exists on \"QueryPoint\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"QueryPoint_queryLetterId_idx_2e9e8707\"",
+          "i",
+          "I",
+          "\"public\".\"QueryPoint\"",
+          "btree",
+          "[\"queryLetterId\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.QueryPoint.QueryPoint_status_idx_e98638ab",
+    "label": "Create index \"QueryPoint_status_idx_e98638ab\" on \"QueryPoint\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "QueryPoint_status_idx_e98638ab",
+        "table": "QueryPoint"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"QueryPoint_status_idx_e98638ab\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"QueryPoint_status_idx_e98638ab\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"QueryPoint_status_idx_e98638ab\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"QueryPoint_status_idx_e98638ab\"",
+        "sql": "CREATE INDEX \"QueryPoint_status_idx_e98638ab\" ON \"public\".\"QueryPoint\" (\"status\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"QueryPoint_status_idx_e98638ab\" exists on \"QueryPoint\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"QueryPoint_status_idx_e98638ab\"",
+          "i",
+          "I",
+          "\"public\".\"QueryPoint\"",
+          "btree",
+          "[\"status\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.AccessLog.AccessLog_patientId_fkey",
+    "label": "Add foreign key \"AccessLog_patientId_fkey\" on \"AccessLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "AccessLog_patientId_fkey",
+        "table": "AccessLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"AccessLog_patientId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AccessLog_patientId_fkey",
+          "public",
+          "\"public\".\"AccessLog\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"AccessLog_patientId_fkey\" on \"AccessLog\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"AccessLog_patientId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"AccessLog\"\nADD CONSTRAINT \"AccessLog_patientId_fkey\"\nFOREIGN KEY (\"patientId\")\nREFERENCES \"public\".\"Patient\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"AccessLog_patientId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "AccessLog_patientId_fkey",
+          "public",
+          "\"public\".\"AccessLog\"",
+          "f",
+          "[\"patientId\"]",
+          "\"public\".\"Patient\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.AgentPatient.AgentPatient_patientId_fkey",
+    "label": "Add foreign key \"AgentPatient_patientId_fkey\" on \"AgentPatient\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "AgentPatient_patientId_fkey",
+        "table": "AgentPatient"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"AgentPatient_patientId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AgentPatient_patientId_fkey",
+          "public",
+          "\"public\".\"AgentPatient\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"AgentPatient_patientId_fkey\" on \"AgentPatient\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"AgentPatient_patientId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"AgentPatient\"\nADD CONSTRAINT \"AgentPatient_patientId_fkey\"\nFOREIGN KEY (\"patientId\")\nREFERENCES \"public\".\"Patient\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"AgentPatient_patientId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "AgentPatient_patientId_fkey",
+          "public",
+          "\"public\".\"AgentPatient\"",
+          "f",
+          "[\"patientId\"]",
+          "\"public\".\"Patient\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Document.Document_patientId_fkey",
+    "label": "Add foreign key \"Document_patientId_fkey\" on \"Document\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Document_patientId_fkey",
+        "table": "Document"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Document_patientId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Document_patientId_fkey",
+          "public",
+          "\"public\".\"Document\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Document_patientId_fkey\" on \"Document\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Document_patientId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Document\"\nADD CONSTRAINT \"Document_patientId_fkey\"\nFOREIGN KEY (\"patientId\")\nREFERENCES \"public\".\"Patient\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Document_patientId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Document_patientId_fkey",
+          "public",
+          "\"public\".\"Document\"",
+          "f",
+          "[\"patientId\"]",
+          "\"public\".\"Patient\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Message.Message_patientId_fkey",
+    "label": "Add foreign key \"Message_patientId_fkey\" on \"Message\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Message_patientId_fkey",
+        "table": "Message"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Message_patientId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Message_patientId_fkey",
+          "public",
+          "\"public\".\"Message\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Message_patientId_fkey\" on \"Message\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Message_patientId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Message\"\nADD CONSTRAINT \"Message_patientId_fkey\"\nFOREIGN KEY (\"patientId\")\nREFERENCES \"public\".\"Patient\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Message_patientId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Message_patientId_fkey",
+          "public",
+          "\"public\".\"Message\"",
+          "f",
+          "[\"patientId\"]",
+          "\"public\".\"Patient\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Message.Message_queryLetterId_fkey",
+    "label": "Add foreign key \"Message_queryLetterId_fkey\" on \"Message\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Message_queryLetterId_fkey",
+        "table": "Message"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Message_queryLetterId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Message_queryLetterId_fkey",
+          "public",
+          "\"public\".\"Message\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"Message_queryLetterId_fkey\" on \"Message\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Message_queryLetterId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Message\"\nADD CONSTRAINT \"Message_queryLetterId_fkey\"\nFOREIGN KEY (\"queryLetterId\")\nREFERENCES \"public\".\"QueryLetter\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Message_queryLetterId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "Message_queryLetterId_fkey",
+          "public",
+          "\"public\".\"Message\"",
+          "f",
+          "[\"queryLetterId\"]",
+          "\"public\".\"QueryLetter\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.QueryLetter.QueryLetter_patientId_fkey",
+    "label": "Add foreign key \"QueryLetter_patientId_fkey\" on \"QueryLetter\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "QueryLetter_patientId_fkey",
+        "table": "QueryLetter"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"QueryLetter_patientId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "QueryLetter_patientId_fkey",
+          "public",
+          "\"public\".\"QueryLetter\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"QueryLetter_patientId_fkey\" on \"QueryLetter\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"QueryLetter_patientId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"QueryLetter\"\nADD CONSTRAINT \"QueryLetter_patientId_fkey\"\nFOREIGN KEY (\"patientId\")\nREFERENCES \"public\".\"Patient\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"QueryLetter_patientId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "QueryLetter_patientId_fkey",
+          "public",
+          "\"public\".\"QueryLetter\"",
+          "f",
+          "[\"patientId\"]",
+          "\"public\".\"Patient\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.QueryPoint.QueryPoint_queryLetterId_fkey",
+    "label": "Add foreign key \"QueryPoint_queryLetterId_fkey\" on \"QueryPoint\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "QueryPoint_queryLetterId_fkey",
+        "table": "QueryPoint"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"QueryPoint_queryLetterId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "QueryPoint_queryLetterId_fkey",
+          "public",
+          "\"public\".\"QueryPoint\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"QueryPoint_queryLetterId_fkey\" on \"QueryPoint\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"QueryPoint_queryLetterId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"QueryPoint\"\nADD CONSTRAINT \"QueryPoint_queryLetterId_fkey\"\nFOREIGN KEY (\"queryLetterId\")\nREFERENCES \"public\".\"QueryLetter\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"QueryPoint_queryLetterId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "QueryPoint_queryLetterId_fkey",
+          "public",
+          "\"public\".\"QueryPoint\"",
+          "f",
+          "[\"queryLetterId\"]",
+          "\"public\".\"QueryLetter\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.QueryPoint.QueryPoint_documentId_fkey",
+    "label": "Add foreign key \"QueryPoint_documentId_fkey\" on \"QueryPoint\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "QueryPoint_documentId_fkey",
+        "table": "QueryPoint"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"QueryPoint_documentId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "QueryPoint_documentId_fkey",
+          "public",
+          "\"public\".\"QueryPoint\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "FK \"QueryPoint_documentId_fkey\" on \"QueryPoint\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"QueryPoint_documentId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"QueryPoint\"\nADD CONSTRAINT \"QueryPoint_documentId_fkey\"\nFOREIGN KEY (\"documentId\")\nREFERENCES \"public\".\"Document\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"QueryPoint_documentId_fkey\" exists with the planned columns, referenced table and actions",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4 AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"conkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"conrelid\" AND key_attribute.attnum = key_column.attnum) = ($5)::jsonb AND \"c\".\"confrelid\" = to_regclass($6) AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"c\".\"confkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"c\".\"confrelid\" AND key_attribute.attnum = key_column.attnum) = ($7)::jsonb AND \"c\".\"confdeltype\" = $8 AND \"c\".\"confupdtype\" = $9)) AS \"result\"",
+        "params": [
+          "QueryPoint_documentId_fkey",
+          "public",
+          "\"public\".\"QueryPoint\"",
+          "f",
+          "[\"documentId\"]",
+          "\"public\".\"Document\"",
+          "[\"id\"]",
+          "a",
+          "a"
+        ]
+      }
+    ]
+  }
+]
