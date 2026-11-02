@@ -424,7 +424,7 @@ A letter with no points also goes to the team.
 
 ### Duplicate sends
 
-Before each send, `sendMessages` inserts or finds the `Message` row, and skips it if it's already `sent`. A crash exactly between the provider accepting a message and the database saving `sent` can still cause one repeat. That small risk is accepted for this build.
+Before each send, `sendMessages` inserts or finds the `Message` row, and skips it if it's already `sent`. Resend also gets the row's id as an idempotency key. A crash exactly between Twilio accepting a message and the database saving `sent` can still cause one repeat WhatsApp. That small risk is accepted for this build.
 
 ### Restart recovery
 

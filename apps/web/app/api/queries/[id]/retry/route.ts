@@ -14,10 +14,12 @@ export async function POST(request: Request, { params }: Context) {
     const { letter } = await requireQueryAccess(user, id);
 
     // One update, so a double click can't start two runs.
-    const claimed = await db.orm.public.QueryLetter.where({ id: letter.id, status: "failed" }).update({
-      status: "uploaded",
-      errorMessage: null,
-    });
+    const claimed = await db.orm.public.QueryLetter.where({ id: letter.id })
+      .where((row) => row.status.in(["failed", "delivery_failed"]))
+      .update({
+        status: "uploaded",
+        errorMessage: null,
+      });
     if (!claimed) return apiError(409, "This letter hasn't failed");
 
     after(() => runAgent(letter.id));
