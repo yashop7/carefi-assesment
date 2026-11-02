@@ -277,8 +277,8 @@ model AccessLog {
   id         String @id @onCreate(uuid(7))
   userId     String
   action     AccessAction
-  patient    Patient @relation(fields: [patientId], references: [id])
-  patientId  String
+  patient    Patient? @relation(fields: [patientId], references: [id])
+  patientId  String?
   resourceId String?
   createdAt  TimestamptzString @default(now())
 

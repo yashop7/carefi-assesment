@@ -23,9 +23,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'a51b4833fdaffe730572670ccc27dd89af7e0726ab3de7f428d21702d687cc15'>;
+  StorageHashBase<'82954e9c0fc24bade4c143b9af41b6b8195f5f6415f996ad918bc45b6b060d54'>;
 export type ExecutionHash =
-  ExecutionHashBase<'3730158042e7c88d23f35529e89ad90532db0cd5c528c13e701f93cb45aa8a9c'>;
+  ExecutionHashBase<'b4e302124c8740cde75a3223955c66932ad80ab257fe8ed1535d95e9fd4ca179'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -270,7 +270,92 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
   : Encoded;
 type ParameterizedOutputTypeFunctions = PgParameterizedOutputTypes;
 
-type FieldTypeOverrides = {};
+type FieldTypeOverrides = {
+  readonly public: {
+    readonly models: {
+      readonly AccessLog: {
+        readonly action: {
+          readonly output: 'view_patient' | 'view_document' | 'view_query' | 'upload' | 'denied';
+          readonly input: 'view_patient' | 'view_document' | 'view_query' | 'upload' | 'denied';
+        };
+      };
+      readonly Document: {
+        readonly readingStatus: {
+          readonly output: 'pending' | 'processing' | 'done' | 'unreadable' | 'failed';
+          readonly input: 'pending' | 'processing' | 'done' | 'unreadable' | 'failed';
+        };
+        readonly type: {
+          readonly output:
+            | 'discharge_summary'
+            | 'summary_bill'
+            | 'itemised_bill'
+            | 'pharmacy_bill'
+            | 'investigation_report'
+            | 'consultation_paper'
+            | 'policy_copy'
+            | 'kyc'
+            | 'cancelled_cheque'
+            | 'query_letter'
+            | 'other';
+          readonly input:
+            | 'discharge_summary'
+            | 'summary_bill'
+            | 'itemised_bill'
+            | 'pharmacy_bill'
+            | 'investigation_report'
+            | 'consultation_paper'
+            | 'policy_copy'
+            | 'kyc'
+            | 'cancelled_cheque'
+            | 'query_letter'
+            | 'other';
+        };
+      };
+      readonly Message: {
+        readonly channel: {
+          readonly output: 'whatsapp' | 'email';
+          readonly input: 'whatsapp' | 'email';
+        };
+        readonly status: {
+          readonly output: 'pending' | 'sent' | 'failed';
+          readonly input: 'pending' | 'sent' | 'failed';
+        };
+      };
+      readonly QueryLetter: {
+        readonly status: {
+          readonly output:
+            | 'uploaded'
+            | 'reading'
+            | 'checking_locker'
+            | 'sending'
+            | 'completed'
+            | 'delivery_failed'
+            | 'failed';
+          readonly input:
+            | 'uploaded'
+            | 'reading'
+            | 'checking_locker'
+            | 'sending'
+            | 'completed'
+            | 'delivery_failed'
+            | 'failed';
+        };
+      };
+      readonly QueryPoint: {
+        readonly status: {
+          readonly output: 'already_in_locker' | 'needed_from_patient' | 'needs_team';
+          readonly input: 'already_in_locker' | 'needed_from_patient' | 'needs_team';
+        };
+      };
+      readonly Template: {
+        readonly channel: {
+          readonly output: 'whatsapp' | 'email';
+          readonly input: 'whatsapp' | 'email';
+        };
+      };
+    };
+  };
+};
 export type FieldOutputTypes = FieldTypesFromDomain<
   ContractBase['domain']['namespaces'],
   CodecTypes,
@@ -285,7 +370,90 @@ export type FieldInputTypes = FieldTypesFromDomain<
   FieldTypeOverrides,
   'input'
 >;
-type ColumnTypeOverrides = {};
+type ColumnTypeOverrides = {
+  readonly public: {
+    readonly AccessLog: {
+      readonly action: {
+        readonly output: 'view_patient' | 'view_document' | 'view_query' | 'upload' | 'denied';
+        readonly input: 'view_patient' | 'view_document' | 'view_query' | 'upload' | 'denied';
+      };
+    };
+    readonly Document: {
+      readonly readingStatus: {
+        readonly output: 'pending' | 'processing' | 'done' | 'unreadable' | 'failed';
+        readonly input: 'pending' | 'processing' | 'done' | 'unreadable' | 'failed';
+      };
+      readonly type: {
+        readonly output:
+          | 'discharge_summary'
+          | 'summary_bill'
+          | 'itemised_bill'
+          | 'pharmacy_bill'
+          | 'investigation_report'
+          | 'consultation_paper'
+          | 'policy_copy'
+          | 'kyc'
+          | 'cancelled_cheque'
+          | 'query_letter'
+          | 'other';
+        readonly input:
+          | 'discharge_summary'
+          | 'summary_bill'
+          | 'itemised_bill'
+          | 'pharmacy_bill'
+          | 'investigation_report'
+          | 'consultation_paper'
+          | 'policy_copy'
+          | 'kyc'
+          | 'cancelled_cheque'
+          | 'query_letter'
+          | 'other';
+      };
+    };
+    readonly Message: {
+      readonly channel: {
+        readonly output: 'whatsapp' | 'email';
+        readonly input: 'whatsapp' | 'email';
+      };
+      readonly status: {
+        readonly output: 'pending' | 'sent' | 'failed';
+        readonly input: 'pending' | 'sent' | 'failed';
+      };
+    };
+    readonly QueryLetter: {
+      readonly status: {
+        readonly output:
+          | 'uploaded'
+          | 'reading'
+          | 'checking_locker'
+          | 'sending'
+          | 'completed'
+          | 'delivery_failed'
+          | 'failed';
+        readonly input:
+          | 'uploaded'
+          | 'reading'
+          | 'checking_locker'
+          | 'sending'
+          | 'completed'
+          | 'delivery_failed'
+          | 'failed';
+      };
+    };
+    readonly QueryPoint: {
+      readonly status: {
+        readonly output: 'already_in_locker' | 'needed_from_patient' | 'needs_team';
+        readonly input: 'already_in_locker' | 'needed_from_patient' | 'needs_team';
+      };
+    };
+    readonly Template: {
+      readonly channel: {
+        readonly output: 'whatsapp' | 'email';
+        readonly input: 'whatsapp' | 'email';
+      };
+    };
+  };
+};
 export type StorageColumnTypes = ColumnTypesFromStorage<
   ContractBase['storage'],
   CodecTypes,
@@ -302,32 +470,137 @@ export type StorageColumnInputTypes = ColumnTypesFromStorage<
 >;
 
 export namespace Models {
-  export type public_Post = {
-    authorId: FieldOutputTypes['public']['Post']['authorId'];
-    content: FieldOutputTypes['public']['Post']['content'];
-    createdAt: FieldOutputTypes['public']['Post']['createdAt'];
-    id: FieldOutputTypes['public']['Post']['id'];
-    title: FieldOutputTypes['public']['Post']['title'];
-    updatedAt: FieldOutputTypes['public']['Post']['updatedAt'];
-    author: public_User;
-    readonly [RelationKeys]?: 'author';
+  export type public_AccessLog = {
+    action: FieldOutputTypes['public']['AccessLog']['action'];
+    createdAt: FieldOutputTypes['public']['AccessLog']['createdAt'];
+    id: FieldOutputTypes['public']['AccessLog']['id'];
+    patientId: FieldOutputTypes['public']['AccessLog']['patientId'];
+    resourceId: FieldOutputTypes['public']['AccessLog']['resourceId'];
+    userId: FieldOutputTypes['public']['AccessLog']['userId'];
+    patient: public_Patient | null;
+    readonly [RelationKeys]?: 'patient';
   };
-  export type public_User = {
-    createdAt: FieldOutputTypes['public']['User']['createdAt'];
-    email: FieldOutputTypes['public']['User']['email'];
-    id: FieldOutputTypes['public']['User']['id'];
-    name: FieldOutputTypes['public']['User']['name'];
-    updatedAt: FieldOutputTypes['public']['User']['updatedAt'];
-    username: FieldOutputTypes['public']['User']['username'];
-    posts: public_Post[];
-    readonly [RelationKeys]?: 'posts';
+  export type public_AgentPatient = {
+    createdAt: FieldOutputTypes['public']['AgentPatient']['createdAt'];
+    id: FieldOutputTypes['public']['AgentPatient']['id'];
+    patientId: FieldOutputTypes['public']['AgentPatient']['patientId'];
+    userId: FieldOutputTypes['public']['AgentPatient']['userId'];
+    patient: public_Patient;
+    readonly [RelationKeys]?: 'patient';
+  };
+  export type public_Document = {
+    createdAt: FieldOutputTypes['public']['Document']['createdAt'];
+    documentDate: FieldOutputTypes['public']['Document']['documentDate'];
+    fileName: FieldOutputTypes['public']['Document']['fileName'];
+    id: FieldOutputTypes['public']['Document']['id'];
+    mimeType: FieldOutputTypes['public']['Document']['mimeType'];
+    nameMismatch: FieldOutputTypes['public']['Document']['nameMismatch'];
+    nameOnDocument: FieldOutputTypes['public']['Document']['nameOnDocument'];
+    patientId: FieldOutputTypes['public']['Document']['patientId'];
+    readingStatus: FieldOutputTypes['public']['Document']['readingStatus'];
+    sha256: FieldOutputTypes['public']['Document']['sha256'];
+    sizeBytes: FieldOutputTypes['public']['Document']['sizeBytes'];
+    storageKey: FieldOutputTypes['public']['Document']['storageKey'];
+    summary: FieldOutputTypes['public']['Document']['summary'];
+    type: FieldOutputTypes['public']['Document']['type'];
+    updatedAt: FieldOutputTypes['public']['Document']['updatedAt'];
+    uploadedBy: FieldOutputTypes['public']['Document']['uploadedBy'];
+    citedBy: public_QueryPoint[];
+    patient: public_Patient;
+    readonly [RelationKeys]?: 'citedBy' | 'patient';
+  };
+  export type public_Message = {
+    attempts: FieldOutputTypes['public']['Message']['attempts'];
+    body: FieldOutputTypes['public']['Message']['body'];
+    channel: FieldOutputTypes['public']['Message']['channel'];
+    createdAt: FieldOutputTypes['public']['Message']['createdAt'];
+    errorMessage: FieldOutputTypes['public']['Message']['errorMessage'];
+    id: FieldOutputTypes['public']['Message']['id'];
+    patientId: FieldOutputTypes['public']['Message']['patientId'];
+    providerId: FieldOutputTypes['public']['Message']['providerId'];
+    queryLetterId: FieldOutputTypes['public']['Message']['queryLetterId'];
+    recipient: FieldOutputTypes['public']['Message']['recipient'];
+    sentAt: FieldOutputTypes['public']['Message']['sentAt'];
+    status: FieldOutputTypes['public']['Message']['status'];
+    updatedAt: FieldOutputTypes['public']['Message']['updatedAt'];
+    patient: public_Patient;
+    queryLetter: public_QueryLetter;
+    readonly [RelationKeys]?: 'patient' | 'queryLetter';
+  };
+  export type public_Patient = {
+    claimNumber: FieldOutputTypes['public']['Patient']['claimNumber'];
+    createdAt: FieldOutputTypes['public']['Patient']['createdAt'];
+    email: FieldOutputTypes['public']['Patient']['email'];
+    id: FieldOutputTypes['public']['Patient']['id'];
+    name: FieldOutputTypes['public']['Patient']['name'];
+    patientCode: FieldOutputTypes['public']['Patient']['patientCode'];
+    phone: FieldOutputTypes['public']['Patient']['phone'];
+    policyNumber: FieldOutputTypes['public']['Patient']['policyNumber'];
+    updatedAt: FieldOutputTypes['public']['Patient']['updatedAt'];
+    userId: FieldOutputTypes['public']['Patient']['userId'];
+    accessLogs: public_AccessLog[];
+    agents: public_AgentPatient[];
+    documents: public_Document[];
+    messages: public_Message[];
+    queryLetters: public_QueryLetter[];
+    readonly [RelationKeys]?: 'accessLogs' | 'agents' | 'documents' | 'messages' | 'queryLetters';
+  };
+  export type public_QueryLetter = {
+    createdAt: FieldOutputTypes['public']['QueryLetter']['createdAt'];
+    errorMessage: FieldOutputTypes['public']['QueryLetter']['errorMessage'];
+    fileName: FieldOutputTypes['public']['QueryLetter']['fileName'];
+    finishedAt: FieldOutputTypes['public']['QueryLetter']['finishedAt'];
+    id: FieldOutputTypes['public']['QueryLetter']['id'];
+    mimeType: FieldOutputTypes['public']['QueryLetter']['mimeType'];
+    patientId: FieldOutputTypes['public']['QueryLetter']['patientId'];
+    startedAt: FieldOutputTypes['public']['QueryLetter']['startedAt'];
+    status: FieldOutputTypes['public']['QueryLetter']['status'];
+    storageKey: FieldOutputTypes['public']['QueryLetter']['storageKey'];
+    updatedAt: FieldOutputTypes['public']['QueryLetter']['updatedAt'];
+    uploadedBy: FieldOutputTypes['public']['QueryLetter']['uploadedBy'];
+    messages: public_Message[];
+    patient: public_Patient;
+    points: public_QueryPoint[];
+    readonly [RelationKeys]?: 'messages' | 'patient' | 'points';
+  };
+  export type public_QueryPoint = {
+    asksFor: FieldOutputTypes['public']['QueryPoint']['asksFor'];
+    createdAt: FieldOutputTypes['public']['QueryPoint']['createdAt'];
+    documentId: FieldOutputTypes['public']['QueryPoint']['documentId'];
+    id: FieldOutputTypes['public']['QueryPoint']['id'];
+    patientRequest: FieldOutputTypes['public']['QueryPoint']['patientRequest'];
+    patientWhy: FieldOutputTypes['public']['QueryPoint']['patientWhy'];
+    position: FieldOutputTypes['public']['QueryPoint']['position'];
+    queryLetterId: FieldOutputTypes['public']['QueryPoint']['queryLetterId'];
+    reason: FieldOutputTypes['public']['QueryPoint']['reason'];
+    resolvedAt: FieldOutputTypes['public']['QueryPoint']['resolvedAt'];
+    resolvedBy: FieldOutputTypes['public']['QueryPoint']['resolvedBy'];
+    status: FieldOutputTypes['public']['QueryPoint']['status'];
+    document: public_Document | null;
+    queryLetter: public_QueryLetter;
+    readonly [RelationKeys]?: 'document' | 'queryLetter';
+  };
+  export type public_Template = {
+    body: FieldOutputTypes['public']['Template']['body'];
+    channel: FieldOutputTypes['public']['Template']['channel'];
+    id: FieldOutputTypes['public']['Template']['id'];
+    subject: FieldOutputTypes['public']['Template']['subject'];
+    updatedAt: FieldOutputTypes['public']['Template']['updatedAt'];
+    updatedBy: FieldOutputTypes['public']['Template']['updatedBy'];
+    readonly [RelationKeys]?: never;
   };
 }
 
 export declare const models: {
   public: {
-    Post: Models.public_Post;
-    User: Models.public_User;
+    AccessLog: Models.public_AccessLog;
+    AgentPatient: Models.public_AgentPatient;
+    Document: Models.public_Document;
+    Message: Models.public_Message;
+    Patient: Models.public_Patient;
+    QueryLetter: Models.public_QueryLetter;
+    QueryPoint: Models.public_QueryPoint;
+    Template: Models.public_Template;
   };
 };
 
@@ -349,18 +622,12 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
-            readonly Post: {
+            readonly AccessLog: {
               columns: {
-                readonly authorId: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly content: {
+                readonly action: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
+                  readonly nullable: false;
                   readonly many: false;
                 };
                 readonly createdAt: {
@@ -371,19 +638,335 @@ type ContractBase = Omit<
                   readonly many: false;
                 };
                 readonly id: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly patientId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly resourceId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly userId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'AccessLog_patientId_idx_e5f07e88';
+                  readonly prefix: 'AccessLog_patientId_idx';
+                  readonly columns: readonly ['patientId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'AccessLog_userId_idx_a489d58a';
+                  readonly prefix: 'AccessLog_userId_idx';
+                  readonly columns: readonly ['userId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'AccessLog';
+                    readonly columns: readonly ['patientId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Patient';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly AgentPatient: {
+              columns: {
+                readonly createdAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly patientId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly userId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['userId', 'patientId'] }];
+              indexes: readonly [
+                {
+                  readonly name: 'AgentPatient_patientId_idx_e5f07e88';
+                  readonly prefix: 'AgentPatient_patientId_idx';
+                  readonly columns: readonly ['patientId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'AgentPatient';
+                    readonly columns: readonly ['patientId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Patient';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly Document: {
+              columns: {
+                readonly createdAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
+                readonly documentDate: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly fileName: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly mimeType: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly nameMismatch: {
+                  readonly dataType: 'pg/bool';
+                  readonly codecId: 'pg/bool@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/bool@1', false>;
+                  };
+                  readonly many: false;
+                };
+                readonly nameOnDocument: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly patientId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly readingStatus: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'pending'>;
+                  };
+                  readonly many: false;
+                };
+                readonly sha256: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly sizeBytes: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly storageKey: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly summary: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly type: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'other'>;
+                  };
+                  readonly many: false;
+                };
+                readonly updatedAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly uploadedBy: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [
+                { readonly columns: readonly ['storageKey'] },
+                { readonly columns: readonly ['patientId', 'sha256'] },
+              ];
+              indexes: readonly [
+                {
+                  readonly name: 'Document_patientId_idx_e5f07e88';
+                  readonly prefix: 'Document_patientId_idx';
+                  readonly columns: readonly ['patientId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Document';
+                    readonly columns: readonly ['patientId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Patient';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly Message: {
+              columns: {
+                readonly attempts: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                   readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
                   };
                   readonly many: false;
                 };
-                readonly title: {
+                readonly body: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly channel: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly createdAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
+                readonly errorMessage: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly patientId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly providerId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly queryLetterId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly recipient: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly sentAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly status: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'pending'>;
+                  };
                   readonly many: false;
                 };
                 readonly updatedAt: {
@@ -394,12 +977,18 @@ type ContractBase = Omit<
                 };
               };
               primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [];
+              uniques: readonly [{ readonly columns: readonly ['queryLetterId', 'channel'] }];
               indexes: readonly [
                 {
-                  readonly name: 'Post_authorId_idx_e47547ed';
-                  readonly prefix: 'Post_authorId_idx';
-                  readonly columns: readonly ['authorId'];
+                  readonly name: 'Message_patientId_idx_e5f07e88';
+                  readonly prefix: 'Message_patientId_idx';
+                  readonly columns: readonly ['patientId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'Message_queryLetterId_idx_2e9e8707';
+                  readonly prefix: 'Message_queryLetterId_idx';
+                  readonly columns: readonly ['queryLetterId'];
                   readonly unique: false;
                 },
               ];
@@ -407,19 +996,37 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Post';
-                    readonly columns: readonly ['authorId'];
+                    readonly tableName: 'Message';
+                    readonly columns: readonly ['patientId'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'User';
+                    readonly tableName: 'Patient';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Message';
+                    readonly columns: readonly ['queryLetterId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'QueryLetter';
                     readonly columns: readonly ['id'];
                   };
                 },
               ];
             };
-            readonly User: {
+            readonly Patient: {
               columns: {
+                readonly claimNumber: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
                 readonly createdAt: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-string@1';
@@ -434,16 +1041,30 @@ type ContractBase = Omit<
                   readonly many: false;
                 };
                 readonly id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
                   readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
                   readonly many: false;
                 };
                 readonly name: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly patientCode: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly phone: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly policyNumber: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
@@ -455,7 +1076,7 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly username: {
+                readonly userId: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
@@ -463,9 +1084,355 @@ type ContractBase = Omit<
                 };
               };
               primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [{ readonly columns: readonly ['email'] }];
+              uniques: readonly [
+                { readonly columns: readonly ['patientCode'] },
+                { readonly columns: readonly ['userId'] },
+              ];
+              indexes: readonly [
+                {
+                  readonly name: 'Patient_name_idx_ce87e6ba';
+                  readonly prefix: 'Patient_name_idx';
+                  readonly columns: readonly ['name'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [];
+            };
+            readonly QueryLetter: {
+              columns: {
+                readonly createdAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
+                readonly errorMessage: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly fileName: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly finishedAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly mimeType: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly patientId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly startedAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly status: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'uploaded'>;
+                  };
+                  readonly many: false;
+                };
+                readonly storageKey: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly updatedAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly uploadedBy: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['storageKey'] }];
+              indexes: readonly [
+                {
+                  readonly name: 'QueryLetter_patientId_idx_e5f07e88';
+                  readonly prefix: 'QueryLetter_patientId_idx';
+                  readonly columns: readonly ['patientId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'QueryLetter_status_idx_e98638ab';
+                  readonly prefix: 'QueryLetter_status_idx';
+                  readonly columns: readonly ['status'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'QueryLetter';
+                    readonly columns: readonly ['patientId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Patient';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly QueryPoint: {
+              columns: {
+                readonly asksFor: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly createdAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
+                readonly documentId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly patientRequest: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly patientWhy: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly position: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly queryLetterId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly reason: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly resolvedAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly resolvedBy: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly status: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['queryLetterId', 'position'] }];
+              indexes: readonly [
+                {
+                  readonly name: 'QueryPoint_documentId_idx_825ef746';
+                  readonly prefix: 'QueryPoint_documentId_idx';
+                  readonly columns: readonly ['documentId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'QueryPoint_queryLetterId_idx_2e9e8707';
+                  readonly prefix: 'QueryPoint_queryLetterId_idx';
+                  readonly columns: readonly ['queryLetterId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'QueryPoint_status_idx_e98638ab';
+                  readonly prefix: 'QueryPoint_status_idx';
+                  readonly columns: readonly ['status'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'QueryPoint';
+                    readonly columns: readonly ['queryLetterId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'QueryLetter';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'QueryPoint';
+                    readonly columns: readonly ['documentId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Document';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly Template: {
+              columns: {
+                readonly body: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly channel: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly subject: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly updatedAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly updatedBy: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['channel'] }];
               indexes: readonly [];
               foreignKeys: readonly [];
+            };
+          };
+          readonly valueSet: {
+            readonly AccessAction: {
+              readonly kind: 'valueSet';
+              readonly values: readonly [
+                'view_patient',
+                'view_document',
+                'view_query',
+                'upload',
+                'denied',
+              ];
+            };
+            readonly DocumentType: {
+              readonly kind: 'valueSet';
+              readonly values: readonly [
+                'discharge_summary',
+                'summary_bill',
+                'itemised_bill',
+                'pharmacy_bill',
+                'investigation_report',
+                'consultation_paper',
+                'policy_copy',
+                'kyc',
+                'cancelled_cheque',
+                'query_letter',
+                'other',
+              ];
+            };
+            readonly MessageChannel: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['whatsapp', 'email'];
+            };
+            readonly MessageStatus: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['pending', 'sent', 'failed'];
+            };
+            readonly PointStatus: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['already_in_locker', 'needed_from_patient', 'needs_team'];
+            };
+            readonly QueryStatus: {
+              readonly kind: 'valueSet';
+              readonly values: readonly [
+                'uploaded',
+                'reading',
+                'checking_locker',
+                'sending',
+                'completed',
+                'delivery_failed',
+                'failed',
+              ];
+            };
+            readonly ReadingStatus: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['pending', 'processing', 'done', 'unreadable', 'failed'];
             };
           };
         };
@@ -478,21 +1445,32 @@ type ContractBase = Omit<
   readonly target: 'postgres';
   readonly targetFamily: 'sql';
   readonly roots: {
-    readonly Post: { readonly namespace: 'public' & NamespaceId; readonly model: 'Post' };
-    readonly User: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+    readonly AccessLog: { readonly namespace: 'public' & NamespaceId; readonly model: 'AccessLog' };
+    readonly AgentPatient: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'AgentPatient';
+    };
+    readonly Document: { readonly namespace: 'public' & NamespaceId; readonly model: 'Document' };
+    readonly Message: { readonly namespace: 'public' & NamespaceId; readonly model: 'Message' };
+    readonly Patient: { readonly namespace: 'public' & NamespaceId; readonly model: 'Patient' };
+    readonly QueryLetter: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'QueryLetter';
+    };
+    readonly QueryPoint: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'QueryPoint';
+    };
+    readonly Template: { readonly namespace: 'public' & NamespaceId; readonly model: 'Template' };
   };
   readonly domain: {
     readonly namespaces: {
       readonly public: {
         readonly models: {
-          readonly Post: {
+          readonly AccessLog: {
             readonly fields: {
-              readonly authorId: {
+              readonly action: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly content: {
-                readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly createdAt: {
@@ -504,9 +1482,269 @@ type ContractBase = Omit<
               };
               readonly id: {
                 readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly patientId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly resourceId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly patient: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Patient';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['patientId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'AccessLog';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly action: { readonly column: 'action' };
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly id: { readonly column: 'id' };
+                readonly patientId: { readonly column: 'patientId' };
+                readonly resourceId: { readonly column: 'resourceId' };
+                readonly userId: { readonly column: 'userId' };
+              };
+            };
+          };
+          readonly AgentPatient: {
+            readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly patientId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly patient: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Patient';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['patientId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'AgentPatient';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly id: { readonly column: 'id' };
+                readonly patientId: { readonly column: 'patientId' };
+                readonly userId: { readonly column: 'userId' };
+              };
+            };
+          };
+          readonly Document: {
+            readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly documentDate: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly fileName: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly mimeType: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly nameMismatch: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
+              readonly nameOnDocument: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly patientId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly readingStatus: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly sha256: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly sizeBytes: {
+                readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly title: {
+              readonly storageKey: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly summary: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly type: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly uploadedBy: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly citedBy: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'QueryPoint';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['documentId'];
+                };
+              };
+              readonly patient: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Patient';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['patientId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'Document';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly documentDate: { readonly column: 'documentDate' };
+                readonly fileName: { readonly column: 'fileName' };
+                readonly id: { readonly column: 'id' };
+                readonly mimeType: { readonly column: 'mimeType' };
+                readonly nameMismatch: { readonly column: 'nameMismatch' };
+                readonly nameOnDocument: { readonly column: 'nameOnDocument' };
+                readonly patientId: { readonly column: 'patientId' };
+                readonly readingStatus: { readonly column: 'readingStatus' };
+                readonly sha256: { readonly column: 'sha256' };
+                readonly sizeBytes: { readonly column: 'sizeBytes' };
+                readonly storageKey: { readonly column: 'storageKey' };
+                readonly summary: { readonly column: 'summary' };
+                readonly type: { readonly column: 'type' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+                readonly uploadedBy: { readonly column: 'uploadedBy' };
+              };
+            };
+          };
+          readonly Message: {
+            readonly fields: {
+              readonly attempts: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly body: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly channel: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly errorMessage: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly patientId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly providerId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly queryLetterId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly recipient: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly sentAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly status: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -519,31 +1757,57 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
-              readonly author: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+              readonly patient: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Patient';
+                };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['authorId'];
+                  readonly localFields: readonly ['patientId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly queryLetter: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'QueryLetter';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['queryLetterId'];
                   readonly targetFields: readonly ['id'];
                 };
               };
             };
             readonly storage: {
-              readonly table: 'Post';
+              readonly table: 'Message';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly authorId: { readonly column: 'authorId' };
-                readonly content: { readonly column: 'content' };
+                readonly attempts: { readonly column: 'attempts' };
+                readonly body: { readonly column: 'body' };
+                readonly channel: { readonly column: 'channel' };
                 readonly createdAt: { readonly column: 'createdAt' };
+                readonly errorMessage: { readonly column: 'errorMessage' };
                 readonly id: { readonly column: 'id' };
-                readonly title: { readonly column: 'title' };
+                readonly patientId: { readonly column: 'patientId' };
+                readonly providerId: { readonly column: 'providerId' };
+                readonly queryLetterId: { readonly column: 'queryLetterId' };
+                readonly recipient: { readonly column: 'recipient' };
+                readonly sentAt: { readonly column: 'sentAt' };
+                readonly status: { readonly column: 'status' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
               };
             };
           };
-          readonly User: {
+          readonly Patient: {
             readonly fields: {
+              readonly claimNumber: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly createdAt: {
                 readonly nullable: false;
                 readonly type: {
@@ -557,9 +1821,21 @@ type ContractBase = Omit<
               };
               readonly id: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly patientCode: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly phone: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly policyNumber: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -570,34 +1846,474 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/timestamptz-string@1';
                 };
               };
-              readonly username: {
+              readonly userId: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
             };
             readonly relations: {
-              readonly posts: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'Post' };
+              readonly accessLogs: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AccessLog';
+                };
                 readonly cardinality: '1:N';
                 readonly on: {
                   readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['authorId'];
+                  readonly targetFields: readonly ['patientId'];
+                };
+              };
+              readonly agents: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'AgentPatient';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['patientId'];
+                };
+              };
+              readonly documents: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Document';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['patientId'];
+                };
+              };
+              readonly messages: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Message';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['patientId'];
+                };
+              };
+              readonly queryLetters: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'QueryLetter';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['patientId'];
                 };
               };
             };
             readonly storage: {
-              readonly table: 'User';
+              readonly table: 'Patient';
               readonly namespaceId: 'public';
               readonly fields: {
+                readonly claimNumber: { readonly column: 'claimNumber' };
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly email: { readonly column: 'email' };
                 readonly id: { readonly column: 'id' };
                 readonly name: { readonly column: 'name' };
+                readonly patientCode: { readonly column: 'patientCode' };
+                readonly phone: { readonly column: 'phone' };
+                readonly policyNumber: { readonly column: 'policyNumber' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
-                readonly username: { readonly column: 'username' };
+                readonly userId: { readonly column: 'userId' };
               };
             };
           };
+          readonly QueryLetter: {
+            readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly errorMessage: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly fileName: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly finishedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly mimeType: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly patientId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly startedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly storageKey: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly uploadedBy: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly messages: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Message';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['queryLetterId'];
+                };
+              };
+              readonly patient: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Patient';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['patientId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly points: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'QueryPoint';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['queryLetterId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'QueryLetter';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly errorMessage: { readonly column: 'errorMessage' };
+                readonly fileName: { readonly column: 'fileName' };
+                readonly finishedAt: { readonly column: 'finishedAt' };
+                readonly id: { readonly column: 'id' };
+                readonly mimeType: { readonly column: 'mimeType' };
+                readonly patientId: { readonly column: 'patientId' };
+                readonly startedAt: { readonly column: 'startedAt' };
+                readonly status: { readonly column: 'status' };
+                readonly storageKey: { readonly column: 'storageKey' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+                readonly uploadedBy: { readonly column: 'uploadedBy' };
+              };
+            };
+          };
+          readonly QueryPoint: {
+            readonly fields: {
+              readonly asksFor: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly documentId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly patientRequest: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly patientWhy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly position: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly queryLetterId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly reason: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly resolvedAt: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly resolvedBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly document: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Document';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: true;
+                readonly on: {
+                  readonly localFields: readonly ['documentId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly queryLetter: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'QueryLetter';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['queryLetterId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'QueryPoint';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly asksFor: { readonly column: 'asksFor' };
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly documentId: { readonly column: 'documentId' };
+                readonly id: { readonly column: 'id' };
+                readonly patientRequest: { readonly column: 'patientRequest' };
+                readonly patientWhy: { readonly column: 'patientWhy' };
+                readonly position: { readonly column: 'position' };
+                readonly queryLetterId: { readonly column: 'queryLetterId' };
+                readonly reason: { readonly column: 'reason' };
+                readonly resolvedAt: { readonly column: 'resolvedAt' };
+                readonly resolvedBy: { readonly column: 'resolvedBy' };
+                readonly status: { readonly column: 'status' };
+              };
+            };
+          };
+          readonly Template: {
+            readonly fields: {
+              readonly body: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly channel: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly subject: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly updatedBy: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: Record<string, never>;
+            readonly storage: {
+              readonly table: 'Template';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly body: { readonly column: 'body' };
+                readonly channel: { readonly column: 'channel' };
+                readonly id: { readonly column: 'id' };
+                readonly subject: { readonly column: 'subject' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+                readonly updatedBy: { readonly column: 'updatedBy' };
+              };
+            };
+          };
+        };
+        readonly enum: {
+          readonly AccessAction: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'view_patient'; readonly value: 'view_patient' },
+              { readonly name: 'view_document'; readonly value: 'view_document' },
+              { readonly name: 'view_query'; readonly value: 'view_query' },
+              { readonly name: 'upload'; readonly value: 'upload' },
+              { readonly name: 'denied'; readonly value: 'denied' },
+            ];
+          };
+          readonly DocumentType: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'discharge_summary'; readonly value: 'discharge_summary' },
+              { readonly name: 'summary_bill'; readonly value: 'summary_bill' },
+              { readonly name: 'itemised_bill'; readonly value: 'itemised_bill' },
+              { readonly name: 'pharmacy_bill'; readonly value: 'pharmacy_bill' },
+              { readonly name: 'investigation_report'; readonly value: 'investigation_report' },
+              { readonly name: 'consultation_paper'; readonly value: 'consultation_paper' },
+              { readonly name: 'policy_copy'; readonly value: 'policy_copy' },
+              { readonly name: 'kyc'; readonly value: 'kyc' },
+              { readonly name: 'cancelled_cheque'; readonly value: 'cancelled_cheque' },
+              { readonly name: 'query_letter'; readonly value: 'query_letter' },
+              { readonly name: 'other'; readonly value: 'other' },
+            ];
+          };
+          readonly MessageChannel: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'whatsapp'; readonly value: 'whatsapp' },
+              { readonly name: 'email'; readonly value: 'email' },
+            ];
+          };
+          readonly MessageStatus: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'pending'; readonly value: 'pending' },
+              { readonly name: 'sent'; readonly value: 'sent' },
+              { readonly name: 'failed'; readonly value: 'failed' },
+            ];
+          };
+          readonly PointStatus: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'already_in_locker'; readonly value: 'already_in_locker' },
+              { readonly name: 'needed_from_patient'; readonly value: 'needed_from_patient' },
+              { readonly name: 'needs_team'; readonly value: 'needs_team' },
+            ];
+          };
+          readonly QueryStatus: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'uploaded'; readonly value: 'uploaded' },
+              { readonly name: 'reading'; readonly value: 'reading' },
+              { readonly name: 'checking_locker'; readonly value: 'checking_locker' },
+              { readonly name: 'sending'; readonly value: 'sending' },
+              { readonly name: 'completed'; readonly value: 'completed' },
+              { readonly name: 'delivery_failed'; readonly value: 'delivery_failed' },
+              { readonly name: 'failed'; readonly value: 'failed' },
+            ];
+          };
+          readonly ReadingStatus: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'pending'; readonly value: 'pending' },
+              { readonly name: 'processing'; readonly value: 'processing' },
+              { readonly name: 'done'; readonly value: 'done' },
+              { readonly name: 'unreadable'; readonly value: 'unreadable' },
+              { readonly name: 'failed'; readonly value: 'failed' },
+            ];
+          };
+        };
+        readonly enumMemberTypes?: {
+          readonly AccessAction: readonly [
+            { readonly name: 'view_patient'; readonly value: 'view_patient' },
+            { readonly name: 'view_document'; readonly value: 'view_document' },
+            { readonly name: 'view_query'; readonly value: 'view_query' },
+            { readonly name: 'upload'; readonly value: 'upload' },
+            { readonly name: 'denied'; readonly value: 'denied' },
+          ];
+          readonly DocumentType: readonly [
+            { readonly name: 'discharge_summary'; readonly value: 'discharge_summary' },
+            { readonly name: 'summary_bill'; readonly value: 'summary_bill' },
+            { readonly name: 'itemised_bill'; readonly value: 'itemised_bill' },
+            { readonly name: 'pharmacy_bill'; readonly value: 'pharmacy_bill' },
+            { readonly name: 'investigation_report'; readonly value: 'investigation_report' },
+            { readonly name: 'consultation_paper'; readonly value: 'consultation_paper' },
+            { readonly name: 'policy_copy'; readonly value: 'policy_copy' },
+            { readonly name: 'kyc'; readonly value: 'kyc' },
+            { readonly name: 'cancelled_cheque'; readonly value: 'cancelled_cheque' },
+            { readonly name: 'query_letter'; readonly value: 'query_letter' },
+            { readonly name: 'other'; readonly value: 'other' },
+          ];
+          readonly MessageChannel: readonly [
+            { readonly name: 'whatsapp'; readonly value: 'whatsapp' },
+            { readonly name: 'email'; readonly value: 'email' },
+          ];
+          readonly MessageStatus: readonly [
+            { readonly name: 'pending'; readonly value: 'pending' },
+            { readonly name: 'sent'; readonly value: 'sent' },
+            { readonly name: 'failed'; readonly value: 'failed' },
+          ];
+          readonly PointStatus: readonly [
+            { readonly name: 'already_in_locker'; readonly value: 'already_in_locker' },
+            { readonly name: 'needed_from_patient'; readonly value: 'needed_from_patient' },
+            { readonly name: 'needs_team'; readonly value: 'needs_team' },
+          ];
+          readonly QueryStatus: readonly [
+            { readonly name: 'uploaded'; readonly value: 'uploaded' },
+            { readonly name: 'reading'; readonly value: 'reading' },
+            { readonly name: 'checking_locker'; readonly value: 'checking_locker' },
+            { readonly name: 'sending'; readonly value: 'sending' },
+            { readonly name: 'completed'; readonly value: 'completed' },
+            { readonly name: 'delivery_failed'; readonly value: 'delivery_failed' },
+            { readonly name: 'failed'; readonly value: 'failed' },
+          ];
+          readonly ReadingStatus: readonly [
+            { readonly name: 'pending'; readonly value: 'pending' },
+            { readonly name: 'processing'; readonly value: 'processing' },
+            { readonly name: 'done'; readonly value: 'done' },
+            { readonly name: 'unreadable'; readonly value: 'unreadable' },
+            { readonly name: 'failed'; readonly value: 'failed' },
+          ];
         };
       };
     };
@@ -635,11 +2351,26 @@ type ContractBase = Omit<
     readonly mutations: {
       readonly defaults: readonly [
         {
-          readonly onCreate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
-          readonly onUpdate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
+          readonly onCreate: { readonly id: 'uuidv7'; readonly kind: 'generator' };
           readonly ref: {
-            readonly entry: 'Post';
-            readonly field: 'updatedAt';
+            readonly entry: 'AccessLog';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'uuidv7'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'AgentPatient';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'uuidv7'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'Document';
+            readonly field: 'id';
             readonly namespace: 'public';
           };
         },
@@ -647,7 +2378,83 @@ type ContractBase = Omit<
           readonly onCreate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
           readonly onUpdate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
           readonly ref: {
-            readonly entry: 'User';
+            readonly entry: 'Document';
+            readonly field: 'updatedAt';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'uuidv7'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'Message';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'Message';
+            readonly field: 'updatedAt';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'uuidv7'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'Patient';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'Patient';
+            readonly field: 'updatedAt';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'uuidv7'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'QueryLetter';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'QueryLetter';
+            readonly field: 'updatedAt';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'uuidv7'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'QueryPoint';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'uuidv7'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'Template';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'timestamptzStringNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'Template';
             readonly field: 'updatedAt';
             readonly namespace: 'public';
           };

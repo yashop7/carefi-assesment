@@ -1,21 +1,205 @@
 // use prisma-8
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String?
-  name      String?
-  posts     Post[]
+enum DocumentType {
+  @@type("pg/text@1")
+  discharge_summary    = "discharge_summary"
+  summary_bill         = "summary_bill"
+  itemised_bill        = "itemised_bill"
+  pharmacy_bill        = "pharmacy_bill"
+  investigation_report = "investigation_report"
+  consultation_paper   = "consultation_paper"
+  policy_copy          = "policy_copy"
+  kyc                  = "kyc"
+  cancelled_cheque     = "cancelled_cheque"
+  query_letter         = "query_letter"
+  other                = "other"
+}
+
+enum ReadingStatus {
+  @@type("pg/text@1")
+  pending    = "pending"
+  processing = "processing"
+  done       = "done"
+  unreadable = "unreadable"
+  failed     = "failed"
+}
+
+enum QueryStatus {
+  @@type("pg/text@1")
+  uploaded        = "uploaded"
+  reading         = "reading"
+  checking_locker = "checking_locker"
+  sending         = "sending"
+  completed       = "completed"
+  delivery_failed = "delivery_failed"
+  failed          = "failed"
+}
+
+enum PointStatus {
+  @@type("pg/text@1")
+  already_in_locker   = "already_in_locker"
+  needed_from_patient = "needed_from_patient"
+  needs_team          = "needs_team"
+}
+
+enum MessageChannel {
+  @@type("pg/text@1")
+  whatsapp = "whatsapp"
+  email    = "email"
+}
+
+enum MessageStatus {
+  @@type("pg/text@1")
+  pending = "pending"
+  sent    = "sent"
+  failed  = "failed"
+}
+
+enum AccessAction {
+  @@type("pg/text@1")
+  view_patient  = "view_patient"
+  view_document = "view_document"
+  view_query    = "view_query"
+  upload        = "upload"
+  denied        = "denied"
+}
+
+model Patient {
+  id           String @id @onCreate(uuid(7))
+  patientCode  String @unique
+  userId       String? @unique
+  name         String
+  phone        String
+  email        String
+  policyNumber String?
+  claimNumber  String?
+  documents    Document[]
+  queryLetters QueryLetter[]
+  messages     Message[]
+  accessLogs   AccessLog[]
+  agents       AgentPatient[]
+  createdAt    TimestamptzString @default(now())
+  updatedAt    temporal.UpdatedAtString
+
+  @@index([name])
+}
+
+model AgentPatient {
+  id        String  @id @onCreate(uuid(7))
+  userId    String
+  patient   Patient @relation(fields: [patientId], references: [id])
+  patientId String
   createdAt TimestamptzString @default(now())
+
+  @@unique([userId, patientId])
+  @@index([patientId])
+}
+
+model Document {
+  id             String  @id @onCreate(uuid(7))
+  patient        Patient @relation(fields: [patientId], references: [id])
+  patientId      String
+  fileName       String
+  storageKey     String  @unique
+  mimeType       String
+  sizeBytes      Int
+  sha256         String
+  type           DocumentType @default(other)
+  summary        String?
+  nameOnDocument String?
+  documentDate   String?
+  readingStatus  ReadingStatus @default(pending)
+  nameMismatch   Boolean @default(false)
+  uploadedBy     String
+  citedBy        QueryPoint[]
+  createdAt      TimestamptzString @default(now())
+  updatedAt      temporal.UpdatedAtString
+
+  @@unique([patientId, sha256])
+  @@index([patientId])
+}
+
+model QueryLetter {
+  id            String  @id @onCreate(uuid(7))
+  patient       Patient @relation(fields: [patientId], references: [id])
+  patientId     String
+  fileName      String
+  storageKey    String  @unique
+  mimeType      String
+  status        QueryStatus @default(uploaded)
+  errorMessage  String?
+  uploadedBy    String
+  startedAt     TimestamptzString?
+  finishedAt    TimestamptzString?
+  points        QueryPoint[]
+  messages      Message[]
+  createdAt     TimestamptzString @default(now())
+  updatedAt     temporal.UpdatedAtString
+
+  @@index([patientId])
+  @@index([status])
+}
+
+model QueryPoint {
+  id             String @id @onCreate(uuid(7))
+  queryLetter    QueryLetter @relation(fields: [queryLetterId], references: [id])
+  queryLetterId  String
+  position       Int
+  asksFor        String
+  status         PointStatus
+  reason         String
+  document       Document? @relation(fields: [documentId], references: [id])
+  documentId     String?
+  patientRequest String?
+  patientWhy     String?
+  resolvedBy     String?
+  resolvedAt     TimestamptzString?
+  createdAt      TimestamptzString @default(now())
+
+  @@unique([queryLetterId, position])
+  @@index([status])
+  @@index([documentId])
+}
+
+model Template {
+  id        String @id @onCreate(uuid(7))
+  channel   MessageChannel @unique
+  subject   String?
+  body      String
+  updatedBy String?
   updatedAt temporal.UpdatedAtString
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.UpdatedAtString
+model Message {
+  id            String @id @onCreate(uuid(7))
+  patient       Patient @relation(fields: [patientId], references: [id])
+  patientId     String
+  queryLetter   QueryLetter @relation(fields: [queryLetterId], references: [id])
+  queryLetterId String
+  channel       MessageChannel
+  recipient     String
+  body          String
+  status        MessageStatus @default(pending)
+  attempts      Int @default(0)
+  providerId    String?
+  errorMessage  String?
+  sentAt        TimestamptzString?
+  createdAt     TimestamptzString @default(now())
+  updatedAt     temporal.UpdatedAtString
+
+  @@unique([queryLetterId, channel])
+  @@index([patientId])
+}
+
+model AccessLog {
+  id         String @id @onCreate(uuid(7))
+  userId     String
+  action     AccessAction
+  patient    Patient? @relation(fields: [patientId], references: [id])
+  patientId  String?
+  resourceId String?
+  createdAt  TimestamptzString @default(now())
+
+  @@index([patientId])
+  @@index([userId])
 }
