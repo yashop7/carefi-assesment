@@ -47,10 +47,17 @@ export async function deleteObject(key: string) {
 export async function createExpiringLink(
   key: string,
   expiresIn = MAX_LINK_SECONDS,
+  fileName?: string,
 ) {
   return getSignedUrl(
     getClient(),
-    new GetObjectCommand({ Bucket: process.env.S3_BUCKET, Key: key }),
+    new GetObjectCommand({
+      Bucket: process.env.S3_BUCKET,
+      Key: key,
+      ResponseContentDisposition: fileName
+        ? `inline; filename*=UTF-8''${encodeURIComponent(fileName)}`
+        : undefined,
+    }),
     { expiresIn: Math.min(expiresIn, MAX_LINK_SECONDS) },
   );
 }
