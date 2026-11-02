@@ -32,7 +32,7 @@ Accuracy is worth 45 of the 100 points, so stage 8 gets real time.
 | File storage | Private Railway bucket (S3-compatible) |
 | Agent workflow | LangGraph.js with `PostgresSaver` |
 | AI | OpenAI Responses API, with the model set by `OPENAI_MODEL` |
-| WhatsApp | Twilio WhatsApp sandbox |
+| WhatsApp | Meta WhatsApp Cloud API |
 | Email | Resend with a verified domain |
 | Hosting | One always-on Next.js service on Railway |
 
@@ -50,7 +50,7 @@ apps/web/
   lib/agent/graph.ts    LangGraph workflow
   lib/agent/nodes.ts    One function per node
   lib/agent/ai.ts       OpenAI helper and response shapes
-  lib/messaging/        Twilio, Resend and template filling
+  lib/messaging/        WhatsApp, Resend and template filling
   instrumentation.ts    Resumes unfinished letters on startup
   scripts/              Admin creation and the bucket privacy check
 packages/db/            Contract, migrations and database client
@@ -344,7 +344,7 @@ There's no public signup. Accounts are created by a seed script or by an admin. 
 5. Logs carry IDs, never names, phone numbers, message text or document contents.
 6. All secrets stay in environment variables.
 
-Patient records are sent to OpenAI, Twilio and the email provider. Only fake and CareFi sample data goes through this build. A real launch would need agreements with those providers first.
+Patient records are sent to OpenAI, Meta and the email provider. Only fake and CareFi sample data goes through this build. A real launch would need agreements with those providers first.
 
 ## 6. Upload flows
 
@@ -383,7 +383,7 @@ CareFi's patients may only arrive at evaluation, so an admin needs a fast way to
 | Text letter | The stored PDF or image is sent to the AI |
 | `MemorySaver` | `PostgresSaver`, so progress survives a restart |
 | `alreadySent` in memory | `Message` rows and the unique key |
-| Simulated sending | Twilio and Resend |
+| Simulated sending | WhatsApp Cloud API and Resend |
 | Results printed to the console | Saved to `QueryPoint` and `QueryLetter` |
 | One test patient | `thread_id` is the `queryLetterId` |
 
@@ -424,7 +424,7 @@ A letter with no points also goes to the team.
 
 ### Duplicate sends
 
-Before each send, `sendMessages` inserts or finds the `Message` row, and skips it if it's already `sent`. Resend also gets the row's id as an idempotency key. A crash exactly between Twilio accepting a message and the database saving `sent` can still cause one repeat WhatsApp. That small risk is accepted for this build.
+Before each send, `sendMessages` inserts or finds the `Message` row, and skips it if it's already `sent`. Resend also gets the row's id as an idempotency key. A crash exactly between Meta accepting a message and the database saving `sent` can still cause one repeat WhatsApp. That small risk is accepted for this build.
 
 ### Restart recovery
 
@@ -533,9 +533,8 @@ S3_REGION
 S3_BUCKET
 S3_ACCESS_KEY_ID
 S3_SECRET_ACCESS_KEY
-TWILIO_ACCOUNT_SID
-TWILIO_AUTH_TOKEN
-TWILIO_WHATSAPP_FROM
+WHATSAPP_TOKEN
+WHATSAPP_PHONE_NUMBER_ID
 RESEND_API_KEY
 EMAIL_FROM
 ```
@@ -578,7 +577,7 @@ Each stage ends with something you can test. Don't start a stage until the one b
 
 ### Stage 5: Real sending
 
-- Connect Twilio and Resend, and add the template and message history.
+- Connect the WhatsApp Cloud API and Resend, and add the template and message history.
 
 **Done when:** a dropped letter reaches a real phone and inbox automatically, a forced failure retries only that channel, and restarting mid-run sends no duplicates.
 
@@ -623,8 +622,8 @@ Each stage ends with something you can test. Don't start a stage until the one b
 
 | Risk | Plan |
 |---|---|
-| Twilio's sandbox sends only to numbers that have joined, and joining can expire | Get CareFi's number early, and have it join and send a message shortly before the evaluation |
-| WhatsApp may block free-form messages if the number hasn't messaged recently | Test the same sequence yourself and confirm it first |
+| WhatsApp plain text only reaches added numbers that messaged in the last 24 hours | Get CareFi's number early, add it on Meta's API Setup page, and have it message shortly before the evaluation |
+| Meta can accept a message and fail it later, reporting that only by webhook | Test the same sequence yourself first. "Sent" means Meta accepted it |
 | Resend needs a verified domain to reach CareFi's address | Verify a domain in stage 5 |
 | CareFi's data and template arrive late | Bulk import and the template editor |
 | Blurry scans read badly | Test in stage 3, and send doubtful documents to the team |

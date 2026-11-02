@@ -45,6 +45,8 @@ Give every point exactly one status:
   patientWhy says why the insurer needs it. Never write "I" or "me". For example:
   patientRequest: "A hospital bill that lists each charge separately."
   patientWhy: "The insurer needs to see the room, medicine and surgeon charges."
+  Being missing is never a reason for needs_team. If the patient can get it themselves,
+  such as a bill, report, ID, policy copy or cancelled cheque, always use this status.
 - needs_team: only the hospital, doctor or insurer can answer it, it is unclear,
   or you aren't sure.
 
