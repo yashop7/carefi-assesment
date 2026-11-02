@@ -237,9 +237,14 @@ export const auth = betterAuth({
       },
     },
   },
+  advanced: {
+    ipAddress: { ipAddressHeaders: ["x-real-ip"] },
+  },
   plugins: [nextCookies()],
 });
 ```
+
+Without `ipAddressHeaders`, Better Auth finds no client IP on Railway and every visitor shares one login rate limit. Railway's edge sets `X-Real-IP`.
 
 ### `apps/web/scripts/create-admin.ts`
 

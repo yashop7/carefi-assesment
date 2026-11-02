@@ -24,5 +24,10 @@ export const auth = betterAuth({
       },
     },
   },
+  advanced: {
+    // Railway's edge sets this to the client's address, so each visitor gets
+    // their own login rate limit.
+    ipAddress: { ipAddressHeaders: ["x-real-ip"] },
+  },
   plugins: [nextCookies()],
 });
