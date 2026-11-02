@@ -327,6 +327,7 @@ There's no public signup. Accounts are created by a seed script or by an admin. 
 | See patient list | All | Assigned only | None |
 | Open patient profile and documents | All | Assigned only | Own only |
 | Upload documents | All | Assigned only | Own only |
+| Delete documents | All | Assigned only | None |
 | Upload query letters | All | Assigned only | None |
 | See query decisions and team reasons | All | Assigned only | None |
 | See message history | All | Assigned only | Own only |
@@ -507,6 +508,7 @@ Every route checks login and permissions first.
 | `GET, POST /api/patients` | List and create patients |
 | `GET, PATCH /api/patients/[id]` | Read and edit a profile |
 | `POST /api/patients/[id]/documents` | Upload a document |
+| `DELETE /api/documents/[id]` | Delete a document and its file |
 | `GET /api/documents/[id]/link` | Get an expiring file link |
 | `POST /api/patients/[id]/queries` | Upload a letter and start the agent |
 | `POST /api/queries/[id]/retry` | Retry a failed letter or channel |

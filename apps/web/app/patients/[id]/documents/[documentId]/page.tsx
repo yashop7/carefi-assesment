@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { getCurrentUser, logAccess, orNotFound, requireDocumentAccess } from "@/lib/access";
 import { documentTypeLabel, isBeingRead } from "@/lib/format";
 import { createExpiringLink } from "@/lib/storage";
+import { DeleteDocument } from "../../delete-document";
 import { RefreshWhileReading, RetryButton } from "../../reading-status";
 
 export default async function DocumentPage({
@@ -26,9 +27,14 @@ export default async function DocumentPage({
       </Link>
       <div className="page-title">
         <h1 className="truncate">{document.fileName}</h1>
-        <a className="button button-quiet" href={link} target="_blank" rel="noreferrer">
-          Open in new tab
-        </a>
+        <div className="status-cell">
+          {user.role !== "patient" && (
+            <DeleteDocument documentId={document.id} patientId={patient.id} />
+          )}
+          <a className="button button-quiet" href={link} target="_blank" rel="noreferrer">
+            Open in new tab
+          </a>
+        </div>
       </div>
       {isBeingRead(document.readingStatus) && (
         <>

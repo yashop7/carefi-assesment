@@ -472,6 +472,10 @@ tbody tr:last-child td {
   cursor: pointer;
 }
 
+.link-button-danger {
+  color: var(--danger);
+}
+
 .profile-wide {
   grid-column: 1 / -1;
 }
