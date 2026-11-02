@@ -12,10 +12,11 @@ type Message = {
   createdAt: string;
 };
 
-function statusLabel({ status, providerId }: Message) {
+function statusLabel({ channel, status, providerId }: Message) {
   if (providerId === "simulated") return "Simulated";
   if (status === "sent") return "Sent";
-  return status === "failed" ? "Failed" : "Sending";
+  if (status === "failed") return "Failed";
+  return channel === "whatsapp" ? "Waiting for patient to message" : "Sending";
 }
 
 // `showDelivery` is for staff: patients don't see attempts or provider errors.

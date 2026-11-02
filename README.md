@@ -172,4 +172,8 @@ Staff drop a letter on a patient's Query letters tab. A LangGraph agent (`apps/w
 
 ## Sending
 
-When the patient must send something, the agent sends the template on WhatsApp through the Meta Cloud API and by email through Resend (`apps/web/lib/messaging/`). A failed channel retries alone, then the letter shows "Delivery failed" with "Try again". Set `WHATSAPP_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `RESEND_API_KEY` and `EMAIL_FROM` in `apps/web/.env` and on Railway. Without them, sending fails rather than pretending to work.
+When the patient must send something, the agent emails the template through Resend straight away (`apps/web/lib/messaging/`). A failed email retries alone, then the letter shows "Delivery failed" with "Try again". Set `RESEND_API_KEY` and `EMAIL_FROM` in `apps/web/.env` and on Railway. Without them, sending fails rather than pretending to work.
+
+WhatsApp isn't fully automatic in this build. Twilio's trial sandbox only allows free text as a reply, so the message waits, marked "Waiting for patient to message". To receive it, the patient sends `join road-depend` to +1 415 523 8886, then any message. `POST /api/whatsapp` checks Twilio's signature with `TWILIO_AUTH_TOKEN` and replies with what's waiting for that number. Set that URL under "When a message comes in" in the sandbox settings. Membership lasts 72 hours. "Sent" means the reply was handed to Twilio.
+
+With a Meta account, set `WHATSAPP_TOKEN` and `WHATSAPP_PHONE_NUMBER_ID` instead, and WhatsApp sends automatically through the Meta Cloud API.
