@@ -1,7 +1,9 @@
 import { createHash } from "node:crypto";
 import { db } from "db";
+import { after } from "next/server";
 import { logAccess, requirePatientAccess, requireUser } from "@/lib/access";
 import { apiError, handleRouteError, isForeignOrigin, isUniqueViolation } from "@/lib/api";
+import { readDocument } from "@/lib/documents";
 import { deleteObject, putObject } from "@/lib/storage";
 import {
   cleanFileName,
@@ -87,6 +89,8 @@ export async function POST(request: Request, { params }: Context) {
     }
 
     await logAccess(user, "upload", patient.id, document.id);
+    const documentId = document.id;
+    after(() => readDocument(documentId));
     return Response.json({ document }, { status: 201 });
   } catch (error) {
     return handleRouteError(error);

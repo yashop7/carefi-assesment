@@ -441,3 +441,37 @@ tbody tr:last-child td {
   border: 1px solid var(--line);
   border-radius: 8px;
 }
+
+.summary {
+  max-width: 460px;
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.status-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: center;
+}
+
+.badge-warn {
+  color: var(--danger);
+  border-color: currentcolor;
+}
+
+.link-button {
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: underline;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.profile-wide {
+  grid-column: 1 / -1;
+}
