@@ -622,7 +622,8 @@ Each stage ends with something you can test. Don't start a stage until the one b
 
 | Risk | Plan |
 |---|---|
-| WhatsApp plain text only reaches added numbers that messaged in the last 24 hours | Get CareFi's number early, add it on Meta's API Setup page, and have it message shortly before the evaluation |
+| Meta blocked signup and Twilio's trial only allows WhatsApp as a reply | Without `WHATSAPP_TOKEN`, the message waits until the patient messages the sandbox (`.claude/specs/05c-whatsapp-reply.md`). CareFi's number joins shortly before the evaluation |
+| WhatsApp plain text only reaches added numbers that messaged in the last 24 hours | If Meta is used, get CareFi's number early, add it on Meta's API Setup page, and have it message shortly before the evaluation |
 | Meta can accept a message and fail it later, reporting that only by webhook | Test the same sequence yourself first. "Sent" means Meta accepted it |
 | Resend needs a verified domain to reach CareFi's address | Verify a domain in stage 5 |
 | CareFi's data and template arrive late | Bulk import and the template editor |

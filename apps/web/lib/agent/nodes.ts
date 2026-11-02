@@ -267,6 +267,12 @@ async function sendOne(channel: Channel, state: GraphState, recipient: string, p
   if (message.status === "sent") return "sent";
 
   const row = db.orm.public.Message.where({ id: message.id });
+  // Without Meta, WhatsApp waits and goes out as a reply when the patient messages
+  // us (app/api/whatsapp/route.ts), so there's nothing more to do here.
+  if (channel === "whatsapp" && !process.env.WHATSAPP_TOKEN) {
+    if (message.status === "failed") await row.update({ status: "pending", errorMessage: null });
+    return "sent";
+  }
   try {
     const providerId = await deliver({ ...message, channel }, state.emailSubject);
     await row.update({
