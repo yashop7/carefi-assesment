@@ -2,9 +2,17 @@ import { db } from "db";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser, logAccess, orNotFound, requirePatientAccess } from "@/lib/access";
-import { documentTypeLabel, formatBytes, formatDate, isBeingRead } from "@/lib/format";
+import {
+  documentTypeLabel,
+  formatBytes,
+  formatDate,
+  isBeingRead,
+  isBeingWorkedOn,
+  queryStatusLabel,
+} from "@/lib/format";
 import { DocumentUpload } from "./document-upload";
-import { RefreshWhileReading, RetryReading } from "./reading-status";
+import { QueryDrop } from "./query-drop";
+import { RefreshWhileReading, RetryButton } from "./reading-status";
 
 export default async function PatientPage({
   params,
@@ -42,6 +50,16 @@ export default async function PatientPage({
           )
           .orderBy((document) => document.createdAt.desc())
           .limit(500)
+          .all()
+      : [];
+
+  const letters =
+    tab === "queries"
+      ? await db.orm.public.QueryLetter.where({ patientId: patient.id })
+          .select("id", "fileName", "status", "createdAt")
+          .include("points", (points) => points.select("status").limit(200))
+          .orderBy((letter) => letter.createdAt.desc())
+          .limit(200)
           .all()
       : [];
 
@@ -122,7 +140,7 @@ export default async function PatientPage({
                           {document.readingStatus === "failed" && (
                             <>
                               <span className="badge badge-warn">Reading failed</span>
-                              <RetryReading documentId={document.id} />
+                              <RetryButton url={`/api/documents/${document.id}/read`} />
                             </>
                           )}
                           {document.nameMismatch && <span className="badge badge-warn">Name doesn&apos;t match</span>}
@@ -139,7 +157,42 @@ export default async function PatientPage({
         </>
       )}
       {tab === "queries" && (
-        <div className="empty"><p>No query letters yet.</p></div>
+        <>
+          <QueryDrop patientId={patient.id} />
+          {letters.some(({ status }) => isBeingWorkedOn(status)) && <RefreshWhileReading />}
+          {letters.length === 0 ? (
+            <div className="empty"><p>No query letters yet.</p></div>
+          ) : (
+            <div className="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Letter</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Uploaded</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {letters.map((letter) => (
+                    <tr key={letter.id}>
+                      <td>
+                        <Link className="text-link" href={`/patients/${patient.id}/queries/${letter.id}`}>
+                          {letter.fileName}
+                        </Link>
+                      </td>
+                      <td>
+                        <span className={letter.status.endsWith("failed") ? "badge badge-warn" : "badge"}>
+                          {queryStatusLabel(letter.status, letter.points)}
+                        </span>
+                      </td>
+                      <td>{formatDate(letter.createdAt)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
       )}
       {tab === "messages" && (
         <div className="empty"><p>No messages yet.</p></div>

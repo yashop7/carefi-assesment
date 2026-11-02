@@ -22,7 +22,7 @@ export async function requireUser() {
 
 export async function logAccess(
   user: CurrentUser,
-  action: "view_patient" | "view_document" | "upload" | "denied",
+  action: "view_patient" | "view_document" | "view_query" | "upload" | "denied",
   patientId: string | null,
   resourceId: string | null,
 ) {
@@ -73,6 +73,20 @@ export async function requireDocumentAccess(user: CurrentUser, documentId: strin
   if (!document) return deny(user, null, documentId);
   const patient = await requirePatientAccess(user, document.patientId);
   return { document, patient };
+}
+
+// Query letters are for staff: patients never see them.
+export async function requireStaffAccess(user: CurrentUser, patientId: string) {
+  if (user.role === "patient") return deny(user, null, patientId);
+  return requirePatientAccess(user, patientId);
+}
+
+// Access is checked against the letter's own patient, never one from a URL.
+export async function requireQueryAccess(user: CurrentUser, queryId: string) {
+  const letter = await db.orm.public.QueryLetter.first({ id: queryId });
+  if (!letter) return deny(user, null, queryId);
+  const patient = await requireStaffAccess(user, letter.patientId);
+  return { letter, patient };
 }
 
 export async function requireAdmin(user: CurrentUser, patientId?: string) {

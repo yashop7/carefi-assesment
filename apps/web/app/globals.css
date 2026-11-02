@@ -475,3 +475,17 @@ tbody tr:last-child td {
 .profile-wide {
   grid-column: 1 / -1;
 }
+
+.message {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.message pre {
+  margin: 8px 0 0;
+  font: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

@@ -26,6 +26,6 @@ export function cleanFileName(name: string) {
   return base.replace(/[\u0000-\u001f\u007f]/g, "").trim().slice(0, 200) || "document";
 }
 
-export function newStorageKey(patientId: string) {
-  return `patients/${patientId}/documents/${randomUUID()}`;
+export function newStorageKey(patientId: string, folder = "documents") {
+  return `patients/${patientId}/${folder}/${randomUUID()}`;
 }
