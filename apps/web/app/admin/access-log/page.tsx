@@ -25,9 +25,6 @@ export default async function AccessLogPage({
 
   return (
     <>
-      <Link className="back-link" href="/patients">
-        Back to patients
-      </Link>
       <div className="page-title">
         <h1>Access log</h1>
       </div>
@@ -58,7 +55,7 @@ export default async function AccessLogPage({
             <tbody>
               {rows.map((row) => (
                 <tr key={row.id}>
-                  <td>{formatDate(row.createdAt)}</td>
+                  <td className="nowrap">{formatDate(row.createdAt)}</td>
                   <td>{emails.get(row.userId) ?? row.userId}</td>
                   <td>
                     <span className={row.action === "denied" ? "badge badge-warn" : "badge"}>

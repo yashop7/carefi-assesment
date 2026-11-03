@@ -7,13 +7,11 @@ type Message = {
   body: string;
   status: string;
   attempts: number;
-  providerId: string | null;
   errorMessage: string | null;
   createdAt: string;
 };
 
-function statusLabel({ channel, status, providerId }: Message) {
-  if (providerId === "simulated") return "Simulated";
+function statusLabel({ channel, status }: Message) {
   if (status === "sent") return "Sent";
   if (status === "failed") return "Failed";
   return channel === "whatsapp" ? "Waiting for patient to message" : "Sending";
@@ -31,7 +29,7 @@ export function MessageList({
     <div className="message" key={message.id}>
       <p className="status-cell">
         <strong>{message.channel === "whatsapp" ? "WhatsApp" : "Email"}</strong>
-        <span className={message.status === "failed" ? "badge badge-warn" : "badge badge-good"}>
+        <span className={message.status === "failed" ? "badge badge-warn" : message.status === "sent" ? "badge badge-good" : "badge"}>
           {statusLabel(message)}
         </span>
         <span className="muted">

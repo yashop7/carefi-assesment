@@ -24,23 +24,9 @@ export default async function PatientsPage() {
       <div className="page-title">
         <h1>Patients</h1>
         {isAdmin && (
-          <div className="form-actions">
-            <Link className="button button-quiet" href="/admin/users">
-              Accounts
-            </Link>
-            <Link className="button button-quiet" href="/admin/access-log">
-              Access log
-            </Link>
-            <Link className="button button-quiet" href="/admin/templates">
-              Templates
-            </Link>
-            <Link className="button button-quiet" href="/admin/import">
-              Import
-            </Link>
-            <Link className="button" href="/patients/new">
-              Add patient
-            </Link>
-          </div>
+          <Link className="button" href="/patients/new">
+            Add patient
+          </Link>
         )}
       </div>
       {patients.length === 0 ? (

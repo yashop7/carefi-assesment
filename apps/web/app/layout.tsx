@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -14,6 +14,13 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "CareFi Patient Locker",
   description: "Patient documents and insurance query responses for CareFi",
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#17181a" },
+  ],
 };
 
 export default function RootLayout({

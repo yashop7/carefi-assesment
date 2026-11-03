@@ -506,16 +506,17 @@ Every route checks login and permissions first.
 |---|---|
 | `/api/auth/[...all]` | Better Auth |
 | `GET /api/health` | Railway's healthcheck. Public, and returns no patient data |
-| `GET, POST /api/patients` | List and create patients |
-| `GET, PATCH /api/patients/[id]` | Read and edit a profile |
+| `POST /api/patients` | Create a patient |
+| `PATCH /api/patients/[id]` | Edit a profile |
 | `POST /api/patients/[id]/documents` | Upload a document |
 | `DELETE /api/documents/[id]` | Delete a document and its file |
-| `GET /api/documents/[id]/link` | Get an expiring file link |
 | `POST /api/patients/[id]/queries` | Upload a letter and start the agent |
 | `POST /api/queries/[id]/retry` | Retry a failed letter or channel |
 | `POST /api/points/[id]/resolve` | Mark a team item as handled |
+| `POST /api/users`, `POST /api/users/[id]/patients`, `DELETE /api/users/[id]/patients/[patientId]` | Add an account, assign and remove a patient |
 | `PUT /api/templates/[channel]` | Edit a template |
 | `POST /api/import/patients` | Import the CSV |
+| `POST /api/whatsapp` | Twilio asks for a patient's waiting messages. Checked by signature |
 
 ## 11. Environment variables
 

@@ -1,21 +1,9 @@
 import { db } from "db";
-import { logAccess, requireAdmin, requirePatientAccess, requireUser } from "@/lib/access";
+import { requireAdmin, requirePatientAccess, requireUser } from "@/lib/access";
 import { apiError, handleRouteError, isForeignOrigin } from "@/lib/api";
 import { fieldErrors, patientUpdateSchema, publicPatient } from "@/lib/patients";
 
 type Context = { params: Promise<{ id: string }> };
-
-export async function GET(_request: Request, { params }: Context) {
-  try {
-    const user = await requireUser();
-    const { id } = await params;
-    const patient = await requirePatientAccess(user, id);
-    await logAccess(user, "view_patient", patient.id, patient.id);
-    return Response.json({ patient: publicPatient(patient) });
-  } catch (error) {
-    return handleRouteError(error);
-  }
-}
 
 export async function PATCH(request: Request, { params }: Context) {
   if (isForeignOrigin(request)) return apiError(403, "Forbidden");

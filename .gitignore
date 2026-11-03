@@ -39,3 +39,10 @@ yarn-error.log*
 
 demo-agent.ts
 demo-langgraph.ts
+# AI tool files
+.agents/
+skills-lock.json
+packages/db/.agents/
+packages/db/.claude/
+packages/db/.cursor/
+packages/db/.devin/

@@ -48,16 +48,28 @@ export function isBeingWorkedOn(status: string) {
   return ["uploaded", "reading", "checking_locker", "sending"].includes(status);
 }
 
-export function queryStatusLabel(status: string, points: { status: string }[]) {
+type PointState = { status: string; resolvedAt: string | null };
+
+export function waitingForTeam(point: PointState) {
+  return point.status === "needs_team" && !point.resolvedAt;
+}
+
+export function queryStatusLabel(status: string, points: PointState[]) {
   if (status !== "completed") return QUERY_STATUSES[status] ?? "Unknown";
   const sent = points.some((point) => point.status === "needed_from_patient");
-  const team = points.some((point) => point.status === "needs_team");
+  const team = points.some(waitingForTeam);
   if (sent) return team ? "Sent, needs team" : "Sent";
   return team ? "Needs team" : "No action needed";
 }
 
-export function openItems(points: { status: string }[]) {
-  return points.filter(({ status }) => status === "needed_from_patient" || status === "needs_team").length;
+export function queryBadgeClass(label: string) {
+  if (/fail|team/i.test(label)) return "badge badge-warn";
+  if (label === "Sent" || label === "No action needed") return "badge badge-good";
+  return "badge";
+}
+
+export function openItems(points: PointState[]) {
+  return points.filter((point) => point.status === "needed_from_patient" || waitingForTeam(point)).length;
 }
 
 const POINT_STATUSES: Record<string, string> = {
@@ -66,8 +78,9 @@ const POINT_STATUSES: Record<string, string> = {
   needs_team: "Needs team",
 };
 
-export function pointStatusLabel(status: string) {
-  return POINT_STATUSES[status] ?? "Unknown";
+export function pointStatusLabel(point: PointState) {
+  if (point.status === "needs_team" && point.resolvedAt) return "Handled";
+  return POINT_STATUSES[point.status] ?? "Unknown";
 }
 
 const ACCESS_ACTIONS: Record<string, string> = {

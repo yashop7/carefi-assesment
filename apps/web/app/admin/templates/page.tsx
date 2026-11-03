@@ -1,5 +1,4 @@
 import { db } from "db";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser, orNotFound, requireAdmin } from "@/lib/access";
 import { TemplateForm } from "./template-form";
@@ -14,9 +13,6 @@ export default async function TemplatesPage() {
 
   return (
     <>
-      <Link className="back-link" href="/patients">
-        Back to patients
-      </Link>
       <div className="page-title">
         <h1>Message templates</h1>
       </div>

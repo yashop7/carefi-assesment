@@ -57,7 +57,7 @@ export function QueryDrop({ patientId }: { patientId: string }) {
             event.target.value = "";
           }}
         />
-        <strong>{uploading ? "Uploading..." : "Drop a query letter here, or click to choose"}</strong>
+        <strong>{uploading ? "Uploading…" : "Drop a query letter here, or click to choose"}</strong>
         <span className="muted">PDF, JPG or PNG, up to 20 MB. The rest happens automatically.</span>
       </label>
       {error && <p className="field-error">{error}</p>}

@@ -89,7 +89,7 @@ export function ImportForm({ patients }: { patients: { id: string; patientCode: 
               event.target.value = "";
             }}
           />
-          <strong>{csvPending ? "Importing..." : "Choose a CSV file"}</strong>
+          <strong>{csvPending ? "Importing…" : "Choose a CSV file"}</strong>
         </label>
         {csvError && <p className="field-error" role="alert">{csvError}</p>}
         {csvResult && (

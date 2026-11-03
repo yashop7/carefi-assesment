@@ -68,7 +68,7 @@ export function AccountForm({ lockers }: { lockers: Option[] }) {
       {error && <p className="field-error" role="alert">{error}</p>}
       <div className="form-actions">
         <button type="submit" className="button" disabled={pending}>
-          {pending ? "Adding..." : "Add account"}
+          {pending ? "Adding…" : "Add account"}
         </button>
       </div>
     </form>
