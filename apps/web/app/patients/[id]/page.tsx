@@ -15,7 +15,7 @@ import { DeleteQuery } from "./delete-query";
 import { DocumentUpload } from "./document-upload";
 import { MessageList } from "./message-list";
 import { QueryDrop } from "./query-drop";
-import { RefreshWhileReading, RetryButton } from "./reading-status";
+import { RefreshWhileReading, ActionButton } from "./reading-status";
 
 export default async function PatientPage({
   params,
@@ -60,7 +60,7 @@ export default async function PatientPage({
     tab === "queries"
       ? await db.orm.public.QueryLetter.where({ patientId: patient.id })
           .select("id", "fileName", "status", "createdAt")
-          .include("points", (points) => points.select("status").limit(200))
+          .include("points", (points) => points.select("status", "resolvedAt").limit(200))
           .orderBy((letter) => letter.createdAt.desc())
           .limit(200)
           .all()
@@ -154,7 +154,7 @@ export default async function PatientPage({
                           {document.readingStatus === "failed" && (
                             <>
                               <span className="badge badge-warn">Reading failed</span>
-                              <RetryButton url={`/api/documents/${document.id}/read`} />
+                              <ActionButton url={`/api/documents/${document.id}/read`} />
                             </>
                           )}
                           {document.nameMismatch && <span className="badge badge-warn">Name doesn&apos;t match</span>}

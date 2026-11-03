@@ -4,7 +4,7 @@ import { getCurrentUser, logAccess, orNotFound, requireDocumentAccess } from "@/
 import { documentTypeLabel, isBeingRead } from "@/lib/format";
 import { createExpiringLink } from "@/lib/storage";
 import { DeleteDocument } from "../../delete-document";
-import { RefreshWhileReading, RetryButton } from "../../reading-status";
+import { RefreshWhileReading, ActionButton } from "../../reading-status";
 
 export default async function DocumentPage({
   params,
@@ -47,7 +47,7 @@ export default async function DocumentPage({
       )}
       {document.readingStatus === "failed" && (
         <p className="field-error">
-          Reading failed. <RetryButton url={`/api/documents/${document.id}/read`} />
+          Reading failed. <ActionButton url={`/api/documents/${document.id}/read`} />
         </p>
       )}
       {document.nameMismatch && (

@@ -96,8 +96,33 @@ export async function requireQueryAccess(user: CurrentUser, queryId: string) {
   return { letter, patient };
 }
 
+// Access is checked against the point's own letter and patient.
+export async function requirePointAccess(user: CurrentUser, pointId: string) {
+  const point = await db.orm.public.QueryPoint.first({ id: pointId });
+  if (!point) return deny(user, null, pointId);
+  await requireQueryAccess(user, point.queryLetterId);
+  return point;
+}
+
+export async function requireStaff(user: CurrentUser) {
+  if (user.role !== "admin" && user.role !== "agent") await deny(user, null);
+}
+
 export async function requireAdmin(user: CurrentUser, patientId?: string) {
   if (user.role !== "admin") await deny(user, null, patientId);
+}
+
+async function assignedPatientIds(userId: string) {
+  const assignments = await db.orm.public.AgentPatient.where({ userId })
+    .select("patientId")
+    .limit(500)
+    .all();
+  return assignments.map((assignment) => assignment.patientId);
+}
+
+// What the team queue shows this person. Null means every patient.
+export async function queuePatientIds(user: CurrentUser) {
+  return user.role === "admin" ? null : assignedPatientIds(user.id);
 }
 
 export async function listPatientsFor(user: CurrentUser) {
@@ -111,7 +136,7 @@ export async function listPatientsFor(user: CurrentUser) {
     .include("queryLetters", (letters) =>
       letters
         .select("status")
-        .include("points", (points) => points.select("status").limit(200))
+        .include("points", (points) => points.select("status", "resolvedAt").limit(200))
         .orderBy((letter) => letter.createdAt.desc())
         .limit(1),
     )
@@ -121,13 +146,7 @@ export async function listPatientsFor(user: CurrentUser) {
   if (user.role === "admin") return patients.all();
   if (user.role !== "agent") return deny(user, null);
 
-  const assignments = await db.orm.public.AgentPatient.where({
-    userId: user.id,
-  })
-    .select("patientId")
-    .limit(500)
-    .all();
-  const ids = assignments.map((assignment) => assignment.patientId);
+  const ids = await assignedPatientIds(user.id);
   if (ids.length === 0) return [];
   return patients.where((patient) => patient.id.in(ids)).all();
 }

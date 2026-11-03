@@ -1,16 +1,7 @@
 import { db } from "db";
-import { listPatientsFor, requireAdmin, requireUser } from "@/lib/access";
+import { requireAdmin, requireUser } from "@/lib/access";
 import { apiError, handleRouteError, isForeignOrigin, isUniqueViolation } from "@/lib/api";
 import { fieldErrors, newPatientSchema, publicPatient } from "@/lib/patients";
-
-export async function GET() {
-  try {
-    const user = await requireUser();
-    return Response.json({ patients: await listPatientsFor(user) });
-  } catch (error) {
-    return handleRouteError(error);
-  }
-}
 
 export async function POST(request: Request) {
   if (isForeignOrigin(request)) return apiError(403, "Forbidden");

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser, orNotFound, requireAdmin } from "@/lib/access";
 import { documentTypeLabel, isBeingRead } from "@/lib/format";
-import { RefreshWhileReading, RetryButton } from "../../patients/[id]/reading-status";
+import { RefreshWhileReading, ActionButton } from "../../patients/[id]/reading-status";
 import { ImportForm } from "./import-form";
 
 export default async function ImportPage() {
@@ -65,7 +65,7 @@ export default async function ImportPage() {
                       {document.readingStatus === "failed" && (
                         <>
                           <span className="badge badge-warn">Reading failed</span>
-                          <RetryButton url={`/api/documents/${document.id}/read`} />
+                          <ActionButton url={`/api/documents/${document.id}/read`} />
                         </>
                       )}
                     </div>

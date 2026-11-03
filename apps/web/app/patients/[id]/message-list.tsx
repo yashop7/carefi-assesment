@@ -7,13 +7,11 @@ type Message = {
   body: string;
   status: string;
   attempts: number;
-  providerId: string | null;
   errorMessage: string | null;
   createdAt: string;
 };
 
-function statusLabel({ channel, status, providerId }: Message) {
-  if (providerId === "simulated") return "Simulated";
+function statusLabel({ channel, status }: Message) {
   if (status === "sent") return "Sent";
   if (status === "failed") return "Failed";
   return channel === "whatsapp" ? "Waiting for patient to message" : "Sending";

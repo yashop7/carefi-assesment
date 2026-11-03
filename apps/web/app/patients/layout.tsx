@@ -17,6 +17,20 @@ export default async function PatientsLayout({
         <Link className="portal-brand" href="/">
           CareFi Patient Locker
         </Link>
+        {user.role !== "patient" && (
+          <nav className="portal-nav" aria-label="Main">
+            <Link href="/patients">Patients</Link>
+            <Link href="/queue">Team queue</Link>
+            {user.role === "admin" && (
+              <>
+                <Link href="/admin/users">Accounts</Link>
+                <Link href="/admin/templates">Templates</Link>
+                <Link href="/admin/import">Import</Link>
+                <Link href="/admin/access-log">Access log</Link>
+              </>
+            )}
+          </nav>
+        )}
         <div className="portal-user">
           <span>
             {user.email} <span className="badge">{user.role}</span>

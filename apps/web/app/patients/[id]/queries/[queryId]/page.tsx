@@ -8,10 +8,11 @@ import {
   pointStatusLabel,
   queryStatusLabel,
   timeTaken,
+  waitingForTeam,
 } from "@/lib/format";
 import { createExpiringLink } from "@/lib/storage";
 import { MessageList } from "../../message-list";
-import { RefreshWhileReading, RetryButton } from "../../reading-status";
+import { RefreshWhileReading, ActionButton } from "../../reading-status";
 
 export default async function QueryPage({
   params,
@@ -59,7 +60,7 @@ export default async function QueryPage({
             <span className={letter.status.endsWith("failed") ? "badge badge-warn" : "badge"}>
               {statusLabel}
             </span>
-            {letter.status.endsWith("failed") && <RetryButton url={`/api/queries/${letter.id}/retry`} />}
+            {letter.status.endsWith("failed") && <ActionButton url={`/api/queries/${letter.id}/retry`} />}
           </dd>
         </div>
         <div><dt>Uploaded</dt><dd>{formatDate(letter.createdAt)}</dd></div>
@@ -89,9 +90,12 @@ export default async function QueryPage({
                 <tr key={point.id}>
                   <td>{point.asksFor}</td>
                   <td>
-                    <span className={point.status === "needs_team" ? "badge badge-warn" : "badge"}>
-                      {pointStatusLabel(point.status)}
-                    </span>
+                    <div className="status-cell">
+                      <span className={waitingForTeam(point) ? "badge badge-warn" : "badge"}>
+                        {pointStatusLabel(point)}
+                      </span>
+                      {waitingForTeam(point) && <ActionButton url={`/api/points/${point.id}/resolve`} label="Mark handled" />}
+                    </div>
                   </td>
                   <td>
                     {point.reason}

@@ -32,20 +32,9 @@ a {
   text-decoration: none;
 }
 
-.imgDark {
-  display: none;
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
-  }
-
-  .imgLight {
-    display: none;
-  }
-  .imgDark {
-    display: unset;
   }
 }
 
@@ -141,6 +130,17 @@ a {
 
 .portal-brand {
   font-weight: 600;
+}
+
+.portal-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: 14px;
+}
+
+.portal-nav a:hover {
+  text-decoration: underline;
 }
 
 .portal-user {
@@ -345,6 +345,7 @@ tbody tr:last-child td {
 
 .form-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
