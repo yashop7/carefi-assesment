@@ -1,0 +1,42 @@
+%PDF-1.4
+1 0 obj
+<</Type/Catalog/Pages 2 0 R>>
+endobj
+2 0 obj
+<</Type/Pages/Kids[3 0 R]/Count 1>>
+endobj
+3 0 obj
+<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>
+endobj
+4 0 obj
+<</Length 413>>
+stream
+BT /F1 11 Tf 50 780 Td 16 TL
+(SAMPLE - FAKE DATA) Tj T*
+(City Hospital, Pune) Tj T*
+(DISCHARGE SUMMARY) Tj T*
+() Tj T*
+(Patient: Asha Verma    Age: 42    Sex: Female) Tj T*
+(Admitted: 3 March 2026    Discharged: 7 March 2026) Tj T*
+(Diagnosis: Acute appendicitis) Tj T*
+(Procedure: Laparoscopic appendectomy on 4 March 2026) Tj T*
+(Condition at discharge: Stable) Tj T*
+(Treating doctor: Dr. R. Kulkarni) Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000054 00000 n 
+0000000105 00000 n 
+0000000217 00000 n 
+0000000679 00000 n 
+trailer<</Size 6/Root 1 0 R>>
+startxref
+742
+%%EOF
