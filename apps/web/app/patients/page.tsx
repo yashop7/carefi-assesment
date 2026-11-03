@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser, listPatientsFor } from "@/lib/access";
+import { openItems, queryStatusLabel } from "@/lib/format";
+import { PatientTable } from "./patient-table";
 
 export default async function PatientsPage() {
   const user = await getCurrentUser();
@@ -9,15 +11,31 @@ export default async function PatientsPage() {
 
   const patients = await listPatientsFor(user);
   const isAdmin = user.role === "admin";
+  const rows = patients.map(({ queryLetters, ...patient }) => {
+    const latest = queryLetters[0];
+    return {
+      ...patient,
+      openItems: latest ? openItems(latest.points) : 0,
+      latestQuery: latest ? queryStatusLabel(latest.status, latest.points) : null,
+    };
+  });
 
   return (
     <>
       <div className="page-title">
         <h1>Patients</h1>
         {isAdmin && (
-          <Link className="button" href="/patients/new">
-            Add patient
-          </Link>
+          <div className="form-actions">
+            <Link className="button button-quiet" href="/admin/templates">
+              Templates
+            </Link>
+            <Link className="button button-quiet" href="/admin/import">
+              Import
+            </Link>
+            <Link className="button" href="/patients/new">
+              Add patient
+            </Link>
+          </div>
         )}
       </div>
       {patients.length === 0 ? (
@@ -25,32 +43,7 @@ export default async function PatientsPage() {
           <p>{isAdmin ? "No patients yet. Add the first one to start a locker." : "No patients are assigned to you yet."}</p>
         </div>
       ) : (
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Patient ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Claim number</th>
-                <th scope="col" className="number">Documents</th>
-              </tr>
-            </thead>
-            <tbody>
-              {patients.map((patient) => (
-                <tr key={patient.id}>
-                  <td className="mono">{patient.patientCode}</td>
-                  <td>
-                    <Link className="text-link" href={`/patients/${patient.id}`}>
-                      {patient.name}
-                    </Link>
-                  </td>
-                  <td>{patient.claimNumber ?? "—"}</td>
-                  <td className="number">{patient.documents}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <PatientTable patients={rows} />
       )}
     </>
   );

@@ -513,7 +513,7 @@ Every route checks login and permissions first.
 | `POST /api/patients/[id]/queries` | Upload a letter and start the agent |
 | `POST /api/queries/[id]/retry` | Retry a failed letter or channel |
 | `POST /api/points/[id]/resolve` | Mark a team item as handled |
-| `GET, PUT /api/templates/[channel]` | Read and edit a template |
+| `PUT /api/templates/[channel]` | Edit a template |
 | `POST /api/import/patients` | Import the CSV |
 
 ## 11. Environment variables

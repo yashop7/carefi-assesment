@@ -108,6 +108,13 @@ export async function listPatientsFor(user: CurrentUser) {
     "claimNumber",
   )
     .include("documents", (documents) => documents.count())
+    .include("queryLetters", (letters) =>
+      letters
+        .select("status")
+        .include("points", (points) => points.select("status").limit(200))
+        .orderBy((letter) => letter.createdAt.desc())
+        .limit(1),
+    )
     .orderBy((patient) => patient.createdAt.desc())
     .limit(500);
 
