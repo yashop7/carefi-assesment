@@ -29,7 +29,7 @@ export function MessageList({
     <div className="message" key={message.id}>
       <p className="status-cell">
         <strong>{message.channel === "whatsapp" ? "WhatsApp" : "Email"}</strong>
-        <span className={message.status === "failed" ? "badge badge-warn" : "badge badge-good"}>
+        <span className={message.status === "failed" ? "badge badge-warn" : message.status === "sent" ? "badge badge-good" : "badge"}>
           {statusLabel(message)}
         </span>
         <span className="muted">

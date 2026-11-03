@@ -20,9 +20,6 @@ export default async function ImportPage() {
 
   return (
     <>
-      <Link className="back-link" href="/patients">
-        Back to patients
-      </Link>
       <div className="page-title">
         <h1>Import</h1>
       </div>

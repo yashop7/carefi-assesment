@@ -97,7 +97,7 @@ export function PatientForm({ patient }: { patient?: PatientValues }) {
       {formError && <p className="field-error" role="alert">{formError}</p>}
       <div className="form-actions">
         <button type="submit" className="button" disabled={pending}>
-          {pending ? "Saving..." : patient ? "Save changes" : "Add patient"}
+          {pending ? "Saving…" : patient ? "Save changes" : "Add patient"}
         </button>
         <Link className="button button-quiet" href={patient ? `/patients/${patient.id}` : "/patients"}>
           Cancel

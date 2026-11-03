@@ -6,6 +6,7 @@ import {
   formatDate,
   isBeingWorkedOn,
   pointStatusLabel,
+  queryBadgeClass,
   queryStatusLabel,
   timeTaken,
   waitingForTeam,
@@ -57,7 +58,7 @@ export default async function QueryPage({
         <div>
           <dt>Status</dt>
           <dd className="status-cell">
-            <span className={letter.status.endsWith("failed") ? "badge badge-warn" : "badge"}>
+            <span className={queryBadgeClass(statusLabel)}>
               {statusLabel}
             </span>
             {letter.status.endsWith("failed") && <ActionButton url={`/api/queries/${letter.id}/retry`} />}
@@ -73,7 +74,7 @@ export default async function QueryPage({
       <h2>What the insurer asked for</h2>
       {points.length === 0 ? (
         <div className="empty">
-          <p>{isBeingWorkedOn(letter.status) ? "Working on this letter..." : "No points saved."}</p>
+          <p>{isBeingWorkedOn(letter.status) ? "Working on this letter…" : "No points saved."}</p>
         </div>
       ) : (
         <div className="table-wrap">
@@ -91,7 +92,7 @@ export default async function QueryPage({
                   <td>{point.asksFor}</td>
                   <td>
                     <div className="status-cell">
-                      <span className={waitingForTeam(point) ? "badge badge-warn" : "badge"}>
+                      <span className={waitingForTeam(point) ? "badge badge-warn" : point.status === "already_in_locker" ? "badge badge-good" : "badge"}>
                         {pointStatusLabel(point)}
                       </span>
                       {waitingForTeam(point) && <ActionButton url={`/api/points/${point.id}/resolve`} label="Mark handled" />}

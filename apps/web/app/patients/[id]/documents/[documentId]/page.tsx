@@ -38,7 +38,7 @@ export default async function DocumentPage({
       </div>
       {isBeingRead(document.readingStatus) && (
         <>
-          <p className="muted">Reading this document...</p>
+          <p className="muted">Reading this document…</p>
           <RefreshWhileReading />
         </>
       )}

@@ -57,7 +57,7 @@ export function TemplateForm({
           {error && <p className="field-error" role="alert">{error}</p>}
           <div className="form-actions">
             <button type="submit" className="button" disabled={pending}>
-              {pending ? "Saving..." : "Save"}
+              {pending ? "Saving…" : "Save"}
             </button>
             {saved && <span className="badge badge-good" role="status">Saved</span>}
           </div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { queryBadgeClass } from "@/lib/format";
 
 type Row = {
   id: string;
@@ -26,10 +27,12 @@ export function PatientTable({ patients }: { patients: Row[] }) {
   return (
     <>
       <label className="field search">
-        <span>Search</span>
+        <span className="visually-hidden">Search patients</span>
         <input
           type="search"
-          placeholder="Patient ID, name or claim number"
+          name="search"
+          autoComplete="off"
+          placeholder="Search by ID, name or claim…"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
@@ -53,17 +56,23 @@ export function PatientTable({ patients }: { patients: Row[] }) {
             </thead>
             <tbody>
               {shown.map((patient) => (
-                <tr key={patient.id}>
+                <tr className="row" key={patient.id}>
                   <td className="mono">{patient.patientCode}</td>
                   <td>
-                    <Link className="text-link" href={`/patients/${patient.id}`}>
+                    <Link className="row-link" href={`/patients/${patient.id}`}>
                       {patient.name}
                     </Link>
                   </td>
                   <td>{patient.claimNumber ?? "—"}</td>
                   <td className="number">{patient.documents}</td>
                   <td className="number">{patient.openItems}</td>
-                  <td>{patient.latestQuery ?? "—"}</td>
+                  <td>
+                    {patient.latestQuery ? (
+                      <span className={queryBadgeClass(patient.latestQuery)}>{patient.latestQuery}</span>
+                    ) : (
+                      <span className="muted">—</span>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

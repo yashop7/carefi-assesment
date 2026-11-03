@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/access";
+import { BrandMark } from "../brand-mark";
 import { SignOutButton } from "../sign-out-button";
+import { NavLinks } from "./nav-links";
 
-// Only for the header. A layout doesn't rerun between pages, so each page
+// Only for the sidebar. A layout doesn't rerun between pages, so each page
 // makes its own access check.
 export default async function PatientsLayout({
   children,
@@ -13,31 +15,20 @@ export default async function PatientsLayout({
 
   return (
     <div className="portal">
-      <header className="portal-header">
+      <aside className="portal-side">
         <Link className="portal-brand" href="/">
-          CareFi Patient Locker
+          <BrandMark />
+          CareFi Locker
         </Link>
-        {user.role !== "patient" && (
-          <nav className="portal-nav" aria-label="Main">
-            <Link href="/patients">Patients</Link>
-            <Link href="/queue">Team queue</Link>
-            {user.role === "admin" && (
-              <>
-                <Link href="/admin/users">Accounts</Link>
-                <Link href="/admin/templates">Templates</Link>
-                <Link href="/admin/import">Import</Link>
-                <Link href="/admin/access-log">Access log</Link>
-              </>
-            )}
-          </nav>
-        )}
+        <NavLinks role={user.role} />
         <div className="portal-user">
-          <span>
-            {user.email} <span className="badge">{user.role}</span>
-          </span>
+          <div className="portal-user-name">
+            <span className="truncate">{user.email}</span>
+            <span className="badge">{user.role}</span>
+          </div>
           <SignOutButton className="button button-quiet" />
         </div>
-      </header>
+      </aside>
       <main className="portal-main">{children}</main>
     </div>
   );

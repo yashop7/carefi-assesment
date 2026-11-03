@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { authClient } from "@/lib/auth-client";
+import { BrandMark } from "../brand-mark";
 
 function errorMessage(status: number) {
   if (status === 401) return "Email or password is incorrect";
@@ -33,13 +34,15 @@ export function LoginForm() {
 
   return (
     <form className="panel" onSubmit={onSubmit}>
-      <h1>CareFi Patient Locker</h1>
+      <BrandMark size={32} />
+      <h1>Log in to CareFi Locker</h1>
       <label>
         Email
         <input
           type="email"
           name="email"
           autoComplete="email"
+          spellCheck={false}
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
@@ -58,7 +61,7 @@ export function LoginForm() {
       </label>
       {error && <p role="alert">{error}</p>}
       <button type="submit" disabled={pending}>
-        {pending ? "Logging in..." : "Log in"}
+        {pending ? "Logging in…" : "Log in"}
       </button>
     </form>
   );

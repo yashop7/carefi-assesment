@@ -62,6 +62,12 @@ export function queryStatusLabel(status: string, points: PointState[]) {
   return team ? "Needs team" : "No action needed";
 }
 
+export function queryBadgeClass(label: string) {
+  if (/fail|team/i.test(label)) return "badge badge-warn";
+  if (label === "Sent" || label === "No action needed") return "badge badge-good";
+  return "badge";
+}
+
 export function openItems(points: PointState[]) {
   return points.filter((point) => point.status === "needed_from_patient" || waitingForTeam(point)).length;
 }

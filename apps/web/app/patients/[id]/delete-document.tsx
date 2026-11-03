@@ -24,7 +24,7 @@ export function DeleteDocument({ documentId, patientId }: { documentId: string; 
 
   if (!confirming) {
     return (
-      <button type="button" className="link-button" onClick={() => setConfirming(true)}>
+      <button type="button" className="link-button link-button-danger" onClick={() => setConfirming(true)}>
         Delete
       </button>
     );
@@ -33,7 +33,7 @@ export function DeleteDocument({ documentId, patientId }: { documentId: string; 
   return (
     <span className="status-cell">
       <button type="button" className="link-button link-button-danger" disabled={pending} onClick={remove}>
-        {pending ? "Deleting..." : "Yes, delete"}
+        {pending ? "Deleting…" : "Yes, delete"}
       </button>
       <button type="button" className="link-button" disabled={pending} onClick={() => setConfirming(false)}>
         Cancel

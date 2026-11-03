@@ -8,6 +8,7 @@ import {
   formatDate,
   isBeingRead,
   isBeingWorkedOn,
+  queryBadgeClass,
   queryStatusLabel,
 } from "@/lib/format";
 import { DeleteDocument } from "./delete-document";
@@ -160,8 +161,8 @@ export default async function PatientPage({
                           {document.nameMismatch && <span className="badge badge-warn">Name doesn&apos;t match</span>}
                         </div>
                       </td>
-                      <td>{formatBytes(document.sizeBytes)}</td>
-                      <td>{formatDate(document.createdAt)}</td>
+                      <td className="nowrap">{formatBytes(document.sizeBytes)}</td>
+                      <td className="nowrap">{formatDate(document.createdAt)}</td>
                       {user.role !== "patient" && (
                         <td><DeleteDocument documentId={document.id} patientId={patient.id} /></td>
                       )}
@@ -199,11 +200,11 @@ export default async function PatientPage({
                         </Link>
                       </td>
                       <td>
-                        <span className={letter.status.endsWith("failed") ? "badge badge-warn" : "badge"}>
+                        <span className={queryBadgeClass(queryStatusLabel(letter.status, letter.points))}>
                           {queryStatusLabel(letter.status, letter.points)}
                         </span>
                       </td>
-                      <td>{formatDate(letter.createdAt)}</td>
+                      <td className="nowrap">{formatDate(letter.createdAt)}</td>
                       <td>
                         {!isBeingWorkedOn(letter.status) && (
                           <DeleteQuery queryId={letter.id} patientId={patient.id} />

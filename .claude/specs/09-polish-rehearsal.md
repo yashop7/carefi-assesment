@@ -12,6 +12,16 @@ Finishes the team queue, makes the portal easier to move around, removes what th
 - Handled points no longer count as open items.
 - A failed action now shows its error.
 
+## Design
+
+A quiet tool in the style of Notion and Linear, using CSS only and no new libraries:
+
+- A left sidebar with icons, which becomes a top bar on phones.
+- Hairline tables where the whole patient row opens the patient.
+- Status badges with a dot: green is done, amber needs attention, grey is neutral.
+- Patient details as label and value pairs.
+- Light and dark modes that follow the device, with short fades, loading skeletons and reduced motion respected.
+
 ## What gets removed
 
 - `packages/ui`, starter images, starter README text and the extra starter config.
