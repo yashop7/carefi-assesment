@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Fragment } from "react";
 
 const ICONS = {
   patients: "M16 19v-1a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v1M9.5 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM21 19v-1a3 3 0 0 0-2.3-2.9M15.5 5.1a3 3 0 0 1 0 5.8",
@@ -31,12 +32,15 @@ export function NavLinks({ role }: { role: string }) {
       {LINKS.filter(({ roles }) => roles.includes(role)).map(({ href, label, icon }) => {
         const current = pathname.startsWith(href) || (href === "/" && pathname.startsWith("/patients"));
         return (
-          <Link key={href} href={href} className="nav-link" aria-current={current ? "page" : undefined}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d={icon} />
-            </svg>
-            {label}
-          </Link>
+          <Fragment key={href}>
+            {href === "/admin/users" && <span className="nav-label">Admin</span>}
+            <Link href={href} className="nav-link" aria-current={current ? "page" : undefined}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d={icon} />
+              </svg>
+              {label}
+            </Link>
+          </Fragment>
         );
       })}
     </nav>

@@ -1,0 +1,13 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "app",
+  "theme": "brand",
+  "shape": "app screen",
+  "nav": "kept sidebar",
+  "signature": "triage strip",
+  "prompt": "patient locker staff dashboard",
+  "date": "2026-11-03"
+ }
+]

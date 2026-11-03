@@ -1,0 +1,36 @@
+:root {
+  color-scheme: light dark;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.75rem; --text-sm: 0.8125rem; --text-base: 0.875rem; --text-md: 1rem; --text-lg: 1.2rem; --text-xl: 1.44rem; --text-2xl: 1.728rem; --text-3xl: 2.074rem;
+  --text-display-s: 1.44rem; --text-display: 1.44rem; --text-section: 1rem; --text-title: 0.875rem; --text-lead: 1rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --container: 1120px; --gutter: 40px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+
+  /* Cool, faintly teal neutrals, so the brand teal belongs to them. */
+  --color-paper: oklch(99.6% 0.001 190); --color-paper-2: oklch(96.9% 0.003 190); --color-paper-3: oklch(93.6% 0.004 190);
+  --color-ink: oklch(23% 0.008 230); --color-ink-2: oklch(38% 0.008 230); --color-muted: oklch(49% 0.008 230);
+  --color-rule: oklch(92% 0.004 230); --color-rule-strong: oklch(84% 0.005 230);
+  --color-accent: #0b7566; --color-accent-ink: oklch(99% 0.005 180); --color-focus: #0b7566;
+  --color-error: oklch(50% 0.18 27); --color-success: oklch(47% 0.11 155); --color-warn: oklch(50% 0.13 60);
+  --color-shadow: oklch(23% 0.02 230 / 0.07); --color-sheen: oklch(100% 0 0 / 0.16);
+
+  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif; --font-body: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif; --font-outlier: var(--font-body);
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --radius-card: 12px; --radius-control: 8px; --radius-tag: 6px; --radius-pill: 999px; --rule-hair: 1px;
+  --shadow-card: 0 1px 2px var(--color-shadow), 0 8px 24px var(--color-shadow);
+  --tracking-display: -0.02em;
+  --display-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: oklch(18.5% 0.005 230); --color-paper-2: oklch(15.5% 0.005 230); --color-paper-3: oklch(24% 0.006 230);
+    --color-ink: oklch(94% 0.003 230); --color-ink-2: oklch(82% 0.005 230); --color-muted: oklch(68% 0.007 230);
+    --color-rule: oklch(25.5% 0.006 230); --color-rule-strong: oklch(35% 0.007 230);
+    --color-accent: #4fd1b8; --color-accent-ink: oklch(20% 0.03 180); --color-focus: #4fd1b8;
+    --color-error: oklch(76% 0.13 27); --color-success: oklch(79% 0.12 160); --color-warn: oklch(80% 0.13 75);
+    --color-shadow: oklch(0% 0 0 / 0.3); --color-sheen: oklch(100% 0 0 / 0.2);
+  }
+}

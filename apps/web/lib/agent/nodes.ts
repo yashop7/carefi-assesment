@@ -128,6 +128,7 @@ export async function checkLocker(state: GraphState) {
     },
   ]);
   return {
+    // Assigning document Id to every document
     decisions: decisions.map((decision) => {
       const index = documents.findIndex((_, position) => shortId(position) === decision.documentId);
       return { ...decision, documentId: documents[index]?.id ?? null };

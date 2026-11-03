@@ -11,6 +11,7 @@ import {
   queryBadgeClass,
   queryStatusLabel,
 } from "@/lib/format";
+import { Avatar } from "../../avatar";
 import { DeleteDocument } from "./delete-document";
 import { DeleteQuery } from "./delete-query";
 import { DocumentUpload } from "./document-upload";
@@ -79,13 +80,16 @@ export default async function PatientPage({
     <>
       {user.role !== "patient" && (
         <Link className="text-link back-link" href="/patients">
-          ← All patients
+          All patients
         </Link>
       )}
       <div className="page-title">
-        <div>
-          <h1>{patient.name}</h1>
-          <p className="muted mono">{patient.patientCode}</p>
+        <div className="page-person">
+          <Avatar name={patient.name} large />
+          <div>
+            <h1>{patient.name}</h1>
+            <p className="mono">{patient.patientCode}</p>
+          </div>
         </div>
         {user.role === "admin" && (
           <Link className="button button-quiet" href={`/patients/${patient.id}/edit`}>

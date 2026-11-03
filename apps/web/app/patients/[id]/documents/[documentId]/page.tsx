@@ -23,7 +23,7 @@ export default async function DocumentPage({
   return (
     <>
       <Link className="text-link back-link" href={`/patients/${patient.id}`}>
-        ← {patient.name}
+        {patient.name}
       </Link>
       <div className="page-title">
         <h1 className="truncate">{document.fileName}</h1>

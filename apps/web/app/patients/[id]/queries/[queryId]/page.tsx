@@ -44,7 +44,7 @@ export default async function QueryPage({
   return (
     <>
       <Link className="text-link back-link" href={`/patients/${patient.id}?tab=queries`}>
-        ← {patient.name}
+        {patient.name}
       </Link>
       <div className="page-title">
         <h1 className="truncate">{letter.fileName}</h1>

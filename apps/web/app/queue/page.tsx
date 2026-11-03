@@ -43,6 +43,17 @@ export default async function QueuePage() {
         <h1>Team queue</h1>
       </div>
 
+      <div className="stats">
+        <div className="stat">
+          Points waiting
+          <strong>{openPoints.length}</strong>
+        </div>
+        <div className="stat">
+          Failed letters
+          <strong>{failedLetters.length}</strong>
+        </div>
+      </div>
+
       <h2>Points that need a person</h2>
       {openPoints.length === 0 ? (
         <div className="empty"><p>Nothing is waiting for the team.</p></div>
