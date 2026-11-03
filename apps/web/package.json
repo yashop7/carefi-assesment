@@ -11,7 +11,8 @@
     "check-types": "next typegen && tsc --noEmit",
     "auth:migrate": "auth migrate --config lib/auth.ts --yes",
     "admin:create": "bun run scripts/create-admin.ts",
-    "storage:check": "bun run scripts/check-storage.ts"
+    "storage:check": "bun run scripts/check-storage.ts",
+    "score": "bun run scripts/score-letters.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1161.0",

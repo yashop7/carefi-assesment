@@ -1,0 +1,30 @@
+{
+  "letter": "L17",
+  "patient": "PAT-810",
+  "case": "mixed-and-vague",
+  "file": "L17-PAT-810-mixed-and-vague.pdf",
+  "points": [
+    {
+      "asks": "MRI report",
+      "match": [
+        "mri"
+      ],
+      "status": "already_in_locker",
+      "document": "mri-report.pdf"
+    },
+    {
+      "asks": "Itemised bill",
+      "match": [
+        "itemi"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Past history",
+      "match": [
+        "history"
+      ],
+      "status": "needs_team"
+    }
+  ]
+}

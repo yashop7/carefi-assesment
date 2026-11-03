@@ -1,0 +1,15 @@
+{
+  "letter": "L09",
+  "patient": "PAT-806",
+  "case": "blurry-letter",
+  "file": "L09-PAT-806-blurry-letter.pdf",
+  "points": [
+    {
+      "asks": "Read this letter",
+      "match": [
+        "read this letter"
+      ],
+      "status": "needs_team"
+    }
+  ]
+}

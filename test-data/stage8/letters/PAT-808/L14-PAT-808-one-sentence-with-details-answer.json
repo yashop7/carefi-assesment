@@ -1,0 +1,31 @@
+{
+  "letter": "L14",
+  "patient": "PAT-808",
+  "case": "one-sentence-with-details",
+  "file": "L14-PAT-808-one-sentence-with-details.pdf",
+  "points": [
+    {
+      "asks": "Cancelled cheque",
+      "match": [
+        "cheque"
+      ],
+      "status": "already_in_locker",
+      "document": "cancelled-cheque.pdf"
+    },
+    {
+      "asks": "PAN card",
+      "match": [
+        "pan"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Aadhaar card",
+      "match": [
+        "aadhaar"
+      ],
+      "status": "already_in_locker",
+      "document": "aadhaar-card.pdf"
+    }
+  ]
+}

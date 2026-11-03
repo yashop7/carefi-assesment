@@ -1,0 +1,23 @@
+{
+  "letter": "L08",
+  "patient": "PAT-805",
+  "case": "scanned-letter",
+  "file": "L08-PAT-805-scanned-letter.pdf",
+  "points": [
+    {
+      "asks": "Cancelled cheque",
+      "match": [
+        "cheque"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Itemised bill",
+      "match": [
+        "itemi"
+      ],
+      "status": "already_in_locker",
+      "document": "scanned-itemised-bill.pdf"
+    }
+  ]
+}

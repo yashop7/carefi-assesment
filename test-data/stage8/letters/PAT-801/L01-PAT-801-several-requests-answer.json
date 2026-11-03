@@ -1,0 +1,29 @@
+{
+  "letter": "L01",
+  "patient": "PAT-801",
+  "case": "several-requests",
+  "file": "L01-PAT-801-several-requests.pdf",
+  "points": [
+    {
+      "asks": "Itemised bill",
+      "match": [
+        "itemi"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Pharmacy bills",
+      "match": [
+        "pharmacy"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Investigation reports",
+      "match": [
+        "investigation|report"
+      ],
+      "status": "needed_from_patient"
+    }
+  ]
+}

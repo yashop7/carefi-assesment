@@ -411,7 +411,7 @@ A point goes to the team if any of these is true:
 - It cites a document that isn't in this patient's locker.
 - The cited document has `nameMismatch`, or it's unreadable or still unread.
 - The AI says the patient must send something but doesn't say what or why.
-- The AI says the patient must send something, but a locker document is still unread.
+- The AI says the patient must send something, but a locker document is still unread or too unclear to read.
 - The name on the letter clearly isn't the patient's. No message is built.
 
 A letter with no points also goes to the team.

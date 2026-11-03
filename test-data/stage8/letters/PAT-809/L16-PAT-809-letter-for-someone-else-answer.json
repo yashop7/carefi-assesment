@@ -1,0 +1,22 @@
+{
+  "letter": "L16",
+  "patient": "PAT-809",
+  "case": "letter-for-someone-else",
+  "file": "L16-PAT-809-letter-for-someone-else.pdf",
+  "points": [
+    {
+      "asks": "Discharge summary",
+      "match": [
+        "discharge"
+      ],
+      "status": "needs_team"
+    },
+    {
+      "asks": "Itemised bill",
+      "match": [
+        "itemi"
+      ],
+      "status": "needs_team"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "letter": "L18",
+  "patient": "PAT-810",
+  "case": "nothing-requested",
+  "file": "L18-PAT-810-nothing-requested.pdf",
+  "points": [
+    {
+      "asks": "Read this letter",
+      "match": [
+        "read this letter"
+      ],
+      "status": "needs_team"
+    }
+  ]
+}
