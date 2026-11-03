@@ -11,6 +11,7 @@ import {
   queryStatusLabel,
 } from "@/lib/format";
 import { DeleteDocument } from "./delete-document";
+import { DeleteQuery } from "./delete-query";
 import { DocumentUpload } from "./document-upload";
 import { MessageList } from "./message-list";
 import { QueryDrop } from "./query-drop";
@@ -186,6 +187,7 @@ export default async function PatientPage({
                     <th scope="col">Letter</th>
                     <th scope="col">Status</th>
                     <th scope="col">Uploaded</th>
+                    <th scope="col"><span className="visually-hidden">Actions</span></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -202,6 +204,11 @@ export default async function PatientPage({
                         </span>
                       </td>
                       <td>{formatDate(letter.createdAt)}</td>
+                      <td>
+                        {!isBeingWorkedOn(letter.status) && (
+                          <DeleteQuery queryId={letter.id} patientId={patient.id} />
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
