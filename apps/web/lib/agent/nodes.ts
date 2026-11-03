@@ -15,6 +15,8 @@ import {
 } from "./ai";
 
 const CHANNELS = ["whatsapp", "email"] as const;
+const WHATSAPP_JOIN_LINE =
+  'To get this message on WhatsApp, send "join road-depend" to +1 415 523 8886 on WhatsApp, then send "hi".';
 type Channel = (typeof CHANNELS)[number];
 type Delivery = Record<Channel, "pending" | "sent" | "failed">;
 type Result = Omit<Decision, "pointId"> & { point: Point };
@@ -227,7 +229,10 @@ export async function buildMessage(state: GraphState) {
   if (!whatsapp || !email) throw new Error("Template not found");
 
   const whatsappBody = fillTemplate(whatsapp.body, values);
-  const emailBody = fillTemplate(email.body, values);
+  const filledEmail = fillTemplate(email.body, values);
+  // Without Meta, WhatsApp only reaches the patient once they message us.
+  const emailBody =
+    filledEmail && !process.env.WHATSAPP_TOKEN ? `${filledEmail}\n\n${WHATSAPP_JOIN_LINE}` : filledEmail;
   const emailSubject = fillTemplate(email.subject ?? "Documents needed for your claim", values);
   if (whatsappBody && emailBody && emailSubject) {
     return { messages: { whatsapp: whatsappBody, email: emailBody }, emailSubject };
