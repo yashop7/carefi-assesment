@@ -13,14 +13,24 @@ function isFromTwilio(request: Request, form: FormData) {
   if (!token || !signature) return false;
 
   const fields = [...form.entries()]
+    .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
     .map(([key, value]) => `${key}${value}`)
-    .sort()
     .join("");
-  const expected = createHmac("sha1", token)
-    .update(`${process.env.BETTER_AUTH_URL}/api/whatsapp${fields}`)
-    .digest();
   const received = Buffer.from(signature, "base64");
-  return received.length === expected.length && timingSafeEqual(received, expected);
+  // Twilio can sign an https URL with or without its port.
+  const matches = ["", ":443"].some((port) => {
+    const url = `${process.env.BETTER_AUTH_URL}${port}/api/whatsapp`;
+    const expected = createHmac("sha1", token).update(`${url}${fields}`).digest();
+    return received.length === expected.length && timingSafeEqual(received, expected);
+  });
+  if (!matches) {
+    // Field names and the end of the account id only, never patient details.
+    console.warn("Twilio signature check failed", {
+      account: String(form.get("AccountSid")).slice(-6),
+      fields: [...form.keys()].sort().join(","),
+    });
+  }
+  return matches;
 }
 
 function escapeXml(text: string) {
