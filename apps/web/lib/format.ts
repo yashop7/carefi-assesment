@@ -56,6 +56,10 @@ export function queryStatusLabel(status: string, points: { status: string }[]) {
   return team ? "Needs team" : "No action needed";
 }
 
+export function openItems(points: { status: string }[]) {
+  return points.filter(({ status }) => status === "needed_from_patient" || status === "needs_team").length;
+}
+
 const POINT_STATUSES: Record<string, string> = {
   already_in_locker: "Already in locker",
   needed_from_patient: "Asked from patient",

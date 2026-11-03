@@ -6,8 +6,8 @@ Your insurance company needs the following for your claim {{claim_number}}:
 
 {{requested_items}}
 
-Please send these as soon as you can. We already have your other documents, so
-there is no need to send them again.
+Please send these as soon as you can. There is no need to send again anything
+you have already given us.
 
 Team CareFi`;
 

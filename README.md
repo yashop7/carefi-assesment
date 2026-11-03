@@ -177,3 +177,9 @@ When the patient must send something, the agent emails the template through Rese
 WhatsApp isn't fully automatic in this build. Twilio's trial sandbox only allows free text as a reply, so the message waits, marked "Waiting for patient to message". To receive it, the patient sends `join road-depend` to +1 415 523 8886, then any message. `POST /api/whatsapp` checks Twilio's signature with `TWILIO_AUTH_TOKEN` and replies with what's waiting for that number. Set that URL under "When a message comes in" in the sandbox settings. Membership lasts 72 hours. "Sent" means the reply was handed to Twilio. The automatic email ends with these steps, so the patient knows what to do.
 
 With a Meta account, set `WHATSAPP_TOKEN` and `WHATSAPP_PHONE_NUMBER_ID` instead, and WhatsApp sends automatically through the Meta Cloud API.
+
+## Loading CareFi's data
+
+Sign in as an admin and open **Import** on the patient list. Upload a CSV with `patientCode, name, phone, email, policyNumber, claimNumber`, then choose a folder with one folder per patient, like `PAT-001/discharge.pdf`. Bad rows and unmatched files are listed, and the rest still load. Put query letters on the patient's page, because that starts the agent.
+
+Open **Templates** to paste in CareFi's WhatsApp and email text. The next message uses it.
