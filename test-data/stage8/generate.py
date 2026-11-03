@@ -1,4 +1,4 @@
-# Writes 10 fake patients, their lockers, 18 letters and each letter's correct answer.
+# Writes 11 fake patients, their lockers, 19 letters and each letter's correct answer.
 # Every name and number here is made up. Run: python3 test-data/stage8/generate.py
 import json
 import random
@@ -23,6 +23,7 @@ PATIENTS = {
     "PAT-808": "Deepak Yadav",
     "PAT-809": "Lata Menon",
     "PAT-810": "Harpreet Singh",
+    "PAT-811": "Vikram Desai",
 }
 
 
@@ -121,6 +122,10 @@ def lockers():
                     "lab-report-old.pdf": [lab_report("Lata Menon", "10 January 2025")]},
         "PAT-810": {"discharge-summary.pdf": [discharge("Harpreet Singh")], "summary-bill.pdf": [summary_bill("Harpreet Singh")],
                     "mri-report.pdf": [mri_report("Harpreet Singh")]},
+        # No blurry file here: one unreadable document sends every "ask the patient" point to the team.
+        "PAT-811": {"discharge-summary.pdf": [discharge("Vikram Desai")], "itemised-bill.pdf": [itemised_bill("Vikram Desai")],
+                    "policy-copy.pdf": [policy("Vikram Desai")], "lab-report-old.pdf": [lab_report("Vikram Desai", "10 January 2025")],
+                    "mri-report-other-person.pdf": [mri_report("Neha Joshi")]},
     }
 
 
@@ -198,6 +203,18 @@ LETTERS = [
       point("Past history", ["history"], TEAM)]),
     ("L18", "PAT-810", "nothing-requested",
      "We are pleased to inform you that your claim is under process. No further documents are required at this time.", UNREADABLE),
+    ("L19", "PAT-811", "all-three-cases",
+     "Please provide the discharge summary, the itemised hospital bill and a copy of the insurance policy. "
+     "Please also provide the pharmacy bills, a cancelled cheque and the blood test report for the hospital stay "
+     "from 12 March 2026 to 15 March 2026. We also need the MRI report. The treating hospital must confirm in writing "
+     "the tariff applied for the room charges. Please also clarify the past history.",
+     [point("Discharge summary", ["discharge"], LOCKER, "discharge-summary.pdf"),
+      point("Itemised bill", ["itemi"], LOCKER, "itemised-bill.pdf"),
+      point("Policy copy", ["policy"], LOCKER, "policy-copy.pdf"),
+      point("Pharmacy bills", ["pharmacy"], ASK), point("Cancelled cheque", ["cheque"], ASK),
+      point("Blood test report for the stay", ["blood|test|report"], ASK),
+      point("MRI report", ["mri"], TEAM), point("Tariff confirmation", ["tariff"], TEAM),
+      point("Past history", ["history"], TEAM)]),
 ]
 
 

@@ -1,0 +1,74 @@
+{
+  "letter": "L19",
+  "patient": "PAT-811",
+  "case": "all-three-cases",
+  "file": "L19-PAT-811-all-three-cases.pdf",
+  "points": [
+    {
+      "asks": "Discharge summary",
+      "match": [
+        "discharge"
+      ],
+      "status": "already_in_locker",
+      "document": "discharge-summary.pdf"
+    },
+    {
+      "asks": "Itemised bill",
+      "match": [
+        "itemi"
+      ],
+      "status": "already_in_locker",
+      "document": "itemised-bill.pdf"
+    },
+    {
+      "asks": "Policy copy",
+      "match": [
+        "policy"
+      ],
+      "status": "already_in_locker",
+      "document": "policy-copy.pdf"
+    },
+    {
+      "asks": "Pharmacy bills",
+      "match": [
+        "pharmacy"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Cancelled cheque",
+      "match": [
+        "cheque"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Blood test report for the stay",
+      "match": [
+        "blood|test|report"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "MRI report",
+      "match": [
+        "mri"
+      ],
+      "status": "needs_team"
+    },
+    {
+      "asks": "Tariff confirmation",
+      "match": [
+        "tariff"
+      ],
+      "status": "needs_team"
+    },
+    {
+      "asks": "Past history",
+      "match": [
+        "history"
+      ],
+      "status": "needs_team"
+    }
+  ]
+}
