@@ -1,5 +1,5 @@
 import { db } from "db";
-import { requireStaffDocumentAccess, requireUser } from "@/lib/access";
+import { logAccess, requireStaffDocumentAccess, requireUser } from "@/lib/access";
 import { apiError, handleRouteError, isForeignOrigin } from "@/lib/api";
 import { deleteObject } from "@/lib/storage";
 
@@ -26,6 +26,7 @@ export async function DELETE(request: Request, { params }: Context) {
       documentId: null,
     });
     await db.orm.public.Document.where({ id: document.id }).delete();
+    await logAccess(user, "delete_file", document.patientId, document.id);
     return Response.json({ ok: true });
   } catch (error) {
     return handleRouteError(error);

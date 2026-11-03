@@ -516,6 +516,44 @@ tbody tr:last-child td {
   margin-top: 0;
 }
 
+.field select,
+.assign-form select {
+  padding: 9px 12px;
+  font: inherit;
+  font-weight: 400;
+  color: inherit;
+  background: var(--background);
+  border: 1px solid #8a8a8a;
+  border-radius: 6px;
+}
+
+.assigned-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+  list-style: none;
+}
+
+.assigned-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: center;
+}
+
+.assign-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.assign-form select {
+  min-width: 0;
+  max-width: 260px;
+}
+
 .message pre {
   margin: 8px 0 0;
   font: inherit;

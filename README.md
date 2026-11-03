@@ -183,3 +183,9 @@ With a Meta account, set `WHATSAPP_TOKEN` and `WHATSAPP_PHONE_NUMBER_ID` instead
 Sign in as an admin and open **Import** on the patient list. Upload a CSV with `patientCode, name, phone, email, policyNumber, claimNumber`, then choose a folder with one folder per patient, like `PAT-001/discharge.pdf`. Bad rows and unmatched files are listed, and the rest still load. Put query letters on the patient's page, because that starts the agent.
 
 Open **Templates** to paste in CareFi's WhatsApp and email text. The next message uses it.
+
+## Accounts and privacy
+
+There is no public signup. An admin opens **Accounts** on the patient list to add agents and patients, assign patients to an agent, and link a patient account to its locker. Share the password with the person directly.
+
+An agent sees only assigned patients, and a patient sees only their own locker. Anything else returns a 404 and writes a `denied` row. **Access log** shows who opened, uploaded or deleted what, and **Denied only** shows the refused attempts. Log rows keep IDs only.

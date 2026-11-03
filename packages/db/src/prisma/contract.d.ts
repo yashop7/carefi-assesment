@@ -23,7 +23,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'82954e9c0fc24bade4c143b9af41b6b8195f5f6415f996ad918bc45b6b060d54'>;
+  StorageHashBase<'19491e3b5dcc43a9bd2165c8e3bba4b060cb49e13d5c5662b2dd143f3c4676b4'>;
 export type ExecutionHash =
   ExecutionHashBase<'b4e302124c8740cde75a3223955c66932ad80ab257fe8ed1535d95e9fd4ca179'>;
 export type ProfileHash =
@@ -275,8 +275,10 @@ type FieldTypeOverrides = {
     readonly models: {
       readonly AccessLog: {
         readonly action: {
-          readonly output: 'view_patient' | 'view_document' | 'view_query' | 'upload' | 'denied';
-          readonly input: 'view_patient' | 'view_document' | 'view_query' | 'upload' | 'denied';
+          readonly output:
+            'view_patient' | 'view_document' | 'view_query' | 'upload' | 'delete_file' | 'denied';
+          readonly input:
+            'view_patient' | 'view_document' | 'view_query' | 'upload' | 'delete_file' | 'denied';
         };
       };
       readonly Document: {
@@ -374,8 +376,10 @@ type ColumnTypeOverrides = {
   readonly public: {
     readonly AccessLog: {
       readonly action: {
-        readonly output: 'view_patient' | 'view_document' | 'view_query' | 'upload' | 'denied';
-        readonly input: 'view_patient' | 'view_document' | 'view_query' | 'upload' | 'denied';
+        readonly output:
+          'view_patient' | 'view_document' | 'view_query' | 'upload' | 'delete_file' | 'denied';
+        readonly input:
+          'view_patient' | 'view_document' | 'view_query' | 'upload' | 'delete_file' | 'denied';
       };
     };
     readonly Document: {
@@ -1387,6 +1391,7 @@ type ContractBase = Omit<
                 'view_document',
                 'view_query',
                 'upload',
+                'delete_file',
                 'denied',
               ];
             };
@@ -2198,6 +2203,7 @@ type ContractBase = Omit<
               { readonly name: 'view_document'; readonly value: 'view_document' },
               { readonly name: 'view_query'; readonly value: 'view_query' },
               { readonly name: 'upload'; readonly value: 'upload' },
+              { readonly name: 'delete_file'; readonly value: 'delete_file' },
               { readonly name: 'denied'; readonly value: 'denied' },
             ];
           };
@@ -2269,6 +2275,7 @@ type ContractBase = Omit<
             { readonly name: 'view_document'; readonly value: 'view_document' },
             { readonly name: 'view_query'; readonly value: 'view_query' },
             { readonly name: 'upload'; readonly value: 'upload' },
+            { readonly name: 'delete_file'; readonly value: 'delete_file' },
             { readonly name: 'denied'; readonly value: 'denied' },
           ];
           readonly DocumentType: readonly [

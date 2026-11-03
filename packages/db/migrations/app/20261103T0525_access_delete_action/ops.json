@@ -1,0 +1,99 @@
+[
+  {
+    "id": "dropCheckConstraint.AccessLog.AccessLog_action_check_c4a4121d",
+    "label": "Drop check constraint \"AccessLog_action_check_c4a4121d\" on \"AccessLog\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "AccessLog_action_check_c4a4121d",
+        "table": "AccessLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"AccessLog_action_check_c4a4121d\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AccessLog_action_check_c4a4121d",
+          "public",
+          "\"public\".\"AccessLog\""
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "constraint \"AccessLog_action_check_c4a4121d\" on \"AccessLog\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop check constraint \"AccessLog_action_check_c4a4121d\"",
+        "sql": "ALTER TABLE \"public\".\"AccessLog\" DROP CONSTRAINT \"AccessLog_action_check_c4a4121d\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"AccessLog_action_check_c4a4121d\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AccessLog_action_check_c4a4121d",
+          "public",
+          "\"public\".\"AccessLog\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"AccessLog_action_check_c4a4121d\" on \"AccessLog\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.AccessLog.AccessLog_action_check_c7e230b3",
+    "label": "Add check constraint \"AccessLog_action_check_c7e230b3\" on \"AccessLog\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "AccessLog_action_check_c7e230b3",
+        "table": "AccessLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"AccessLog_action_check_c7e230b3\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AccessLog_action_check_c7e230b3",
+          "public",
+          "\"public\".\"AccessLog\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "constraint \"AccessLog_action_check_c7e230b3\" on \"AccessLog\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add check constraint \"AccessLog_action_check_c7e230b3\"",
+        "sql": "ALTER TABLE \"public\".\"AccessLog\" ADD CONSTRAINT \"AccessLog_action_check_c7e230b3\" CHECK (\"action\" IN ('view_patient', 'view_document', 'view_query', 'upload', 'delete_file', 'denied'))"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify check constraint \"AccessLog_action_check_c7e230b3\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3) AND \"c\".\"contype\" = $4)) AS \"result\"",
+        "params": [
+          "AccessLog_action_check_c7e230b3",
+          "public",
+          "\"public\".\"AccessLog\"",
+          "c"
+        ]
+      }
+    ]
+  }
+]

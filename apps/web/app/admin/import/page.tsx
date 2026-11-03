@@ -1,7 +1,7 @@
 import { db } from "db";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/access";
+import { getCurrentUser, orNotFound, requireAdmin } from "@/lib/access";
 import { documentTypeLabel, isBeingRead } from "@/lib/format";
 import { RefreshWhileReading, RetryButton } from "../../patients/[id]/reading-status";
 import { ImportForm } from "./import-form";
@@ -9,7 +9,7 @@ import { ImportForm } from "./import-form";
 export default async function ImportPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
-  if (user.role !== "admin") redirect("/");
+  await orNotFound(requireAdmin(user));
 
   const patients = await db.orm.public.Patient.select("id", "patientCode").limit(1000).all();
   const documents = await db.orm.public.Document.select("id", "fileName", "type", "readingStatus", "patientId")

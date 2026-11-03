@@ -61,6 +61,7 @@ enum AccessAction {
   view_document = "view_document"
   view_query    = "view_query"
   upload        = "upload"
+  delete_file   = "delete_file"
   denied        = "denied"
 }
 

@@ -70,6 +70,19 @@ export function pointStatusLabel(status: string) {
   return POINT_STATUSES[status] ?? "Unknown";
 }
 
+const ACCESS_ACTIONS: Record<string, string> = {
+  view_patient: "Opened patient",
+  view_document: "Opened document",
+  view_query: "Opened letter",
+  upload: "Uploaded",
+  delete_file: "Deleted file",
+  denied: "Denied",
+};
+
+export function accessActionLabel(action: string) {
+  return ACCESS_ACTIONS[action] ?? "Unknown";
+}
+
 export function timeTaken(startedAt: string | null, finishedAt: string | null) {
   if (!startedAt || !finishedAt) return null;
   const seconds = (new Date(finishedAt).getTime() - new Date(startedAt).getTime()) / 1000;

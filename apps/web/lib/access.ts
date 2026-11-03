@@ -22,7 +22,7 @@ export async function requireUser() {
 
 export async function logAccess(
   user: CurrentUser,
-  action: "view_patient" | "view_document" | "view_query" | "upload" | "denied",
+  action: "view_patient" | "view_document" | "view_query" | "upload" | "delete_file" | "denied",
   patientId: string | null,
   resourceId: string | null,
 ) {
