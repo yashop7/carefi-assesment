@@ -43,6 +43,21 @@ The same prompt can give a different answer between runs, so the final version w
 
 If a locker holds an unreadable document, anything the agent thinks is missing goes to the team, and the patient gets no automatic message for those points. This avoids asking for something already uploaded, but sends more work to the team for those patients.
 
+## After adding policy and claim numbers to the files
+
+Letters and locker documents now show each patient's policy and claim number, so the same 18 letters were scored again. The prompts didn't change.
+
+| Run | Points found | Decisions right | Extra points |
+|---|---|---|---|
+| 1 | 41/41 | 38/41 (93%) | 0 |
+| 2 | 41/41 | 39/41 (95%) | 0 |
+
+- **L07, blood test report (2 of 2 runs):** the same open miss as above.
+- **L14, Aadhaar card (2 of 2 runs):** the patient is asked for an Aadhaar card already in the locker. The agent's reason talks about the PAN card, so the answers are still getting mixed up.
+- **L15, consultation paper (1 of 2 runs):** the patient is asked for a paper already in the locker.
+
+L03 didn't miss in these two runs. Two runs are too few to say whether anything really improved or got worse.
+
 ## How to run
 
 Use a test database, a test bucket and a stand-in email service on this computer. The script stops otherwise.
