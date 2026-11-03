@@ -232,7 +232,8 @@ export async function buildMessage(state: GraphState) {
   const values = {
     patient_name: patient.name,
     patient_id: patient.patientCode,
-    claim_number: patient.claimNumber,
+    // A missing claim number shouldn't stop the patient hearing what's needed.
+    claim_number: patient.claimNumber ?? "on file",
     requested_items: requestedItems,
   };
   const whatsapp = await db.orm.public.Template.first({ channel: "whatsapp" });
@@ -255,7 +256,7 @@ export async function buildMessage(state: GraphState) {
     status: "needed_from_patient",
   }).updateAll({
     status: "needs_team",
-    reason: "No message was sent because the patient's profile is missing a detail it needs, such as the claim number.",
+    reason: "No message was sent because the patient's profile is missing a detail the template needs.",
   });
   return { messages: null };
 }

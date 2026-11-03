@@ -452,7 +452,7 @@ Our code fills in the template, so the format never changes. Admins can edit it 
 |---|---|
 | `{{patient_name}}` | Asha Verma |
 | `{{patient_id}}` | PAT-001 |
-| `{{claim_number}}` | CL-9921 |
+| `{{claim_number}}` | CL-9921, or "on file" if the profile has none |
 | `{{requested_items}}` | Numbered list of what's needed and why |
 
 Saving a template with an unknown placeholder is rejected. Sending also stops if a placeholder has no value, and the letter goes to the team.

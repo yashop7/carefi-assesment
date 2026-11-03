@@ -26,6 +26,22 @@ PATIENTS = {
 }
 
 
+# Each patient's policy and claim number, the same as patients.csv.
+NUMBERS = {name: (f"HP-80{i:02d}", f"CL-80{i:02d}") for i, name in enumerate(PATIENTS.values(), 1)}
+NUMBERS["Neha Joshi"] = ("HP-9901", "CL-9901")
+NUMBERS["Kavita Joshi"] = ("HP-9902", "CL-9902")
+
+
+def with_numbers(lines):
+    out = []
+    for line in lines:
+        out.append(line)
+        if line.startswith(("Patient: ", "Insured: ")):
+            policy, claim = NUMBERS[line.split(": ", 1)[1]]
+            out += [f"Policy number: {policy}", f"Claim number: {claim}"]
+    return out
+
+
 def discharge(name):
     return [HOSPITAL, "DISCHARGE SUMMARY", f"Patient: {name}", "Admitted: 12 March 2026", "Discharged: 15 March 2026",
             "Diagnosis: Acute appendicitis", "Treatment: Laparoscopic appendectomy under general anaesthesia.",
@@ -188,7 +204,7 @@ LETTERS = [
 def letter_lines(code, body):
     name = "Kavita Joshi" if code == "L16" else None
     return lambda patient: ["Sunrise Health Insurance Ltd", "Claims Department", "Date: 20 March 2026",
-                            f"Patient: {name or patient}", f"Claim reference: QR-{code}",
+                            f"Patient: {name or patient}",
                             "Subject: Query on your health insurance claim", "", "Dear Sir or Madam,", "",
                             *textwrap.wrap(body, 72), "", "Please respond within 15 days.", "", "Claims Team"]
 
@@ -232,9 +248,9 @@ def write_file(path, content):
     path.parent.mkdir(parents=True, exist_ok=True)
     if isinstance(content, tuple):
         kind, lines = content
-        image_pdf(path, lines, 11 if kind == "blur" else 0.6)
+        image_pdf(path, with_numbers(lines), 11 if kind == "blur" else 0.6)
     else:
-        text_pdf(path, content)
+        text_pdf(path, [with_numbers(lines) for lines in content])
 
 
 def main():
