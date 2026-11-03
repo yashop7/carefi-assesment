@@ -1,13 +1,13 @@
 import { db } from "db";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/access";
+import { getCurrentUser, orNotFound, requireAdmin } from "@/lib/access";
 import { TemplateForm } from "./template-form";
 
 export default async function TemplatesPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
-  if (user.role !== "admin") redirect("/");
+  await orNotFound(requireAdmin(user));
 
   const whatsapp = await db.orm.public.Template.first({ channel: "whatsapp" });
   const email = await db.orm.public.Template.first({ channel: "email" });

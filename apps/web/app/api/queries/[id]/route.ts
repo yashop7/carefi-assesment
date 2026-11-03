@@ -1,5 +1,5 @@
 import { db } from "db";
-import { requireQueryAccess, requireUser } from "@/lib/access";
+import { logAccess, requireQueryAccess, requireUser } from "@/lib/access";
 import { apiError, handleRouteError, isForeignOrigin } from "@/lib/api";
 import { isBeingWorkedOn } from "@/lib/format";
 import { deleteObject } from "@/lib/storage";
@@ -29,6 +29,7 @@ export async function DELETE(request: Request, { params }: Context) {
     await db.orm.public.Message.where({ queryLetterId: letter.id }).deleteAll();
     await db.orm.public.QueryPoint.where({ queryLetterId: letter.id }).deleteAll();
     await db.orm.public.QueryLetter.where({ id: letter.id }).delete();
+    await logAccess(user, "delete_file", letter.patientId, letter.id);
     return Response.json({ ok: true });
   } catch (error) {
     return handleRouteError(error);

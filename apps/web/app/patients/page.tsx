@@ -1,15 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getCurrentUser, listPatientsFor } from "@/lib/access";
+import { getCurrentUser, listPatientsFor, orNotFound } from "@/lib/access";
 import { openItems, queryStatusLabel } from "@/lib/format";
 import { PatientTable } from "./patient-table";
 
 export default async function PatientsPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
-  if (user.role !== "admin" && user.role !== "agent") redirect("/");
 
-  const patients = await listPatientsFor(user);
+  const patients = await orNotFound(listPatientsFor(user));
   const isAdmin = user.role === "admin";
   const rows = patients.map(({ queryLetters, ...patient }) => {
     const latest = queryLetters[0];
@@ -26,6 +25,12 @@ export default async function PatientsPage() {
         <h1>Patients</h1>
         {isAdmin && (
           <div className="form-actions">
+            <Link className="button button-quiet" href="/admin/users">
+              Accounts
+            </Link>
+            <Link className="button button-quiet" href="/admin/access-log">
+              Access log
+            </Link>
             <Link className="button button-quiet" href="/admin/templates">
               Templates
             </Link>

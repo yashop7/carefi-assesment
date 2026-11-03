@@ -144,6 +144,7 @@ enum AccessAction {
   view_document = "view_document"
   view_query    = "view_query"
   upload        = "upload"
+  delete_file   = "delete_file"
   denied        = "denied"
 }
 
@@ -340,7 +341,7 @@ There's no public signup. Accounts are created by a seed script or by an admin. 
 1. Every page and API route calls `requirePatientAccess(user, patientId, action)` in `lib/access.ts`. Hiding a button is never the check.
 2. An access failure returns 404, so someone can't discover which patients exist. It also writes a `denied` row to `AccessLog`.
 3. The bucket is private. Files open through links that expire after 5 minutes, created only after the access check.
-4. Opening a patient or document writes to `AccessLog`.
+4. Opening a patient or document, and deleting a file, writes to `AccessLog`.
 5. Logs carry IDs, never names, phone numbers, message text or document contents.
 6. All secrets stay in environment variables.
 
