@@ -1,0 +1,23 @@
+{
+  "letter": "L15",
+  "patient": "PAT-809",
+  "case": "wrong-date-in-locker",
+  "file": "L15-PAT-809-wrong-date-in-locker.pdf",
+  "points": [
+    {
+      "asks": "Blood test report for the stay",
+      "match": [
+        "blood|test|report"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Consultation paper",
+      "match": [
+        "consultation"
+      ],
+      "status": "already_in_locker",
+      "document": "consultation-paper.pdf"
+    }
+  ]
+}

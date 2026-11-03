@@ -1,0 +1,23 @@
+{
+  "letter": "L07",
+  "patient": "PAT-804",
+  "case": "other-patients-document",
+  "file": "L07-PAT-804-other-patients-document.pdf",
+  "points": [
+    {
+      "asks": "Blood test report",
+      "match": [
+        "blood|test|report"
+      ],
+      "status": "needs_team"
+    },
+    {
+      "asks": "Discharge summary",
+      "match": [
+        "discharge"
+      ],
+      "status": "already_in_locker",
+      "document": "discharge-summary.pdf"
+    }
+  ]
+}

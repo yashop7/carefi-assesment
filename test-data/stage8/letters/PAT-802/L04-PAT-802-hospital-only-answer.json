@@ -1,0 +1,30 @@
+{
+  "letter": "L04",
+  "patient": "PAT-802",
+  "case": "hospital-only",
+  "file": "L04-PAT-802-hospital-only.pdf",
+  "points": [
+    {
+      "asks": "Tariff confirmation",
+      "match": [
+        "tariff"
+      ],
+      "status": "needs_team"
+    },
+    {
+      "asks": "Doctor's reason for ICU",
+      "match": [
+        "doctor|necessary"
+      ],
+      "status": "needs_team"
+    },
+    {
+      "asks": "Pharmacy bill",
+      "match": [
+        "pharmacy"
+      ],
+      "status": "already_in_locker",
+      "document": "pharmacy-bill.pdf"
+    }
+  ]
+}

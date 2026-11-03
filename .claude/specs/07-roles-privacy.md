@@ -14,7 +14,7 @@ An admin can add agent and patient accounts, give agents their patients, and lin
 ## Not in this stage
 
 - Password reset, removing accounts, or changing a role.
-- The team queue, which no stage builds.
+- The team queue, which stage 9 finishes.
 
 ## Rules
 

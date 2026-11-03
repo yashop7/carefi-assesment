@@ -189,3 +189,7 @@ Open **Templates** to paste in CareFi's WhatsApp and email text. The next messag
 There is no public signup. An admin opens **Accounts** on the patient list to add agents and patients, assign patients to an agent, and link a patient account to its locker. Share the password with the person directly.
 
 An agent sees only assigned patients, and a patient sees only their own locker. Anything else returns a 404 and writes a `denied` row. **Access log** shows who opened, uploaded or deleted what, and **Denied only** shows the refused attempts. Log rows keep IDs only.
+
+## Accuracy
+
+The agent is scored on 18 fake letters in `test-data/stage8`, each with its answer written first. See `test-data/stage8/results.md` for the score, every miss and how to run it.

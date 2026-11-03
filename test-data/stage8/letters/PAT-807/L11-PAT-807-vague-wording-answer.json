@@ -1,0 +1,15 @@
+{
+  "letter": "L11",
+  "patient": "PAT-807",
+  "case": "vague-wording",
+  "file": "L11-PAT-807-vague-wording.pdf",
+  "points": [
+    {
+      "asks": "Relevant documents",
+      "match": [
+        "document"
+      ],
+      "status": "needs_team"
+    }
+  ]
+}

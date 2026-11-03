@@ -1,0 +1,32 @@
+{
+  "letter": "L13",
+  "patient": "PAT-808",
+  "case": "no-message-needed",
+  "file": "L13-PAT-808-no-message-needed.pdf",
+  "points": [
+    {
+      "asks": "Policy copy",
+      "match": [
+        "policy"
+      ],
+      "status": "already_in_locker",
+      "document": "policy-copy.pdf"
+    },
+    {
+      "asks": "Cancelled cheque",
+      "match": [
+        "cheque"
+      ],
+      "status": "already_in_locker",
+      "document": "cancelled-cheque.pdf"
+    },
+    {
+      "asks": "Identity proof",
+      "match": [
+        "identity|id "
+      ],
+      "status": "already_in_locker",
+      "document": "aadhaar-card.pdf"
+    }
+  ]
+}

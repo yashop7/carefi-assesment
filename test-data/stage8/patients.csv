@@ -1,0 +1,11 @@
+patientCode,name,phone,email,policyNumber,claimNumber
+PAT-801,Asha Verma,+919000008001,pat-801@example.com,HP-8001,CL-8001
+PAT-802,Ravi Kumar,+919000008002,pat-802@example.com,HP-8002,CL-8002
+PAT-803,Sita Rao,+919000008003,pat-803@example.com,HP-8003,CL-8003
+PAT-804,Imran Shaikh,+919000008004,pat-804@example.com,HP-8004,CL-8004
+PAT-805,Meena Iyer,+919000008005,pat-805@example.com,HP-8005,CL-8005
+PAT-806,Arjun Nair,+919000008006,pat-806@example.com,HP-8006,CL-8006
+PAT-807,Farah Khan,+919000008007,pat-807@example.com,HP-8007,CL-8007
+PAT-808,Deepak Yadav,+919000008008,pat-808@example.com,HP-8008,CL-8008
+PAT-809,Lata Menon,+919000008009,pat-809@example.com,HP-8009,CL-8009
+PAT-810,Harpreet Singh,+919000008010,pat-810@example.com,HP-8010,CL-8010

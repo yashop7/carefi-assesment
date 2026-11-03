@@ -1,0 +1,23 @@
+{
+  "letter": "L10",
+  "patient": "PAT-806",
+  "case": "blurry-document",
+  "file": "L10-PAT-806-blurry-document.pdf",
+  "points": [
+    {
+      "asks": "Discharge summary",
+      "match": [
+        "discharge"
+      ],
+      "status": "needs_team"
+    },
+    {
+      "asks": "Cancelled cheque",
+      "match": [
+        "cheque"
+      ],
+      "status": "already_in_locker",
+      "document": "cancelled-cheque.pdf"
+    }
+  ]
+}

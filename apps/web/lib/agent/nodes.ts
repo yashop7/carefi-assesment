@@ -19,7 +19,7 @@ const WHATSAPP_JOIN_LINE =
   'To get this message on WhatsApp, send "join road-depend" to +1 415 523 8886 on WhatsApp, then send "hi".';
 type Channel = (typeof CHANNELS)[number];
 type Delivery = Record<Channel, "pending" | "sent" | "failed">;
-type Result = Omit<Decision, "pointId"> & { point: Point };
+type Result = Omit<Decision, "pointId" | "asksFor"> & { point: Point };
 
 const MAX_SEND_ATTEMPTS = 3;
 const READING_WAIT_MS = 30_000;
@@ -108,8 +108,11 @@ export async function checkLocker(state: GraphState) {
   if (state.points.length === 0) return { decisions: [] };
 
   await waitForReading(letter.patientId);
-  const locker = (await loadLocker(letter.patientId)).map((document) => ({
-    id: document.id,
+  const documents = await loadLocker(letter.patientId);
+  // Short ids, because the AI can miscopy a long one.
+  const shortId = (index: number) => `doc${index + 1}`;
+  const locker = documents.map((document, index) => ({
+    id: shortId(index),
     type: document.type,
     summary: document.summary,
     date: document.documentDate,
@@ -120,10 +123,16 @@ export async function checkLocker(state: GraphState) {
     {
       type: "input_text",
       text: `<query_points>${JSON.stringify(state.points)}</query_points>
-<locker_documents>${JSON.stringify(locker)}</locker_documents>`,
+<usable_documents>${JSON.stringify(locker.filter(({ problem }) => !problem))}</usable_documents>
+<documents_with_problems>${JSON.stringify(locker.filter(({ problem }) => problem))}</documents_with_problems>`,
     },
   ]);
-  return { decisions };
+  return {
+    decisions: decisions.map((decision) => {
+      const index = documents.findIndex((_, position) => shortId(position) === decision.documentId);
+      return { ...decision, documentId: documents[index]?.id ?? null };
+    }),
+  };
 }
 
 // Never blindly trust the AI. If an answer doesn't hold up, a person checks that
@@ -134,6 +143,7 @@ export async function safetyChecks(state: GraphState) {
   const locker = await loadLocker(letter.patientId);
   const someoneElse = Boolean(state.patientName && namesDiffer(patient.name, state.patientName));
   const anyUnread = locker.some(({ readingStatus }) => isUnread(readingStatus));
+  const anyUnreadable = locker.some(({ readingStatus }) => readingStatus === "unreadable");
 
   const problemWith = (decision: Decision | undefined) => {
     if (someoneElse) return "The name on this letter doesn't match this patient.";
@@ -149,6 +159,7 @@ export async function safetyChecks(state: GraphState) {
         return "The AI said the patient must send something, but not what or why.";
       }
       if (anyUnread) return "A locker document hasn't been read, so this may not be missing.";
+      if (anyUnreadable) return "A locker document is too unclear to read, so this may not be missing.";
     }
     return null;
   };

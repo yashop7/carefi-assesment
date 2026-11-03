@@ -1,0 +1,23 @@
+{
+  "letter": "L06",
+  "patient": "PAT-803",
+  "case": "combined-pdf-missing-item",
+  "file": "L06-PAT-803-combined-pdf-missing-item.pdf",
+  "points": [
+    {
+      "asks": "Pharmacy bill",
+      "match": [
+        "pharmacy"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Policy copy",
+      "match": [
+        "policy"
+      ],
+      "status": "already_in_locker",
+      "document": "policy-copy.pdf"
+    }
+  ]
+}

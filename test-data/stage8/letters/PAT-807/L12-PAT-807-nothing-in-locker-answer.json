@@ -1,0 +1,29 @@
+{
+  "letter": "L12",
+  "patient": "PAT-807",
+  "case": "nothing-in-locker",
+  "file": "L12-PAT-807-nothing-in-locker.pdf",
+  "points": [
+    {
+      "asks": "Discharge summary",
+      "match": [
+        "discharge"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Final bill",
+      "match": [
+        "bill"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Policy copy",
+      "match": [
+        "policy"
+      ],
+      "status": "needed_from_patient"
+    }
+  ]
+}

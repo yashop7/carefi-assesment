@@ -1,0 +1,23 @@
+{
+  "letter": "L02",
+  "patient": "PAT-801",
+  "case": "summary-bill-not-itemised",
+  "file": "L02-PAT-801-summary-bill-not-itemised.pdf",
+  "points": [
+    {
+      "asks": "Itemised bill",
+      "match": [
+        "itemi"
+      ],
+      "status": "needed_from_patient"
+    },
+    {
+      "asks": "Discharge summary",
+      "match": [
+        "discharge"
+      ],
+      "status": "already_in_locker",
+      "document": "discharge-summary.pdf"
+    }
+  ]
+}
